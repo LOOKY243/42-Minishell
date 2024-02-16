@@ -37,14 +37,20 @@ int	main(int argc, char **argv, char **envp)
 	char *s;
 
 	if (argc != 1)
-		return (print_fd(2, "\033[1;31mToo many args\n", EXIT_FAILURE));
+		return (print_fd(2, "\x1b[1;31mToo many args\n", EXIT_FAILURE));
 	if (!envp || !envp[0])
-		return (print_fd(2, "\033[1;31mNo environment\n", EXIT_FAILURE));
+		return (print_fd(2, "\x1b[1;31mNo environment\n", EXIT_FAILURE));
+	signal(SIGINT, signal_handler);
 	while (true) {
-		s = readline("\033[1;37m$>\033[1;0m ");
+		print_prompt(prompt(envp));
+		s = readline("\x1b[1;30m╰─ \x1b[0m");
 		if (s && *s)
+		{
+			exit_shell(s);
+			modify_prompt(s);
 			add_history(s);
-		task(s, envp);
-		free(s);
+			//task(s, envp);
+			free(s);
+		}
 	}
 }

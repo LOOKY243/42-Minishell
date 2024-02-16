@@ -37,12 +37,18 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 
-// HANDLE PRINT
+// SIGNAL
+void	signal_handler(int signal);
+
+// PRINT
 int	print_fd(int fd, char *str, int value);
 int	print_error(char *str, int value);
 void	print(const char *s);
+char	*prompt(char **envp);
+void	modify_prompt(const char *s);
+void	print_prompt(char *s);
 
-// HANDLE PIPE
+// PIPE
 void		close_file(int infile, int oufile);
 int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
@@ -55,4 +61,6 @@ void		close_fd(t_pipex pipex);
 int    echo(char **cmd);
 char	*find_pwd(char **envp);
 int pwd(char **envp);
+void exit_shell(char *s);
+
 #endif

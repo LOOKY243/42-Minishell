@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,13 +12,8 @@
 
 #include "minishell.h"
 
-void exit_shell(char *s)
+void	signal_handler(int signal)
 {
-	if (!ft_strcmp(s, "exit"))
-	{
-		modify_prompt(s);
-		print("exit\n");
-		free(s);
-		exit(EXIT_SUCCESS);
-	}
+	(void)signal;
+	print("Caught CTRL+C");
 }

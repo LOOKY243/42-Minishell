@@ -28,6 +28,7 @@ typedef struct s_pipex
 	int		pipe_saved;
 	char	**env;
 	char	**envp;
+	int		exit_value;
 }			t_pipex;
 
 #endif
