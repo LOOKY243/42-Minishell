@@ -2,7 +2,7 @@ CC = clang
 NAME = minishell
 INCPATH = includes/
 SRCPATH = srcs/
-SRCS = cd.c echo.c env.c exit.c export.c handle_print.c libft1.c libft2.c libft3.c main.c pwd.c readline.c signal.c simple_exec.c split_cmd.c unset.c
+SRCS = cd.c echo.c env.c exit.c export.c handle_print.c libft1.c libft2.c libft3.c main.c pipe1.c pwd.c random.c readline.c signal.c split_cmd.c unset.c
 HEADER = enum.h minishell.h struct.h
 SRCSINC = $(addprefix $(SRCPATH), $(SRCS))
 HEADINC = $(addprefix $(INCPATH), $(HEADER))
@@ -10,7 +10,7 @@ OBJS = $(SRCSINC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS = -L./$(INCPATH) -lreadline
 
-all:$(NAME)
+all:$(NAME) clean
 
 $(NAME): $(OBJS)
 	@printf "\033[1;37m"

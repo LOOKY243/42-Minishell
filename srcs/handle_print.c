@@ -18,9 +18,15 @@ int	print_error(char *str, int value)
 	return (value);
 }
 
-int	print_fd(int fd, char *str, int value)
+int	print_strerror(char *str, int errnum, int value)
 {
-	write(fd, str, ft_strlen(str));
+	char *error;
+
+	error = strerror(errnum);
+	print("\x1b[1;6;31m");
+	write(2, str, ft_strlen(str));
+	write(2, error, ft_strlen(error));
+	print("\x1b[0m\n");
 	return (value);
 }
 
@@ -47,8 +53,11 @@ void	print_prompt(char *s)
 
 void	modify_prompt(const char *s)
 {
-	print("\x1b[1A\x1b[K");
-	print("\x1b[1A\x1b[K");
+	print("\x1b[1A\x1b[0K"); //go to and clean empty line
+	print("\x1b[1A\x1b[0K"); //go to and clean ╰─ command
+	// if (no_new_line)
+	//	print("\x1b[?C\x1b[0;47;30m%%\x1b[0m\n");
+	print("\x1b[1A\x1b[0K"); //go to and clean ╭─ header
 	print("\x1b[1;33m❯\x1b[0m ");
 	print(s);
 	print("\n");

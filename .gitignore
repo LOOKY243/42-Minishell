@@ -1,3 +1,5 @@
 .ccls-cache
 .idea
 .nfs*
+minishell
+*.o

@@ -15,5 +15,6 @@
 void	signal_handler(int signal)
 {
 	(void)signal;
-	print("Caught CTRL+C");
+	print("^C\n");
+	exterminate = true;
 }

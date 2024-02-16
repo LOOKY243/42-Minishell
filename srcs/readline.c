@@ -30,11 +30,9 @@ static char	*home_pwd(char **envp)
 
 static char	*session(char **envp)
 {
-	int	i;
 	char	*line;
 	char	**split;
 
-	i = 0;
 	line = find_variable(envp, "SESSION_MANAGER=");
 	if (!line)
 		return (NULL);
@@ -50,22 +48,11 @@ static char	*session(char **envp)
 
 static char	*log_name(char	**envp)
 {
-	int	i;
 	char	*line;
 	char	*tmp;
 	char	*post;
 
-	line = NULL;
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], "LOGNAME=", 8) == 0)
-		{
-			line = &envp[i][8];
-			break;
-		}
-		i++;
-	}
+	line = find_variable(envp, "LOGNAME=");
 	if (!line)
 		return (NULL);
 	tmp = ft_strjoin(line, "@");

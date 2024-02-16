@@ -14,6 +14,7 @@
 # define MINISHELL_H
 
 #include <unistd.h>
+#include <fcntl.h>
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -21,9 +22,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <errno.h>
 #include "enum.h"
 #include "struct.h"
-#define BUFFER_SIZE 64
+#define BUFFER_SIZE 1024
+
+extern bool exterminate;
 
 // LIBFT
 size_t ft_strlen(const char *str);
@@ -41,7 +45,7 @@ int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 void	signal_handler(int signal);
 
 // PRINT
-int	print_fd(int fd, char *str, int value);
+int	print_strerror(char *str, int errnum, int value);
 int	print_error(char *str, int value);
 void	print(const char *s);
 char	*prompt(char **envp);
@@ -54,9 +58,11 @@ int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
 t_program		init_struct(t_cmd cmd, char **envp);
 void		dups(int stdinfd, int stdoutfd);
-bool		treat_child(t_program *pipex, char *cmd, int current, int max);
-void		close_fd(t_program pipex);
-void    simple_exec(char **cmd, t_program program);
+void	treat_child(t_program *program, char *cmd, int current, int max);
+void		close_fd(t_program program);
+int    simple_exec(char **cmd, t_program program);
+void	process(char *prompt, t_program *program);
+void	wait_child(t_program program);
 
 // BUILT-INS
 int    	echo(char **cmd);
@@ -67,4 +73,8 @@ int 	env(char **envp);
 void    ft_export(char **envp);
 void    unset(char  **envp, char *s);
 void exit_shell(char *s);
+
+// OTHERS
+char	*random_string(t_program *program, int len);
+
 #endif

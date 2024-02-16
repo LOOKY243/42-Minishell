@@ -23,13 +23,16 @@ typedef struct s_cmd
 typedef struct s_program
 {
 	int		pipe[2];
+	pid_t	pid[1024];
 	t_cmd	cmd;
 	int		infile;
 	int		outfile;
 	int		pipe_saved;
+	char	*random_file;
 	char	**path;
 	char	**envp;
 	int		exit_value;
+	int		rseed;
 }	t_program;
 
 #endif
