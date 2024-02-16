@@ -1,34 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_calloc.c                                        :+:      :+:    :+:   */
+/*   libft3.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/12 13:48:55 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/12 13:49:08 by gmarre           ###   ########.fr       */
+/*   Created: 2024/02/16 11:38:01 by gmarre            #+#    #+#             */
+/*   Updated: 2024/02/16 11:39:19 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	unsigned char	*str;
 	unsigned int	i;
+	unsigned char	*str1;
+	unsigned char	*str2;
 
-	if (nmemb > 65535 && size > 65535)
-		return (NULL);
-	if (nmemb * size > 2147483647)
-		return (NULL);
-	str = malloc(size * nmemb);
 	i = 0;
-	if (!str)
-		return (NULL);
-	while (i < nmemb * size)
+	str1 = (unsigned char *)s1;
+	str2 = (unsigned char *)s2;
+	while ((str1[i] || str2[i]) && i < n)
 	{
-		str[i] = 0;
+		if (str1[i] - str2[i] != 0)
+			return (str1[i] - str2[i]);
 		i++;
 	}
-	return ((void *)str);
+	return (0);
 }

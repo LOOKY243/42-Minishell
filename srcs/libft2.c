@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycostode <ycostode@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:40:49 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/09 16:42:20 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:26:45 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,4 +81,19 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	ptr[i] = '\0';
 	return (ptr);
+}
+
+int	ft_strcmp(const char *s1, const char *s2)
+{
+	int	i;
+
+	i = 0;
+	while (s1[i] || s2[i])
+	{
+		if ((s1[i] < s2[i]) || (s2[i] < s1[i]))
+			return (s1[i] - s2[i]);
+		else
+			i++;
+	}
+	return (0);
 }

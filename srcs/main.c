@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycostode <ycostode@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/09 15:48:33 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:37:33 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,12 @@ void	task(char *prompt, char **envp)
 	pid = fork();
 	if (pid == 0) {
 		cmd = ft_split_cmd(prompt, ' ');
-		execve(cmd[0], cmd, envp);
+		if (ft_strcmp(cmd[0], "echo") == 0 && ft_strcmp(cmd[1], "-n") == 0)
+			echo(cmd);
+		else if (ft_strcmp(cmd[0], "pwd") == 0)
+			pwd(envp);
+		else
+			execve(cmd[0], cmd, envp);
 		return ;
 	}
 	waitpid(pid, NULL, 0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycostode <ycostode@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/09 16:47:39 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:42:55 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	*ft_strdup(const char *s);
 void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 
 // HANDLE PRINT
 int	print_fd(int fd, char *str, int value);
@@ -50,5 +51,8 @@ void		dups(int stdinfd, int stdoutfd);
 bool		treat_child(t_pipex *pipex, char *cmd, int current, int max);
 void		close_fd(t_pipex pipex);
 
-
+// BUILT-INS
+int    echo(char **cmd);
+char	*find_pwd(char **envp);
+int pwd(char **envp);
 #endif
