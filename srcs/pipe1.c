@@ -44,8 +44,10 @@ void	close_fd(t_program program)
 {
 	if (program.pipe_saved != -1)
 		close(program.pipe_saved);
-	close(program.infile);
-	close(program.outfile);
+	if (program.infile != STDIN_FILENO)
+		close(program.infile);
+	if (program.outfile != STDOUT_FILENO)
+		close(program.outfile);
 }
 
 void	wait_child(t_program program)
@@ -160,24 +162,59 @@ void	treat_child(t_program *program, char *cmd, int current, int max)
 	}
 }
 
-void	handle_file(char *prompt, t_program *program)
+void	cmd_trim(char *cmd, char **cut, int index)
+{
+	char	*line;
+	char	*tmp;
+	int	i;
+
+	i = 0;
+	tmp = NULL;
+	line = ft_strdup(cut[i]);
+	while(cut[++i]) {
+		if (i != index && i != index + 1)
+		{
+			tmp = ft_strjoin(line, " ");
+			free(line);
+			line = ft_strjoin(tmp, cut[i]);
+			free(tmp);
+		}
+	}
+	free(cmd);
+	cmd = ft_strdup(line);
+}
+
+void	handle_file(t_program *program)
 {
 	char	**cut;
 	int	i;
+	int	j;
 
-	cut = ft_split_cmd(prompt, ' ');
-	i = -1;
-	while (cut[++i]) {
-		if (!ft_strcmp(cut[i], "<") && cut[i+ 1])
-			program->infile = open(cut[i + 1], O_RDONLY);
-		else if (!ft_strcmp(cut[i], ">") && cut[i+ 1])
-			program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
-		else if (!ft_strcmp(cut[i], "<<") && cut[i+ 1])
-			read_stdin(program, cut[i + 1]);
-		else if (!ft_strcmp(cut[i], ">>") && cut[i+ 1])
-			program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0666);
+	j = -1;
+	while (program->cmd.list[++j])
+	{
+		cut = ft_split_cmd(program->cmd.list[j], ' ');
+		i = -1;
+		while (cut[++i]) {
+			if (!ft_strcmp(cut[i], "<") && cut[i + 1]) {
+				program->infile = open(cut[i + 1], O_RDONLY);
+				cmd_trim(program->cmd.list[j], cut, i);
+			}
+			else if (!ft_strcmp(cut[i], ">") && cut[i+ 1]) {
+				program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
+				cmd_trim(program->cmd.list[j], cut, i);
+			}
+			else if (!ft_strcmp(cut[i], "<<") && cut[i+ 1]) {
+				read_stdin(program, cut[i + 1]);
+				cmd_trim(program->cmd.list[j], cut, i);
+			}
+			else if (!ft_strcmp(cut[i], ">>") && cut[i+ 1]) {
+				program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0666);
+				cmd_trim(program->cmd.list[j], cut, i);
+			}
+		}
+		ft_freesplit(cut);
 	}
-	ft_freesplit(cut);
 }
 
 int	exec(t_program *program, char *cmd)
@@ -219,7 +256,7 @@ void	process(char *prompt, t_program *program)
 	program->cmd.current = 0;
 	program->cmd.list = ft_split_cmd(prompt, '|');
 	program->cmd.len = size_list(program->cmd.list);
-	handle_file(prompt, program);
+	handle_file(program);
 	if (program->infile == -1 || program->outfile == -1)
 	{
 		close_file(program->infile, program->outfile);

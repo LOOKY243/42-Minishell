@@ -15,6 +15,7 @@
 int	print_error(char *str, int value)
 {
 	perror(str);
+	print("\x1b[0m");
 	return (value);
 }
 

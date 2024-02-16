@@ -54,7 +54,5 @@ int	main(int argc, char **argv, char **envp)
 			free(s);
 		}
 		print("\n");
-		rl_on_new_line();
-		rl_redisplay();
 	}
 }

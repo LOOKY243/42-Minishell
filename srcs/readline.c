@@ -73,6 +73,7 @@ char	*prompt(char **envp)
 
 	log = log_name(envp);
 	current = home_pwd(envp);
+	print("\x1b[0m");
 	prompt = ft_strdup("\x1b[1;30m╭─\x1b[0;30m░▒▓\x1b[0;37;40m  \x1b[1;30m\x1b[0;34;40m  ");
 	tmp = ft_strjoin(prompt, current);
 	if (current)
