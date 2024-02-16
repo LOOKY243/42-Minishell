@@ -1,39 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   parsing1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/16 11:32:49 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/16 14:51:39 by gmarre           ###   ########.fr       */
+/*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
+/*   Updated: 2024/02/16 14:54:19 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*find_variable(char **envp, char *var)
+int env_var_parsing(char **cmd, char **envp)
 {
-	int	i;
+    int i;
+    char    *var;
 
-	i = 0;
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], var, ft_strlen(var)) == 0)
-			return (&envp[i][ft_strlen(var)]);
-		i++;
-	}
-	return (NULL);
-}
-
-int pwd(char **envp)
-{
-    char    *pwd;
-
-    pwd = find_variable(envp, "PWD=");
-    if (!pwd)
-        return (-1);
-    write(1, pwd, ft_strlen(pwd));
-    write(1, "\n", 1);
-    return (0);
+    i = 1;
+    while (cmd[i] && ft_strcmp(cmd[i], '|'))
+    {
+        var = find_variable(envp, cmd[i]);
+        if (var)
+            print(var);
+    }
 }

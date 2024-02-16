@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   struct.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycostode <ycostode@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:31:55 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/09 16:34:01 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/02/16 15:13:36 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,17 @@ typedef struct s_cmd
 	int		current;
 	int		len;
 }			t_cmd;
-typedef struct s_pipex
+
+typedef struct s_program
 {
 	int		pipe[2];
 	t_cmd	cmd;
 	int		infile;
 	int		outfile;
 	int		pipe_saved;
-	char	**env;
+	char	**path;
 	char	**envp;
-}			t_pipex;
+	char	*t_global;
+}	t_program;
 
 #endif

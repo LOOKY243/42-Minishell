@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 11:42:55 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/16 16:30:31 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,18 @@ void	print(const char *s);
 void		close_file(int infile, int oufile);
 int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
-t_pipex		init_struct(t_cmd cmd, char **envp);
+t_program		init_struct(t_cmd cmd, char **envp);
 void		dups(int stdinfd, int stdoutfd);
-bool		treat_child(t_pipex *pipex, char *cmd, int current, int max);
-void		close_fd(t_pipex pipex);
+bool		treat_child(t_program *pipex, char *cmd, int current, int max);
+void		close_fd(t_program pipex);
+void    simple_exec(char **cmd, t_program program);
 
 // BUILT-INS
-int    echo(char **cmd);
-char	*find_pwd(char **envp);
-int pwd(char **envp);
+int    	echo(char **cmd);
+int		count_args(char	**arr);
+char	*find_variable(char **envp, char *var);
+int 	pwd(char **envp);
+int 	env(char **envp);
+void    ft_export(char **envp);
+void    unset(char  **envp, char *s);
 #endif
