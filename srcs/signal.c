@@ -1,35 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   struct.h                                           :+:      :+:    :+:   */
+/*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/09 16:31:55 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:47:21 by gmarre           ###   ########.fr       */
+/*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
+/*   Updated: 2024/02/16 11:37:33 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef STRUCT_H
-# define STRUCT_H
+#include "minishell.h"
 
-typedef struct s_cmd
+void	signal_handler(int signal)
 {
-	char	**list;
-	int		current;
-	int		len;
-}			t_cmd;
-
-typedef struct s_program
-{
-	int		pipe[2];
-	t_cmd	cmd;
-	int		infile;
-	int		outfile;
-	int		pipe_saved;
-	char	**path;
-	char	**envp;
-	int		exit_value;
-}	t_program;
-
-#endif
+	(void)signal;
+	print("Caught CTRL+C");
+}

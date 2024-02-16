@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:30:31 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/16 16:48:25 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,12 +37,18 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 
-// HANDLE PRINT
+// SIGNAL
+void	signal_handler(int signal);
+
+// PRINT
 int	print_fd(int fd, char *str, int value);
 int	print_error(char *str, int value);
 void	print(const char *s);
+char	*prompt(char **envp);
+void	modify_prompt(const char *s);
+void	print_prompt(char *s);
 
-// HANDLE PIPE
+// PIPE
 void		close_file(int infile, int oufile);
 int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
@@ -60,4 +66,5 @@ int 	pwd(char **envp);
 int 	env(char **envp);
 void    ft_export(char **envp);
 void    unset(char  **envp, char *s);
+void exit_shell(char *s);
 #endif

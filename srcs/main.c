@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:39:27 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/16 16:55:29 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,16 +44,22 @@ int	main(int argc, char **argv, char **envp)
 	t_program program;
 
 	if (argc != 1)
-		return (print_fd(2, "\033[1;31mToo many args\n", EXIT_FAILURE));
+		return (print_fd(2, "\x1b[1;31mToo many args\n", EXIT_FAILURE));
 	if (!envp || !envp[0])
 		return (print_fd(2, "\033[1;31mNo environment\n", EXIT_FAILURE));
 	program.envp = envp;
 	program.path = ft_split_cmd(find_variable(envp, "PATH="), ':');
+	//signal(SIGINT, signal_handler);
 	while (true) {
-		s = readline("\033[1;37m$>\033[1;0m ");
+		print_prompt(prompt(envp));
+		s = readline("\x1b[1;30m╰─ \x1b[0m");
 		if (s && *s)
+		{
+			exit_shell(s);
+			modify_prompt(s);
 			add_history(s);
-		task(s, program);
-		free(s);
+			task(s, program);
+			free(s);
+		}
 	}
 }
