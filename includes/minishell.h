@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:48:25 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 16:45:30 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ void    unset(t_program *program, char *s);
 void exit_shell(char *s);
 size_t len_until_sign(char  *str, int sign);
 void    print_env(char  **envp);
+void    cd(char *path);
 
 // OTHERS
 char	*random_string(t_program *program, int len);
