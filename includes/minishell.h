@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:48:25 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:26:18 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ void	ft_bzero(void *s, size_t n);
 void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int	    ft_strncmp(const char *s1, const char *s2, size_t n);
+int	ft_strncmp_case(const char *s1, const char *s2, size_t n);
+int	ft_toupper(int c);
 
 // SIGNAL
 void	signal_handler(int signal);
@@ -65,6 +67,8 @@ char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp);
 int 	env(char **envp);
 void    ft_export(char **envp);
-void    unset(char  **envp, char *s);
+void    unset(t_program *program, char *s);
 void exit_shell(char *s);
+size_t len_until_sign(char  *str, int sign);
+void    print_env(char  **envp);
 #endif

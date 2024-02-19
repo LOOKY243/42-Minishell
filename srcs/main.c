@@ -6,13 +6,13 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:55:29 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:20:11 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	task(char *prompt, t_program program)
+void	task(char *prompt, t_program *program)
 {
 	char **cmd;
 	pid_t pid;
@@ -23,16 +23,16 @@ void	task(char *prompt, t_program program)
 		if (ft_strcmp(cmd[0], "echo") == 0 && ft_strcmp(cmd[1], "-n") == 0)
 			echo(cmd);
 		else if (ft_strcmp(cmd[0], "pwd") == 0)
-			pwd(program.envp);
+			pwd(program->envp);
 		else if (ft_strcmp(cmd[0], "env") == 0)
-			env(program.envp);
+			env(program->envp);
 		else if (ft_strcmp(cmd[0], "export") == 0 && !cmd[1])
-			ft_export(program.envp);
-		// else if (ft_strcmp(cmd[0], "unset") == 0)
-		// 	unset(program.envp, cmd[1]);
+			ft_export(program->envp);
+		else if (ft_strcmp(cmd[0], "unset") == 0)
+			unset(program, cmd[1]);
 		else
-			simple_exec(cmd, program);
-		return ;
+			simple_exec(cmd, *program);
+		exit(EXIT_SUCCESS);
 	}
 	waitpid(pid, NULL, 0);
 }
@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 			exit_shell(s);
 			modify_prompt(s);
 			add_history(s);
-			task(s, program);
+			task(s, &program);
 			free(s);
 		}
 	}
