@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/19 12:27:04 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 16:31:47 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,12 +133,14 @@ int	treat_command(t_program *program, char *cmd)
 		printf("%d\n", program->exit_value);
 		return (0);
 	}
-	else if (ft_strcmp(args[0], "unset") == 0)
+	if (ft_strcmp(args[0], "unset") == 0)
 	{
 		unset(program, args[1]);
 		return (0);
 	}
 	args[0] = get_cmds(*program, args[0]);
+	if (!args[0])
+		return (-1);
 	program->exit_value = 0;
 	return (execve(args[0], args, program->envp));
 }
@@ -224,19 +226,26 @@ int	exec(t_program *program, char *cmd)
 {
 	pid_t	pid;
 
-	if (pipe(program->pipe) == -1)
+	if (pipe(program->pipe) == -1 || pipe(program->data_pipe) == -1)
 		return (print_error("\x1b[1;6;31mpipe", EXIT_FAILURE));
 	pid = fork();
-	program->pid[program->cmd.current] = pid;
 	if (pid == -1)
 		return (print_error("\x1b[1;6;31mfork", EXIT_FAILURE));
+	program->pid[program->cmd.current] = pid;
 	if (pid == 0)
 	{
 		treat_child(program, cmd, program->cmd.current, program->cmd.len - 1);
+		close(program->data_pipe[PIPE_READ]);
+		write(program->data_pipe[PIPE_WRITE], program, sizeof(t_program));
+		close(program->data_pipe[PIPE_WRITE]);
 		exit(EXIT_SUCCESS);
 	}
 	if (program->pipe_saved != -1)
 		close(program->pipe_saved);
+	waitpid(pid, NULL, 0);
+	close(program->data_pipe[PIPE_WRITE]);
+	read(program->data_pipe[PIPE_READ], program, sizeof(t_program));
+	close(program->data_pipe[PIPE_READ]);
 	program->pipe_saved = program->pipe[PIPE_READ];
 	close(program->pipe[PIPE_WRITE]);
 	return (EXIT_SUCCESS);

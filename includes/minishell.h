@@ -60,7 +60,6 @@ int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
 t_program		init_struct(t_cmd cmd, char **envp);
 void		dups(int stdinfd, int stdoutfd);
-void	treat_child(t_program *program, char *cmd, int current, int max);
 void		close_fd(t_program program);
 int    simple_exec(char **cmd, t_program program);
 void	process(char *prompt, t_program *program);

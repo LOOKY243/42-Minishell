@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:46:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/19 14:35:05 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 16:32:59 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,9 @@ void    unset(t_program *program, char *s)
     {
         if (!ft_strncmp_case(program->envp[i], s, ft_strlen(s)) && len_until_sign(program->envp[i], '=') == ft_strlen(s))
         {
-            program->envp[i] = "\0";
+            program->envp[i] = ft_strdup("\0");
             break ;
         }
         i++;
     }
-    communicate(program->envp);
 }
