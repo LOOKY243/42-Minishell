@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/16 16:18:53 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 11:08:35 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,19 @@ void    free_copy(char  **arr)
         i++;
     }
     free(arr);
+}
+
+void    print_export(char  **envp)
+{
+    int i;
+
+    i = 0;
+    while (envp[i])
+    {
+        if (envp[i][0] != '\0')
+            printf("declare -x %s\n", envp[i]);
+        i++;
+    }
 }
 
 char    **copy_arr(char **arr)
@@ -61,8 +74,6 @@ void    ft_export(char **env)
         }
         i++;
     }
-    i = -1;
-    while (envp[++i])
-        printf("declare -x %s\n", envp[i]);
+    print_export(envp);
     free_copy(envp);
 }
