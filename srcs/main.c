@@ -65,7 +65,7 @@ int	main(int argc, char **argv, char **envp)
 			modify_prompt(s);
 		if (s && *s)
 		{
-			exit_shell(s);
+			exit_shell(&program, s);
 			modify_prompt(s);
 			add_history(s);
 			process(s, &program);

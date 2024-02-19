@@ -172,6 +172,28 @@ void	treat_child(t_program *program, char *cmd, int current, int max)
 	}
 }
 
+void	treat_child_no_fork(t_program *program, char *cmd, int current, int max)
+{
+	if (max != 0)
+	{
+		if (current == 0)
+			dups(program->infile, program->pipe[PIPE_WRITE]);
+		else if (current == max)
+			dups(program->pipe_saved, program->outfile);
+		else
+			dups(program->pipe_saved, program->pipe[PIPE_WRITE]);
+	}
+	else
+		dups(program->infile, program->outfile);
+	close(program->pipe[PIPE_WRITE]);
+	program->exit_value = treat_command(program, cmd);
+	if (program->exit_value != 0)
+	{
+		close(program->pipe[PIPE_READ]);
+		print_error("\x1b[1;6;31mexecve", program->exit_value);
+	}
+}
+
 void	cmd_trim(char *cmd, char **cut, int index)
 {
 	char	*line;
@@ -227,30 +249,54 @@ void	handle_file(t_program *program)
 	}
 }
 
+bool    is_recoded(char *cmd)
+{
+	char	**args;
+	bool recoded;
+
+	args = ft_split_cmd(cmd, ' ');
+	recoded = false;
+	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
+		recoded = true;
+	else if (ft_strcmp(args[0], "pwd") == 0)
+		recoded = true;
+	else if (ft_strcmp(args[0], "cd") == 0)
+		recoded = true;
+	else if (ft_strcmp(args[0], "env") == 0)
+		recoded = true;
+	else if (ft_strcmp(args[0], "export") == 0)
+		recoded = true;
+	else if (ft_strcmp(args[0], "$?") == 0)
+		recoded = true;
+	else if (ft_strcmp(args[0], "unset") == 0)
+		recoded = true;
+	ft_freesplit(args);
+	return (recoded);
+}
+
 int	exec(t_program *program, char *cmd)
 {
 	pid_t	pid;
 
 	if (pipe(program->pipe) == -1 || pipe(program->data_pipe) == -1)
 		return (print_error("\x1b[1;6;31mpipe", EXIT_FAILURE));
-	pid = fork();
-	if (pid == -1)
-		return (print_error("\x1b[1;6;31mfork", EXIT_FAILURE));
-	program->pid[program->cmd.current] = pid;
-	if (pid == 0)
+	if (!is_recoded(cmd))
 	{
-		treat_child(program, cmd, program->cmd.current, program->cmd.len - 1);
-		close(program->data_pipe[PIPE_READ]);
-		write(program->data_pipe[PIPE_WRITE], program, sizeof(t_program));
-		close(program->data_pipe[PIPE_WRITE]);
-		exit(EXIT_SUCCESS);
+		pid = fork();
+		if (pid == -1)
+			return (print_error("\x1b[1;6;31mfork", EXIT_FAILURE));
+		program->pid[program->cmd.current] = pid;
+		if (pid == 0)
+		{
+			treat_child(program, cmd, program->cmd.current, program->cmd.len - 1);
+			exit(EXIT_SUCCESS);
+		}
+		waitpid(pid, NULL, 0);
 	}
+	else
+		treat_child_no_fork(program, cmd, program->cmd.current, program->cmd.len - 1);
 	if (program->pipe_saved != -1)
 		close(program->pipe_saved);
-	waitpid(pid, NULL, 0);
-	close(program->data_pipe[PIPE_WRITE]);
-	read(program->data_pipe[PIPE_READ], program, sizeof(t_program));
-	close(program->data_pipe[PIPE_READ]);
 	program->pipe_saved = program->pipe[PIPE_READ];
 	close(program->pipe[PIPE_WRITE]);
 	return (EXIT_SUCCESS);
