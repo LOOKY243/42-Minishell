@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:31:55 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:47:21 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 14:33:45 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ typedef struct s_cmd
 typedef struct s_program
 {
 	int		pipe[2];
+	int		datapipe[2];
 	pid_t	pid[1024];
 	t_cmd	cmd;
 	int		infile;

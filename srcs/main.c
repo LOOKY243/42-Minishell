@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 16:55:29 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 14:45:19 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,26 @@
 
 bool exterminate = false;
 
+char	**copy_envp(char **envp)
+{
+	int	i;
+	char	**env;
+
+	env = ft_calloc(count_args(envp), sizeof(char *));
+	if (!env)
+		return (NULL);
+	i = 0;
+	while (envp[i])
+	{
+		env[i] = ft_strdup(envp[i]);
+		i++;
+	}
+	env[i] = 0;
+}
+
 void init_program(t_program *program, char **envp)
 {
-	program->envp = envp;
+	program->envp = copy_envp(envp);
 	program->path = ft_split_cmd(find_variable(envp, "PATH="), ':');
 	program->exit_value = 0;
 	program->infile = STDIN_FILENO;
