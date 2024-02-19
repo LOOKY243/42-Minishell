@@ -73,7 +73,7 @@ int 	pwd(char **envp);
 int 	env(char **envp);
 void    ft_export(char **envp);
 void    unset(t_program *program, char *s);
-void exit_shell(char *s);
+void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);
 void    print_env(char  **envp);
 

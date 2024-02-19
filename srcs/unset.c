@@ -33,6 +33,7 @@ void    unset(t_program *program, char *s)
     {
         if (!ft_strncmp_case(program->envp[i], s, ft_strlen(s)) && len_until_sign(program->envp[i], '=') == ft_strlen(s))
         {
+            free(program->envp[i]);
             program->envp[i] = ft_strdup("\0");
             break ;
         }

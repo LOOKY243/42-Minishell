@@ -19,7 +19,7 @@ char	**copy_envp(char **envp)
 	int	i;
 	char	**env;
 
-	env = ft_calloc(count_args(envp), sizeof(char *));
+	env = ft_calloc(count_args(envp) + 1, sizeof(char *));
 	if (!env)
 		return (NULL);
 	i = 0;
@@ -29,6 +29,7 @@ char	**copy_envp(char **envp)
 		i++;
 	}
 	env[i] = 0;
+	return (env);
 }
 
 void init_program(t_program *program, char **envp)
@@ -64,7 +65,7 @@ int	main(int argc, char **argv, char **envp)
 			modify_prompt(s);
 		if (s && *s)
 		{
-			exit_shell(s);
+			exit_shell(&program, s);
 			modify_prompt(s);
 			add_history(s);
 			process(s, &program);
