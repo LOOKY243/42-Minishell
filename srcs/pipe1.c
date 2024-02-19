@@ -256,6 +256,7 @@ void	process(char *prompt, t_program *program)
 	program->cmd.current = 0;
 	program->cmd.list = ft_split_cmd(prompt, '|');
 	program->cmd.len = size_list(program->cmd.list);
+	program->pipe_saved = -1;
 	handle_file(program);
 	if (program->infile == -1 || program->outfile == -1)
 	{
