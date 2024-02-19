@@ -312,7 +312,7 @@ int	size_list(char **list)
 void	process(char *prompt, t_program *program)
 {
 	program->cmd.current = 0;
-	program->cmd.list = ft_split_cmd(prompt, '|');
+	program->cmd.list = ft_split(prompt, '|');
 	program->cmd.len = size_list(program->cmd.list);
 	program->pipe_saved = -1;
 	handle_file(program);
@@ -333,5 +333,5 @@ void	process(char *prompt, t_program *program)
 	program->random_file = NULL;
 	close_fd(*program);
 	ft_freesplit(program->cmd.list);
-	wait_child(*program);
+	//wait_child(*program);
 }

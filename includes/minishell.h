@@ -58,6 +58,7 @@ void	print_prompt(char *s);
 void		close_file(int infile, int oufile);
 int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
+char		**ft_split(char const *s, char c);
 t_program		init_struct(t_cmd cmd, char **envp);
 void		dups(int stdinfd, int stdoutfd);
 void		close_fd(t_program program);
