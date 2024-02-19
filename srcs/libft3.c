@@ -12,6 +12,13 @@
 
 #include "minishell.h"
 
+int	ft_toupper(char c)
+{
+	if (c >= 97 && c <= 122)
+		return (c - 32);
+	return (c);
+}
+
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	unsigned int	i;

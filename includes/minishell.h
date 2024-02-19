@@ -41,6 +41,7 @@ void	*ft_calloc(size_t nmemb, size_t size);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 int	ft_strncmp_case(const char *s1, const char *s2, size_t n);
+int	ft_toupper(char c);
 
 // SIGNAL
 void	signal_handler(int signal);
