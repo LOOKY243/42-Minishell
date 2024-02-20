@@ -65,6 +65,10 @@ void		close_fd(t_program program);
 int    simple_exec(char **cmd, t_program program);
 void	process(char *prompt, t_program *program);
 void	wait_child(t_program program);
+void	handle_file(t_program *program);
+void	treat_child(t_program *program, char *cmd, int current, int max);
+void	treat_child_no_fork(t_program *program, char *cmd, int current, int max);
+bool    is_recoded(char *cmd);
 
 // BUILT-INS
 int    	echo(char **cmd);
