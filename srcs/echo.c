@@ -22,6 +22,18 @@ int	count_args(char	**arr)
 	return (i);
 }
 
+int	count_args_no_sign(char	**arr)
+{
+	int	i;
+
+	if (!arr)
+		return (0);
+	i = 0;
+	while (arr[i])
+		i++;
+	return (i);
+}
+
 int    echo(char **cmd)
 {
     int	i;
@@ -29,9 +41,9 @@ int    echo(char **cmd)
     i = 2;
 	while (cmd[i] && ft_strcmp(cmd[i], "|"))
 	{
-		write(1, cmd[i], ft_strlen(cmd[i]));
+		print(cmd[i]);
 		if (i != count_args(cmd) - 1)
-			write(1, " ", 1);
+			print(" ");
 		i++;
 	}
 	return (0);

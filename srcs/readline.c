@@ -20,6 +20,8 @@ static char	*home_pwd(char **envp)
 
 	current = ft_strdup(find_variable(envp, "PWD="));
 	home = find_variable(envp, "HOME=");
+	if (!home)
+		home = "/home";
 	if (ft_strncmp(home, current, ft_strlen(home)) != 0)
 		return (current);
 	final = ft_strjoin("~", &current[ft_strlen(home)]);
@@ -35,7 +37,7 @@ static char	*session(char **envp)
 
 	line = find_variable(envp, "SESSION_MANAGER=");
 	if (!line)
-		return (NULL);
+		return (ft_strdup("1A1"));
 	split = ft_split_cmd(line, '/');
 	if (split && split[0] && split[1])
 	{
@@ -54,7 +56,7 @@ static char	*log_name(char	**envp)
 
 	line = find_variable(envp, "LOGNAME=");
 	if (!line)
-		return (NULL);
+		return (ft_strdup("logname@1A1"));
 	tmp = ft_strjoin(line, "@");
 	post = session(envp);
 	line = ft_strjoin(tmp, post);

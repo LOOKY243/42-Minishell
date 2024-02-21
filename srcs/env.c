@@ -19,10 +19,10 @@ void    print_env(char  **envp)
     i = 0;
     while (envp[i])
     {
-        if (envp[i][0] != '\0')
+        if (envp[i][0] != '\0' && len_until_sign(envp[i], '=') != ft_strlen(envp[i]))
         {
-            write(1, envp[i], ft_strlen(envp[i]));
-            write(1, "\n", 1);
+            print(envp[i]);
+            print("\n");
         }
         i++;
     }
@@ -30,6 +30,8 @@ void    print_env(char  **envp)
 
 int env(char **envp)
 {
+    if (!envp || !envp[0])
+        return (ENOENT);
     print_env(envp);
     return (0);
 }

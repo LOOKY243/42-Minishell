@@ -59,20 +59,26 @@ void	print_prompt(char *s);
 void		close_file(int infile, int oufile);
 int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
+char		**ft_split(char const *s, char c);
 t_program		init_struct(t_cmd cmd, char **envp);
 void		dups(int stdinfd, int stdoutfd);
 void		close_fd(t_program program);
 int    simple_exec(char **cmd, t_program program);
 void	process(char *prompt, t_program *program);
 void	wait_child(t_program program);
+void	handle_file(t_program *program);
+void	treat_child(t_program *program, char *cmd, int current, int max);
+void	treat_child_no_fork(t_program *program, char *cmd, int current, int max);
+bool    is_recoded(char *cmd);
 
 // BUILT-INS
 int    	echo(char **cmd);
 int		count_args(char	**arr);
+int	count_args_no_sign(char	**arr);
 char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp);
 int 	env(char **envp);
-void    ft_export(char **envp);
+int    export(char **envp, char **var);
 void    unset(t_program *program, char *s);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:32:49 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/16 14:51:39 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/20 12:48:53 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,14 @@ char	*find_variable(char **envp, char *var)
 	return (NULL);
 }
 
-int pwd(char **envp)
+int	pwd(char **envp)
 {
-    char    *pwd;
+	char	*pwd;
 
-    pwd = find_variable(envp, "PWD=");
-    if (!pwd)
-        return (-1);
-    write(1, pwd, ft_strlen(pwd));
-    write(1, "\n", 1);
-    return (0);
+	pwd = find_variable(envp, "PWD=");
+	if (!pwd)
+		return (ENOENT);
+	print(pwd);
+	print("\n");
+	return (0);
 }

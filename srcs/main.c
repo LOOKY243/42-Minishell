@@ -60,7 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	// signal(SIGQUIT, signal_d_handler);
 	while (true) {
 		exterminate = false;
-		print_prompt(prompt(envp));
+		print_prompt(prompt(program.envp));
 		s = readline("\x1b[1;30m╰─ \x1b[0m");
 		if (!s)
 			modify_prompt(s);
