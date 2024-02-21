@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/19 16:31:47 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:05:16 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int	treat_command_no_fork(t_program *program, char *cmd)
 	if (ft_strcmp(args[0], "env") == 0)
 		return (env(program->envp));
 	if (ft_strcmp(args[0], "export") == 0)
-		return (export(program->envp, args));
+		return (export(program, args));
 	if (ft_strcmp(args[0], "$?") == 0)
 	{
 		printf("%d\n", program->exit_value);
@@ -74,6 +74,8 @@ int	treat_command_no_fork(t_program *program, char *cmd)
 		unset(program, args[1]);
 		return (0);
 	}
+	if (ft_strcmp(args[0], "cd") == 0)
+		return (cd(program->envp, args[1]));
 	return (ENOENT);
 }
 

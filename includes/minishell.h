@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/20 12:03:02 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:05:10 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	count_args_no_sign(char	**arr);
 char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp);
 int 	env(char **envp);
-int    export(char **envp, char **var);
+int    export(t_program *program, char **var);
 void    unset(t_program *program, char *s);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);

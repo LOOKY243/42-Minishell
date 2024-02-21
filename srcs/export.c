@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/20 11:44:46 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/21 15:05:33 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,34 +69,36 @@ int export_no_args(char **envp)
 void add_to_env(char ***envp, char *line)
 {
     char    **env;
+    char    **new_env;
     int i;
 
     i = -1;
-    env = copy_arr(*envp);
-    ft_freesplit(*envp);
-    *envp = ft_calloc(count_args_no_sign(env) + 2, sizeof(char *));
+    env = *envp;
+    new_env = ft_calloc(count_args_no_sign(env) + 2, sizeof(char *));
     while (env[++i])
-        (*envp)[i] = ft_strdup(env[i]);
-    (*envp)[i++] = ft_strdup(line);
-    (*envp)[i] = NULL;
+        new_env[i] = ft_strdup(env[i]);
+    new_env[i] = ft_strdup(line);
+    ++i;
+    new_env[i] = NULL;
     ft_freesplit(env);
+    *envp = new_env;
 }
 
-int export_var(char **envp, char **var)
+int export_var(t_program *program, char **var)
 {
     int i;
 
     i = 0;
     while (var[++i])
-        add_to_env(&envp, var[i]);
+        add_to_env(&program->envp, var[i]);
     return (0);
 }
 
-int    export(char **envp, char **var)
+int    export(t_program *program, char **var)
 {
-    if (!envp || !envp[0])
+    if (!program->envp || !program->envp[0])
         return (ENOENT);
     if (!var[1])
-        return (export_no_args(envp));
-    return (export_var(envp, var));
+        return (export_no_args(program->envp));
+    return (export_var(program, var));
 }
