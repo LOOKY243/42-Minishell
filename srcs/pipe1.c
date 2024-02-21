@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/19 16:44:34 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/20 12:03:11 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,7 @@ int	treat_command(t_program *program, char *cmd)
 	}
 	if (ft_strcmp(args[0], "cd") == 0)
 	{
-		cd(args[1]);
+		cd(program->envp, args[1]);
 		return (0);
 	}
 	args[0] = get_cmds(*program, args[0]);

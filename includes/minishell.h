@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/19 16:45:30 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/20 12:03:02 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,8 @@ int	ft_strncmp_case(const char *s1, const char *s2, size_t n);
 int	ft_toupper(char c);
 
 // SIGNAL
-void	signal_handler(int signal);
+void	signal_c_handler(int signal);
+void	signal_d_handler(int signal);
 
 // PRINT
 int	print_strerror(char *str, int errnum, int value);
@@ -76,7 +77,7 @@ void    unset(t_program *program, char *s);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);
 void    print_env(char  **envp);
-void    cd(char *path);
+int    cd(char **envp, char *path);
 
 // OTHERS
 char	*random_string(t_program *program, int len);

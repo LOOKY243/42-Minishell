@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/19 11:08:35 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/20 11:44:46 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void    print_export(char  **envp)
     while (envp[i])
     {
         if (envp[i][0] != '\0')
-            printf("declare -x %s\n", envp[i]);
+            printf("%d declare -x %s\n", i, envp[i]);
         i++;
     }
 }

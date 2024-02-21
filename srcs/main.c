@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/19 16:38:15 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/19 18:17:33 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int	main(int argc, char **argv, char **envp)
 		return (print_strerror("env: ", ENODATA, EXIT_FAILURE));
 	init_program(&program, envp);
 	print("\x1b[1;34mEarly Access v0.1\n\x1b[0m");
-	//signal(SIGINT, signal_handler);
+	// signal(SIGINT, signal_c_handler);
+	// signal(SIGQUIT, signal_d_handler);
 	while (true) {
 		exterminate = false;
 		print_prompt(prompt(envp));
