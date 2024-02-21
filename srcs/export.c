@@ -12,19 +12,6 @@
 
 #include "minishell.h"
 
-void    free_copy(char  **arr)
-{
-    int i;
-
-    i = 0;
-    while (arr[i])
-    {
-        free(arr[i]);
-        i++;
-    }
-    free(arr);
-}
-
 void    print_export(char  **envp)
 {
     int i;
@@ -51,29 +38,65 @@ char    **copy_arr(char **arr)
     return (copy);
 }
 
-void    ft_export(char **env)
+int export_no_args(char **envp)
 {
     int i;
     int j;
-    char    **envp;
+    char    **env;
     char    *tmp;
-    
-    envp = copy_arr(env);
+
+    env = copy_arr(envp);
     i = 0;
-    while (envp[i + 1])
+    while (env[i + 1])
     {
         j = i;
-        while (envp[++j])
+        while (env[++j])
         {
-            if (ft_strcmp(envp[i], envp[j]) > 0)
+            if (ft_strcmp(env[i], env[j]) > 0)
             {
-                tmp = envp[i];
-                envp[i] = envp[j];
-                envp[j] = tmp;
+                tmp = env[i];
+                env[i] = env[j];
+                env[j] = tmp;
             }
         }
         i++;
     }
-    print_export(envp);
-    free_copy(envp);
+    print_export(env);
+    ft_freesplit(env);
+    return (0);
+}
+
+void add_to_env(char ***envp, char *line)
+{
+    char    **env;
+    int i;
+
+    i = -1;
+    env = copy_arr(*envp);
+    ft_freesplit(*envp);
+    *envp = ft_calloc(count_args_no_sign(env) + 2, sizeof(char *));
+    while (env[++i])
+        (*envp)[i] = ft_strdup(env[i]);
+    (*envp)[i++] = ft_strdup(line);
+    (*envp)[i] = NULL;
+    ft_freesplit(env);
+}
+
+int export_var(char **envp, char **var)
+{
+    int i;
+
+    i = 0;
+    while (var[++i])
+        add_to_env(&envp, var[i]);
+    return (0);
+}
+
+int    export(char **envp, char **var)
+{
+    if (!envp || !envp[0])
+        return (ENOENT);
+    if (!var[1])
+        return (export_no_args(envp));
+    return (export_var(envp, var));
 }

@@ -73,10 +73,11 @@ bool    is_recoded(char *cmd);
 // BUILT-INS
 int    	echo(char **cmd);
 int		count_args(char	**arr);
+int	count_args_no_sign(char	**arr);
 char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp);
 int 	env(char **envp);
-void    ft_export(char **envp);
+int    export(char **envp, char **var);
 void    unset(t_program *program, char *s);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);

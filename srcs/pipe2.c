@@ -62,11 +62,8 @@ int	treat_command_no_fork(t_program *program, char *cmd)
 		return (pwd(program->envp));
 	if (ft_strcmp(args[0], "env") == 0)
 		return (env(program->envp));
-	if (ft_strcmp(args[0], "export") == 0 && !args[1])
-	{
-		ft_export(program->envp);
-		return (0);
-	}
+	if (ft_strcmp(args[0], "export") == 0)
+		return (export(program->envp, args));
 	if (ft_strcmp(args[0], "$?") == 0)
 	{
 		printf("%d\n", program->exit_value);
