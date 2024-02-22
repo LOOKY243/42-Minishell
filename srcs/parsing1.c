@@ -68,6 +68,8 @@ void	handle_file(t_program *program)
     int	j;
 
     j = -1;
+    program->infile = STDIN_FILENO;
+    program->outfile = STDOUT_FILENO;
     while (program->cmd.list[++j])
     {
         cut = ft_split_cmd(program->cmd.list[j], ' ');

@@ -44,14 +44,13 @@ int	treat_command(t_program *program, char *cmd)
 
 	args = ft_split_cmd(cmd, ' ');
 	args[0] = get_cmds(*program, args[0]);
-	program->exit_value = 0;
 	if (args[0])
 		return (execve(args[0], args, program->envp));
 	ft_freesplit(args);
-	return (-1);
+	return (127);
 }
 
-int	treat_command_no_fork(t_program *program, char *cmd)
+int	treat_command_recoded(t_program *program, char *cmd)
 {
 	char	**args;
 
@@ -65,10 +64,7 @@ int	treat_command_no_fork(t_program *program, char *cmd)
 	if (ft_strcmp(args[0], "export") == 0)
 		return (export(program, args));
 	if (ft_strcmp(args[0], "$?") == 0)
-	{
-		printf("%d\n", program->exit_value);
-		return (0);
-	}
+		return (return_value(program->exit_value));
 	if (ft_strcmp(args[0], "unset") == 0)
 	{
 		unset(program, args[1]);
@@ -101,7 +97,7 @@ void	treat_child(t_program *program, char *cmd, int current, int max)
 	}
 }
 
-void	treat_child_no_fork(t_program *program, char *cmd, int current, int max)
+void	treat_child_recoded(t_program *program, char *cmd, int current, int max)
 {
 	if (max != 0)
 	{
@@ -115,7 +111,7 @@ void	treat_child_no_fork(t_program *program, char *cmd, int current, int max)
 	else
 		dups(program->infile, program->outfile);
 	close(program->pipe[PIPE_WRITE]);
-	program->exit_value = treat_command_no_fork(program, cmd);
+	program->exit_value = treat_command_recoded(program, cmd);
 	if (program->exit_value != 0)
 	{
 		close(program->pipe[PIPE_READ]);
@@ -132,17 +128,15 @@ bool    is_recoded(char *cmd)
 	recoded = false;
 	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
 		recoded = true;
-	else if (ft_strcmp(args[0], "pwd") == 0)
+	else if (ft_strcmp(args[0], "pwd") == 0 && !args[1])
 		recoded = true;
-	else if (ft_strcmp(args[0], "cd") == 0)
+	else if (ft_strcmp(args[0], "cd") == 0 && !args[1])
 		recoded = true;
-	else if (ft_strcmp(args[0], "env") == 0)
+	else if (ft_strcmp(args[0], "env") == 0 && !args[1])
 		recoded = true;
 	else if (ft_strcmp(args[0], "export") == 0)
 		recoded = true;
-	else if (ft_strcmp(args[0], "$?") == 0)
-		recoded = true;
-	else if (ft_strcmp(args[0], "unset") == 0)
+	else if (ft_strcmp(args[0], "unset") == 0 && !args[1])
 		recoded = true;
 	ft_freesplit(args);
 	return (recoded);

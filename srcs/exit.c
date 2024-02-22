@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+int	return_value(int value)
+{
+	printf("%d\n", value);
+	return (0);
+}
+
 void destroy_program(t_program *program)
 {
 	ft_freesplit(program->envp);

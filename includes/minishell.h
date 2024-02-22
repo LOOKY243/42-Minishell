@@ -42,6 +42,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 int	ft_strncmp_case(const char *s1, const char *s2, size_t n);
 int	ft_toupper(char c);
+char	*ft_itoa(int n);
 
 // SIGNAL
 void	signal_c_handler(int signal);
@@ -68,8 +69,9 @@ void	process(char *prompt, t_program *program);
 void	wait_child(t_program program);
 void	handle_file(t_program *program);
 void	treat_child(t_program *program, char *cmd, int current, int max);
-void	treat_child_no_fork(t_program *program, char *cmd, int current, int max);
+void	treat_child_recoded(t_program *program, char *cmd, int current, int max);
 bool    is_recoded(char *cmd);
+char	*change_cmd_var(t_program program, char *cmd);
 
 // BUILT-INS
 int    	echo(char **cmd);
@@ -84,6 +86,7 @@ void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);
 void    print_env(char  **envp);
 int    cd(char **envp, char *path);
+int	return_value(int value); //$?
 
 // OTHERS
 char	*random_string(t_program *program, int len);

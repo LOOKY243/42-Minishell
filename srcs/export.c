@@ -20,7 +20,7 @@ void    print_export(char  **envp)
     while (envp[i])
     {
         if (envp[i][0] != '\0')
-            printf("%d declare -x %s\n", i, envp[i]);
+            printf("declare -x %s\n", envp[i]);
         i++;
     }
 }
@@ -81,6 +81,7 @@ void add_to_env(char ***envp, char *line)
     ++i;
     new_env[i] = NULL;
     ft_freesplit(env);
+    ft_freesplit(*envp);
     *envp = new_env;
 }
 

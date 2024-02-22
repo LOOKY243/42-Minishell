@@ -15,29 +15,25 @@
 int	exec(t_program *program, char *cmd)
 {
 	pid_t	pid;
+	char	*new_cmd;
 
 	if (pipe(program->pipe) == -1 || pipe(program->data_pipe) == -1)
 		return (print_error("\x1b[1;6;31mpipe", EXIT_FAILURE));
-	//if (!is_recoded(cmd))
-	pid = fork();
-	if (pid == -1)
-		return (print_error("\x1b[1;6;31mfork", EXIT_FAILURE));
-	program->pid[program->cmd.current] = pid;
-	if (pid == 0)
-	{
-		if (!is_recoded(cmd))
-			treat_child(program, cmd, program->cmd.current, program->cmd.len - 1);
-		else
-			treat_child_no_fork(program, cmd, program->cmd.current, program->cmd.len - 1);
-		close(program->data_pipe[PIPE_READ]);
-		write(program->data_pipe[PIPE_WRITE], &program->envp, sizeof(char **));
-		close(program->data_pipe[PIPE_WRITE]);
-		exit(EXIT_SUCCESS);
+	new_cmd = change_cmd_var(*program, cmd);
+	if (!is_recoded(new_cmd)) {
+		pid = fork();
+		if (pid == -1)
+			return (print_error("\x1b[1;6;31mfork", EXIT_FAILURE));
+		program->pid[program->cmd.current] = pid;
+		if (pid == 0)
+		{
+
+			treat_child(program, new_cmd, program->cmd.current, program->cmd.len - 1);
+			exit(EXIT_SUCCESS);
+		}
 	}
-	waitpid(pid, NULL, 0);
-	close(program->data_pipe[PIPE_WRITE]);
-	read(program->data_pipe[PIPE_READ], program->envp, sizeof(char **));
-	close(program->data_pipe[PIPE_READ]);
+	else
+		treat_child_recoded(program, new_cmd, program->cmd.current, program->cmd.len - 1);
 	if (program->pipe_saved != -1)
 		close(program->pipe_saved);
 	program->pipe_saved = program->pipe[PIPE_READ];
@@ -63,6 +59,7 @@ void	process(char *prompt, t_program *program)
 	program->cmd.list = ft_split(prompt, '|');
 	program->cmd.len = size_list(program->cmd.list);
 	program->pipe_saved = -1;
+	program->exit_value = 0;
 	handle_file(program);
 	if (program->infile == -1 || program->outfile == -1)
 	{
@@ -81,5 +78,5 @@ void	process(char *prompt, t_program *program)
 	program->random_file = NULL;
 	close_fd(*program);
 	ft_freesplit(program->cmd.list);
-	//wait_child(*program);
+	wait_child(*program);
 }

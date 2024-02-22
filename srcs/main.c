@@ -36,11 +36,7 @@ void init_program(t_program *program, char **envp)
 {
 	program->envp = copy_envp(envp);
 	program->path = ft_split_cmd(find_variable(envp, "PATH="), ':');
-	program->exit_value = 0;
-	program->infile = STDIN_FILENO;
-	program->outfile = STDOUT_FILENO;
 	program->random_file = NULL;
-	program->pipe_saved = -1;
 	program->rseed = 0;
 }
 
@@ -62,9 +58,9 @@ int	main(int argc, char **argv, char **envp)
 		exterminate = false;
 		print_prompt(prompt(program.envp));
 		s = readline("\x1b[1;30m╰─ \x1b[0m");
-		if (!s)
+		if (!s || ft_strlen(s) == 0)
 			modify_prompt(s);
-		if (s && *s)
+		else if (*s)
 		{
 			exit_shell(&program, s);
 			modify_prompt(s);
