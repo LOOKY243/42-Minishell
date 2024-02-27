@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:46:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/19 16:38:40 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/23 15:19:08 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,19 +24,25 @@ size_t len_until_sign(char  *str, int sign)
     return (i);
 }
 
-void    unset(t_program *program, char *s)
+void    unset(t_program *program, char **strs)
 {
     size_t i;
-    
-    i = 0;
-    while (program->envp[i])
+    size_t j;
+
+    j = 0;
+    while (strs[j] && ft_strncmp(strs[j], "|", 1))
     {
-        if (!ft_strncmp_case(program->envp[i], s, ft_strlen(s)) && len_until_sign(program->envp[i], '=') == ft_strlen(s))
+        i = 0;
+        while (program->envp[i])
         {
-            free(program->envp[i]);
-            program->envp[i] = ft_strdup("\0");
-            break ;
+            if (!ft_strncmp_case(program->envp[i], strs[j], ft_strlen(strs[j])) && len_until_sign(program->envp[i], '=') == ft_strlen(strs[j]))
+            {
+                free(program->envp[i]);
+                program->envp[i] = ft_strdup("\0");
+                break ;
+            }
+            i++;
         }
-        i++;
+        j++;
     }
 }

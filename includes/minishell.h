@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/21 15:05:10 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/27 17:29:46 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 #include "enum.h"
 #include "struct.h"
 #define BUFFER_SIZE 1024
+#define MAX_TOKENS  20
 
 extern bool exterminate;
 
@@ -43,6 +44,11 @@ int	    ft_strncmp(const char *s1, const char *s2, size_t n);
 int	ft_strncmp_case(const char *s1, const char *s2, size_t n);
 int	ft_toupper(char c);
 char	*ft_itoa(int n);
+int	ft_isalpha(char *s);
+char	*ft_strstr(const char *str, const char *to_find);
+char	*ft_strncpy(char *dest, char *src, unsigned int n);
+char	*ft_strcpy(char *dest, const char *src);
+char	*ft_strjoin_mod(char const *s1, char const *s2);
 
 // SIGNAL
 void	signal_c_handler(int signal);
@@ -81,7 +87,7 @@ char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp);
 int 	env(char **envp);
 int    export(t_program *program, char **var);
-void    unset(t_program *program, char *s);
+void    unset(t_program *program, char **strs);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);
 void    print_env(char  **envp);
@@ -90,5 +96,7 @@ int	return_value(int value); //$?
 
 // OTHERS
 char	*random_string(t_program *program, int len);
+char	**custom_split(const char *input_string, int *count);
+void	free_result(char **result, int count);
 
 #endif

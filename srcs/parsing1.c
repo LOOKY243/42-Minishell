@@ -6,20 +6,37 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/16 14:54:19 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/27 18:19:13 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cmd_trim(char *cmd, char **cut, int index)
+int find_next_sign(char *str, char *sign)
+{
+    int i;
+    char    **strs;
+
+    i = 0;
+    strs = ft_split(str, ' ');
+    while (strs[i] && ft_strncmp(strs[i], sign, ft_strlen(sign) - 1))
+        i++;
+    ft_freesplit(strs);
+    return (i);
+}
+
+char	*cmd_trim(char *cmd, int index)
 {
     char	*line;
+    char    **cut;
     char	*tmp;
     int	i;
 
     i = 0;
+    if (index == i)
+        i = 2;
     tmp = NULL;
+    cut = ft_split(cmd, ' ');
     line = ft_strdup(cut[i]);
     while(cut[++i]) {
         if (i != index && i != index + 1)
@@ -31,7 +48,8 @@ void	cmd_trim(char *cmd, char **cut, int index)
         }
     }
     free(cmd);
-    cmd = ft_strdup(line);
+    ft_freesplit(cut);
+    return (line);
 }
 
 void	read_stdin(t_program *program, char *limiter)
@@ -61,9 +79,46 @@ void	read_stdin(t_program *program, char *limiter)
     program->infile = open(program->random_file, O_RDONLY);
 }
 
+int is_command_sign(char *str)
+{
+    int i;
+
+    i = -1;
+    if (!str)
+        return (0);
+    while (str[++i])
+    {
+        if (str[i] == '>' || str[i] == '<')
+            return (1);
+    }
+    return (0);
+}
+
+char    *join_rest(char **cmds, int len)
+{
+    int i;
+    char    *res;
+    char    *tmp;
+
+    i = -1;
+    res = NULL;
+    while (++i < len)
+    {
+        if (cmds[i])
+        {
+            tmp = ft_strjoin_mod(res, cmds[i]);
+            if (res)
+                free(res);
+            res = tmp;
+        }
+    }
+    return (res);
+}
+
 void	handle_file(t_program *program)
 {
     char	**cut;
+    int     len;
     int	i;
     int	j;
 
@@ -72,26 +127,49 @@ void	handle_file(t_program *program)
     program->outfile = STDOUT_FILENO;
     while (program->cmd.list[++j])
     {
-        cut = ft_split_cmd(program->cmd.list[j], ' ');
+        cut = custom_split(program->cmd.list[j], &len);
         i = -1;
-        while (cut[++i]) {
-            if (!ft_strcmp(cut[i], "<") && cut[i + 1]) {
-                program->infile = open(cut[i + 1], O_RDONLY);
-                cmd_trim(program->cmd.list[j], cut, i);
-            }
-            else if (!ft_strcmp(cut[i], ">") && cut[i+ 1]) {
-                program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
-                cmd_trim(program->cmd.list[j], cut, i);
-            }
-            else if (!ft_strcmp(cut[i], "<<") && cut[i+ 1]) {
+        while (++i < len)
+        {
+            if (is_command_sign(cut[i]) && is_command_sign(cut[i + 1]))
+                return ;
+            if (!ft_strcmp(cut[i], "<<"))
+            {
                 read_stdin(program, cut[i + 1]);
-                cmd_trim(program->cmd.list[j], cut, i);
+                free(cut[i]);
+                free(cut[i + 1]);
+                cut[i] = 0;
+                cut[i + 1] = 0;
             }
-            else if (!ft_strcmp(cut[i], ">>") && cut[i+ 1]) {
+            else if (!ft_strcmp(cut[i], ">>"))
+            {
                 program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0666);
-                cmd_trim(program->cmd.list[j], cut, i);
+                free(cut[i]);
+                free(cut[i + 1]);
+                cut[i] = 0;
+                cut[i + 1] = 0;
             }
+            else if (!ft_strcmp(cut[i], "<"))
+            {
+                program->infile = open(cut[i + 1], O_RDONLY);
+                free(cut[i]);
+                free(cut[i + 1]);
+                cut[i] = 0;
+                cut[i + 1] = 0;
+            }
+            else if (!ft_strcmp(cut[i], ">") && cut[i + 1] && !is_command_sign(cut[i + 1]))
+            {
+                program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
+                free(cut[i]);
+                free(cut[i + 1]);
+                cut[i] = 0;
+                cut[i + 1] = 0;
+            }
+            if (program->random_file)
+                unlink(program->random_file);
+            program->random_file = 0;
         }
-        ft_freesplit(cut);
+        program->cmd.list[j] = join_rest(cut, len);
+        free_result(cut, len);
     }
 }

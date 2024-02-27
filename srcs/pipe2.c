@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/21 15:39:17 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/26 13:37:53 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	treat_command_recoded(t_program *program, char *cmd)
 		return (return_value(program->exit_value));
 	if (ft_strcmp(args[0], "unset") == 0)
 	{
-		unset(program, args[1]);
+		unset(program, args);
 		return (0);
 	}
 	if (ft_strcmp(args[0], "cd") == 0)
@@ -130,13 +130,13 @@ bool    is_recoded(char *cmd)
 		recoded = true;
 	else if (ft_strcmp(args[0], "pwd") == 0 && !args[1])
 		recoded = true;
-	else if (ft_strcmp(args[0], "cd") == 0 && !args[1])
+	else if (ft_strcmp(args[0], "cd") == 0)
 		recoded = true;
 	else if (ft_strcmp(args[0], "env") == 0 && !args[1])
 		recoded = true;
 	else if (ft_strcmp(args[0], "export") == 0)
 		recoded = true;
-	else if (ft_strcmp(args[0], "unset") == 0 && !args[1])
+	else if (ft_strcmp(args[0], "unset") == 0)
 		recoded = true;
 	ft_freesplit(args);
 	return (recoded);

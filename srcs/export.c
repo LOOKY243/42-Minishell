@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/21 15:05:33 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/23 15:27:17 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ void add_to_env(char ***envp, char *line)
     ++i;
     new_env[i] = NULL;
     ft_freesplit(env);
-    ft_freesplit(*envp);
+    // ft_freesplit(*envp);
     *envp = new_env;
 }
 
