@@ -136,7 +136,7 @@ bool    is_recoded(char *cmd)
 		recoded = true;
 	else if (ft_strcmp(args[0], "export") == 0)
 		recoded = true;
-	else if (ft_strcmp(args[0], "unset") == 0 && !args[1])
+	else if (ft_strcmp(args[0], "unset") == 0)
 		recoded = true;
 	ft_freesplit(args);
 	return (recoded);

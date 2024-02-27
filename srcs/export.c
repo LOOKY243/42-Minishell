@@ -81,7 +81,7 @@ void add_to_env(char ***envp, char *line)
     ++i;
     new_env[i] = NULL;
     ft_freesplit(env);
-    ft_freesplit(*envp);
+    //ft_freesplit(*envp);
     *envp = new_env;
 }
 
