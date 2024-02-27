@@ -20,7 +20,8 @@ int	exec(t_program *program, char *cmd)
 	if (pipe(program->pipe) == -1 || pipe(program->data_pipe) == -1)
 		return (print_error("\x1b[1;6;31mpipe", EXIT_FAILURE));
 	new_cmd = change_cmd_var(*program, cmd);
-	if (!is_recoded(new_cmd)) {
+	if (!is_recoded(new_cmd))
+	{
 		pid = fork();
 		if (pid == -1)
 			return (print_error("\x1b[1;6;31mfork", EXIT_FAILURE));
@@ -34,6 +35,7 @@ int	exec(t_program *program, char *cmd)
 	}
 	else
 		treat_child_recoded(program, new_cmd, program->cmd.current, program->cmd.len - 1);
+	free(new_cmd);
 	if (program->pipe_saved != -1)
 		close(program->pipe_saved);
 	program->pipe_saved = program->pipe[PIPE_READ];
