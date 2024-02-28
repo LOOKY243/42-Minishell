@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void    print_env(char  **envp)
+void    print_env(char  **envp, int fd)
 {
     int i;
 
@@ -21,17 +21,17 @@ void    print_env(char  **envp)
     {
         if (envp[i][0] != '\0' && len_until_sign(envp[i], '=') != ft_strlen(envp[i]))
         {
-            print(envp[i]);
-            print("\n");
+            print_fd(fd, envp[i]);
+            print_fd(fd, "\n");
         }
         i++;
     }
 }
 
-int env(char **envp)
+int env(char **envp, int fd)
 {
     if (!envp || !envp[0])
         return (ENOENT);
-    print_env(envp);
+    print_env(envp, fd);
     return (0);
 }

@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-void    print_export(char  **envp)
+void    print_export(char  **envp, int fd)
 {
     int i;
 
@@ -20,7 +20,11 @@ void    print_export(char  **envp)
     while (envp[i])
     {
         if (envp[i][0] != '\0')
-            printf("declare -x %s\n", envp[i]);
+        {
+            print_fd(fd, "declare -x ");
+            print_fd(fd, envp[i]);
+            print_fd(fd, "\n");
+        }
         i++;
     }
 }
@@ -38,7 +42,7 @@ char    **copy_arr(char **arr)
     return (copy);
 }
 
-int export_no_args(char **envp)
+int export_no_args(char **envp, int fd)
 {
     int i;
     int j;
@@ -61,7 +65,7 @@ int export_no_args(char **envp)
         }
         i++;
     }
-    print_export(env);
+    print_export(env, fd);
     ft_freesplit(env);
     return (0);
 }
@@ -95,11 +99,11 @@ int export_var(t_program *program, char **var)
     return (0);
 }
 
-int    export(t_program *program, char **var)
+int    export(t_program *program, char **var, int fd)
 {
     if (!program->envp || !program->envp[0])
         return (ENOENT);
     if (!var[1])
-        return (export_no_args(program->envp));
+        return (export_no_args(program->envp, fd));
     return (export_var(program, var));
 }

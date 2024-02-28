@@ -55,6 +55,6 @@ void	wait_child(t_program program)
 	int	i;
 
 	i = program.cmd.len - 1;
-	while (i >= 0)
-		waitpid(program.pid[i--], NULL, 0);
+	while (i-- >= 0)
+		wait(NULL);
 }

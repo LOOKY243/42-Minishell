@@ -17,18 +17,17 @@ int	exec(t_program *program, char *cmd)
 	pid_t	pid;
 	char	*new_cmd;
 
-	if (pipe(program->pipe) == -1 || pipe(program->data_pipe) == -1)
-		return (print_error("\x1b[1;6;31mpipe", EXIT_FAILURE));
+	if (pipe(program->pipe) == -1)
+		return (print_error("\x1b[1;31mpipe", EXIT_FAILURE));
 	new_cmd = change_cmd_var(*program, cmd);
 	if (!is_recoded(new_cmd))
 	{
+		program->exit_value = 0;
 		pid = fork();
 		if (pid == -1)
-			return (print_error("\x1b[1;6;31mfork", EXIT_FAILURE));
-		program->pid[program->cmd.current] = pid;
+			return (print_error("\x1b[1;31mfork", EXIT_FAILURE));
 		if (pid == 0)
 		{
-
 			treat_child(program, new_cmd, program->cmd.current, program->cmd.len - 1);
 			exit(EXIT_SUCCESS);
 		}

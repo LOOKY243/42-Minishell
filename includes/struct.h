@@ -24,7 +24,6 @@ typedef struct s_program
 {
 	int		pipe[2];
 	int		data_pipe[2];
-	pid_t	pid[1024];
 	t_cmd	cmd;
 	int		infile;
 	int		outfile;

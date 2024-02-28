@@ -53,39 +53,50 @@ void	close_child_fds(t_program *program)
 int	treat_command(t_program *program, char *cmd)
 {
 	char	**args;
+	int	value;
 
 	args = ft_split_cmd(cmd, ' ');
-	close_child_fds(program);
+	//close_child_fds(program);
 	args[0] = get_cmds(*program, args[0]);
 	if (args[0])
-		return (execve(args[0], args, program->envp));
+	{
+		value = execve(args[0], args, program->envp);
+		print("\x1b[1;31m");
+		print_error(args[0], value);
+		return (value);
+	}
 	ft_freesplit(args);
 	return (127);
 }
 
-int	treat_command_recoded(t_program *program, char *cmd)
+int	treat_command_recoded(t_program *program, int fd, char *cmd)
 {
 	char	**args;
+	int value;
 
 	args = ft_split_cmd(cmd, ' ');
+	value = ENOENT;
 	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
-		return (echo(args));
-	if (ft_strcmp(args[0], "pwd") == 0)
-		return (pwd(program->envp));
-	if (ft_strcmp(args[0], "env") == 0)
-		return (env(program->envp));
-	if (ft_strcmp(args[0], "export") == 0)
-		return (export(program, args));
-	if (ft_strcmp(args[0], "$?") == 0)
-		return (return_value(program->exit_value));
-	if (ft_strcmp(args[0], "unset") == 0)
+		value = echo(args, fd);
+	else if (ft_strcmp(args[0], "pwd") == 0)
+		value = pwd(program->envp, fd);
+	else if (ft_strcmp(args[0], "env") == 0)
+		value = env(program->envp, fd);
+	else if (ft_strcmp(args[0], "export") == 0)
+		value = export(program, args, fd);
+	else if (ft_strcmp(args[0], "$?") == 0)
+		value = return_value(program->exit_value);
+	else if (ft_strcmp(args[0], "unset") == 0)
 	{
 		unset(program, args);
-		return (0);
+		value = 0;
 	}
-	if (ft_strcmp(args[0], "cd") == 0)
-		return (cd(program->envp, args[1]));
-	return (ENOENT);
+	else if (ft_strcmp(args[0], "cd") == 0)
+		value = cd(program->envp, args[1]);
+	if (value != 0)
+		print_strerror(args[0], value, value);
+	ft_freesplit(args);
+	return (value);
 }
 
 void	treat_child(t_program *program, char *cmd, int current, int max)
@@ -104,14 +115,12 @@ void	treat_child(t_program *program, char *cmd, int current, int max)
 	close(program->pipe[PIPE_WRITE]);
 	program->exit_value = treat_command(program, cmd);
 	if (program->exit_value != 0)
-	{
 		close(program->pipe[PIPE_READ]);
-		print_error("\x1b[1;6;31mexecve", program->exit_value);
-	}
 }
 
 void	treat_child_recoded(t_program *program, char *cmd, int current, int max)
 {
+	/*
 	if (max != 0)
 	{
 		if (current == 0)
@@ -124,12 +133,20 @@ void	treat_child_recoded(t_program *program, char *cmd, int current, int max)
 	else
 		dups(program->infile, program->outfile);
 	close(program->pipe[PIPE_WRITE]);
-	program->exit_value = treat_command_recoded(program, cmd);
-	if (program->exit_value != 0)
+	*/
+	if (max != 0)
 	{
-		close(program->pipe[PIPE_READ]);
-		print_strerror("\x1b[1;6;31mbuilt-ins: ", program->exit_value, -1);
+		if (current == 0)
+			program->exit_value = treat_command_recoded(program, program->pipe[PIPE_WRITE], cmd);
+		else if (current == max)
+			program->exit_value = treat_command_recoded(program, program->outfile, cmd);
+		else
+			program->exit_value = treat_command_recoded(program, program->pipe[PIPE_WRITE], cmd);
 	}
+	else
+		program->exit_value = treat_command_recoded(program, program->outfile, cmd);
+	if (program->exit_value != 0)
+		close(program->pipe[PIPE_READ]);
 }
 
 bool    is_recoded(char *cmd)

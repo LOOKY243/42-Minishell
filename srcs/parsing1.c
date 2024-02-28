@@ -71,7 +71,7 @@ void	read_stdin(t_program *program, char *limiter)
             break ;
         if (write(program->infile, buffer, bytes) != bytes)
         {
-            print_error("\x1b[1;6;31mwrite", EXIT_FAILURE);
+            print_error("\x1b[1;31mwrite", EXIT_FAILURE);
             break ;
         }
     }
