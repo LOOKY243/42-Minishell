@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/26 13:37:53 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/28 14:42:12 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,24 @@ char	*get_cmds(t_program program, char *cmd)
 	return (cmd);
 }
 
+void	close_child_fds(t_program *program)
+{
+	if (program->pipe[0])
+		close(program->pipe[0]);
+	if (program->pipe[1])
+		close(program->pipe[1]);
+	if (program->data_pipe[0])
+		close(program->data_pipe[0]);
+	if (program->data_pipe[1])
+		close(program->data_pipe[1]);
+}
+
 int	treat_command(t_program *program, char *cmd)
 {
 	char	**args;
 
 	args = ft_split_cmd(cmd, ' ');
+	close_child_fds(program);
 	args[0] = get_cmds(*program, args[0]);
 	if (args[0])
 		return (execve(args[0], args, program->envp));
