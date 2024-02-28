@@ -37,6 +37,11 @@ void	print(const char *s)
 	write(STDOUT_FILENO, s, ft_strlen(s));
 }
 
+void	print_fd(int fd, const char *s)
+{
+	write(fd, s, ft_strlen(s));
+}
+
 void	print_prompt(char *s)
 {
 	int	i;

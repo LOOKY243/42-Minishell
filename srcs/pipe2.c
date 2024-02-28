@@ -69,7 +69,7 @@ int	treat_command(t_program *program, char *cmd)
 	return (127);
 }
 
-int	treat_command_recoded(t_program *program, char *cmd)
+int	treat_command_recoded(t_program *program, int fd, char *cmd)
 {
 	char	**args;
 	int value;
@@ -77,13 +77,13 @@ int	treat_command_recoded(t_program *program, char *cmd)
 	args = ft_split_cmd(cmd, ' ');
 	value = ENOENT;
 	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
-		value = echo(args);
+		value = echo(args, fd);
 	else if (ft_strcmp(args[0], "pwd") == 0)
-		value = pwd(program->envp);
+		value = pwd(program->envp, fd);
 	else if (ft_strcmp(args[0], "env") == 0)
-		value = env(program->envp);
+		value = env(program->envp, fd);
 	else if (ft_strcmp(args[0], "export") == 0)
-		value = export(program, args);
+		value = export(program, args, fd);
 	else if (ft_strcmp(args[0], "$?") == 0)
 		value = return_value(program->exit_value);
 	else if (ft_strcmp(args[0], "unset") == 0)
@@ -120,6 +120,7 @@ void	treat_child(t_program *program, char *cmd, int current, int max)
 
 void	treat_child_recoded(t_program *program, char *cmd, int current, int max)
 {
+	/*
 	if (max != 0)
 	{
 		if (current == 0)
@@ -132,7 +133,18 @@ void	treat_child_recoded(t_program *program, char *cmd, int current, int max)
 	else
 		dups(program->infile, program->outfile);
 	close(program->pipe[PIPE_WRITE]);
-	program->exit_value = treat_command_recoded(program, cmd);
+	*/
+	if (max != 0)
+	{
+		if (current == 0)
+			program->exit_value = treat_command_recoded(program, program->pipe[PIPE_WRITE], cmd);
+		else if (current == max)
+			program->exit_value = treat_command_recoded(program, program->outfile, cmd);
+		else
+			program->exit_value = treat_command_recoded(program, program->pipe[PIPE_WRITE], cmd);
+	}
+	else
+		program->exit_value = treat_command_recoded(program, program->outfile, cmd);
 	if (program->exit_value != 0)
 		close(program->pipe[PIPE_READ]);
 }

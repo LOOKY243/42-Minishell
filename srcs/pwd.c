@@ -26,14 +26,14 @@ char	*find_variable(char **envp, char *var)
 	return (NULL);
 }
 
-int	pwd(char **envp)
+int	pwd(char **envp, int fd)
 {
 	char	*pwd;
 
 	pwd = find_variable(envp, "PWD=");
 	if (!pwd)
 		return (ENOENT);
-	print(pwd);
-	print("\n");
+	print_fd(fd, pwd);
+	print_fd(fd, "\n");
 	return (0);
 }

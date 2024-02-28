@@ -34,16 +34,16 @@ int	count_args_no_sign(char	**arr)
 	return (i);
 }
 
-int    echo(char **cmd)
+int    echo(char **cmd, int fd)
 {
     int	i;
 
     i = 2;
 	while (cmd[i] && ft_strcmp(cmd[i], "|"))
 	{
-		print(cmd[i]);
+		print_fd(fd, cmd[i]);
 		if (i != count_args(cmd) - 1)
-			print(" ");
+			print_fd(fd, " ");
 		i++;
 	}
 	return (0);

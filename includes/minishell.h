@@ -58,6 +58,7 @@ void	signal_d_handler(int signal);
 int	print_strerror(char *str, int errnum, int value);
 int	print_error(char *str, int value);
 void	print(const char *s);
+void	print_fd(int fd, const char *s);
 char	*prompt(char **envp);
 void	modify_prompt(const char *s);
 void	print_prompt(char *s);
@@ -80,17 +81,16 @@ bool    is_recoded(char *cmd);
 char	*change_cmd_var(t_program program, char *cmd);
 
 // BUILT-INS
-int    	echo(char **cmd);
+int    	echo(char **cmd, int fd);
 int		count_args(char	**arr);
 int	count_args_no_sign(char	**arr);
 char	*find_variable(char **envp, char *var);
-int 	pwd(char **envp);
-int 	env(char **envp);
-int    export(t_program *program, char **var);
+int 	pwd(char **envp, int fd);
+int 	env(char **envp, int fd);
+int    export(t_program *program, char **var, int fd);
 void    unset(t_program *program, char **strs);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);
-void    print_env(char  **envp);
 int    cd(char **envp, char *path);
 int	return_value(int value); //$?
 
