@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:46:29 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/28 17:13:27 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/02/28 17:16:10 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,5 @@ char	**ft_split_cmd(const char *s, char c)
 		i[2]++;
 	}
 	strs[i[2]] = 0;
-	for (int k = 0; strs[k]; k++)
-		printf("%d : %s\n", k, strs[k]);
 	return (strs);
 }
