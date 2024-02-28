@@ -57,8 +57,6 @@ void	modify_prompt(const char *s)
 {
 	print("\x1b[1A\x1b[0K"); //go to and clean empty line
 	print("\x1b[1A\x1b[0K"); //go to and clean ╰─ command
-	// if (no_new_line)
-	//	print("\x1b[?C\x1b[0;47;30m%%\x1b[0m\n");
 	print("\x1b[1A\x1b[0K"); //go to and clean ╭─ header
 	print("\x1b[1;33m❯\x1b[0m ");
 	print(s);

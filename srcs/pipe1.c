@@ -22,13 +22,12 @@ int	exec(t_program *program, char *cmd)
 	new_cmd = change_cmd_var(*program, cmd);
 	if (!is_recoded(new_cmd))
 	{
+		program->exit_value = 0;
 		pid = fork();
 		if (pid == -1)
 			return (print_error("\x1b[1;31mfork", EXIT_FAILURE));
-		program->pid[program->cmd.current] = pid;
 		if (pid == 0)
 		{
-
 			treat_child(program, new_cmd, program->cmd.current, program->cmd.len - 1);
 			exit(EXIT_SUCCESS);
 		}
