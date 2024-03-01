@@ -87,12 +87,9 @@ int	treat_command_recoded(t_program *program, int fd, char *cmd)
 	else if (ft_strcmp(args[0], "$?") == 0)
 		value = return_value(program->exit_value);
 	else if (ft_strcmp(args[0], "unset") == 0)
-	{
-		unset(program, args);
-		value = 0;
-	}
+		value = unset(program, args);
 	else if (ft_strcmp(args[0], "cd") == 0)
-		value = cd(program->envp, args[1]);
+		value = cd(program, args[1]);
 	if (value != 0)
 		print_strerror(args[0], value, value);
 	ft_freesplit(args);

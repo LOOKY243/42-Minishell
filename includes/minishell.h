@@ -49,6 +49,7 @@ char	*ft_strstr(const char *str, const char *to_find);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strjoin_mod(char const *s1, char const *s2);
+char	*ft_strchr(const char *s, int c);
 
 // SIGNAL
 void	signal_c_handler(int signal);
@@ -88,10 +89,10 @@ char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp, int fd);
 int 	env(char **envp, int fd);
 int    export(t_program *program, char **var, int fd);
-void    unset(t_program *program, char **strs);
+int    unset(t_program *program, char **strs);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);
-int    cd(char **envp, char *path);
+int    cd(t_program *program, char *path);
 int	return_value(int value); //$?
 
 // OTHERS
