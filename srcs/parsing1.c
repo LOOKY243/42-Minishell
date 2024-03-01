@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/27 18:19:13 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:50:11 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,28 +52,65 @@ char	*cmd_trim(char *cmd, int index)
     return (line);
 }
 
+int    is_double_quoted(char  *str)
+{
+    if (str[0] == '\"')
+    {    
+        if (str[ft_strlen(str) - 1] == '\"')
+            return (1);
+    }
+    if (str[0] == '\'')
+    {    
+        if (str[ft_strlen(str) - 1] == '\'')
+            return (2);
+    }
+    return (0);
+}
+
+// char    *expand(char *str)
+// {
+    
+// }
+
 void	read_stdin(t_program *program, char *limiter)
 {
     int		bytes;
+    int    is_quoted;
     char	buffer[BUFFER_SIZE + 1];
+    char    *tmp;
+    char    *tmp2;
 
     program->random_file = random_string(program, 10);
     program->infile = open(program->random_file, O_CREAT | O_WRONLY | O_TRUNC, 0666);
     bytes = 1;
+    is_quoted = is_double_quoted(limiter);
     while (true)
     {
         if (bytes != 0)
             print("\x1b[0mheredoc> ");
         bytes = read(STDIN_FILENO, buffer, BUFFER_SIZE);
         buffer[bytes] = '\0';
-        if (ft_strlen(buffer) - 1 == ft_strlen(limiter) && ft_strncmp(buffer,
+        if (!is_quoted)
+        {
+            tmp = ft_substr(buffer, 0, ft_strlen(buffer) - 1);
+			tmp2 = change_cmd_var(*program, tmp);
+            free(tmp);
+            if (ft_strlen(buffer) - 1 == ft_strlen(limiter) && ft_strncmp(buffer,
                 limiter, ft_strlen(limiter)) == 0)
+                break ;
+        }
+        else if (ft_strlen(buffer) == ft_strlen(&limiter[1]) && ft_strncmp(buffer,
+                &limiter[1], ft_strlen(&limiter[1]) - 1) == 0)
             break ;
-        if (write(program->infile, buffer, bytes) != bytes)
+        else
+            tmp2 = ft_substr(buffer, 0, ft_strlen(buffer) - 1);
+        if (write(program->infile, tmp2, ft_strlen(tmp2)) != (int)ft_strlen(tmp2))
         {
             print_error("\x1b[1;31mwrite", EXIT_FAILURE);
             break ;
         }
+        write(program->infile, "\n", 1);
+        free(tmp2);
     }
     close(program->infile);
     program->infile = open(program->random_file, O_RDONLY);
@@ -119,6 +156,7 @@ void	handle_file(t_program *program)
 {
     char	**cut;
     int     len;
+    int trigger;
     int	i;
     int	j;
 
@@ -131,35 +169,21 @@ void	handle_file(t_program *program)
         i = -1;
         while (++i < len)
         {
+            trigger = 1;
             if (is_command_sign(cut[i]) && is_command_sign(cut[i + 1]))
                 return ;
             if (!ft_strcmp(cut[i], "<<"))
-            {
                 read_stdin(program, cut[i + 1]);
-                free(cut[i]);
-                free(cut[i + 1]);
-                cut[i] = 0;
-                cut[i + 1] = 0;
-            }
             else if (!ft_strcmp(cut[i], ">>"))
-            {
                 program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_APPEND, 0666);
-                free(cut[i]);
-                free(cut[i + 1]);
-                cut[i] = 0;
-                cut[i + 1] = 0;
-            }
             else if (!ft_strcmp(cut[i], "<"))
-            {
                 program->infile = open(cut[i + 1], O_RDONLY);
-                free(cut[i]);
-                free(cut[i + 1]);
-                cut[i] = 0;
-                cut[i + 1] = 0;
-            }
             else if (!ft_strcmp(cut[i], ">") && cut[i + 1] && !is_command_sign(cut[i + 1]))
-            {
                 program->outfile = open(cut[i + 1], O_CREAT | O_WRONLY | O_TRUNC, 0666);
+            else
+                trigger = 0;
+            if (trigger)
+            {
                 free(cut[i]);
                 free(cut[i + 1]);
                 cut[i] = 0;

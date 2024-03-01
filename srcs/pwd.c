@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:32:49 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/20 12:48:53 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:31:03 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*find_variable(char **envp, char *var)
 {
 	int	i;
-
+	
 	i = 0;
 	while (envp[i])
 	{

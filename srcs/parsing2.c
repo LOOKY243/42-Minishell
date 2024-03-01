@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/16 14:54:19 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/01 12:24:37 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ char	*change_cmd_var(t_program program, char *cmd)
 			split[i] = ft_itoa(program.exit_value);
 			continue;
 		}
-		env = find_variable(program.envp, &split[i][1]);
-		if (env && env[0] == '=') {
+		env = NULL;
+		if (split[i][0] == '$')
+			env = find_variable(program.envp, &split[i][1]);
+		if (env && env[0] == '=')
+		{
 			free(split[i]);
 			split[i] = ft_strdup(&env[1]);
 		}
