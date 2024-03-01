@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/01 14:50:01 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:54:12 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*ft_strncpy(char *dest, char *src, unsigned int n);
 char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strjoin_mod(char const *s1, char const *s2);
 char	*ft_strtrim(const char *s1, const char *set);
+char	*ft_strchr(const char *s, int c);
 
 // SIGNAL
 void	signal_c_handler(int signal);
@@ -89,10 +90,10 @@ char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp, int fd);
 int 	env(char **envp, int fd);
 int    export(t_program *program, char **var, int fd);
-void    unset(t_program *program, char **strs);
+int    unset(t_program *program, char **strs);
 void exit_shell(t_program *program, char *s);
 size_t len_until_sign(char  *str, int sign);
-int    cd(char **envp, char *path);
+int    cd(t_program *program, char *path);
 int	return_value(int value); //$?
 
 // OTHERS

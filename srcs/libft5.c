@@ -6,9 +6,11 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:49:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/01 14:49:16 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/01 16:55:14 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+#include "minishell.h"
 
 int	ft_inset(char c, const char *set)
 {
@@ -51,4 +53,24 @@ char	*ft_strtrim(const char *s1, const char *set)
 	if (!str)
 		return (NULL);
 	return (str);
+}
+
+char	*ft_strchr(const char *s, int c)
+{
+	int				i;
+	unsigned char	*str;
+	unsigned char	st;
+
+	str = (unsigned char *) s;
+	st = (unsigned char) c;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == st)
+			return ((char *)&str[i]);
+		i++;
+	}
+	if (st == 0)
+		return ((char *)&str[i]);
+	return (NULL);
 }

@@ -24,11 +24,14 @@ size_t len_until_sign(char  *str, int sign)
     return (i);
 }
 
-void    unset(t_program *program, char **strs)
+int    unset(t_program *program, char **strs)
 {
     size_t i;
     size_t j;
 
+
+    if (program->cmd.len != 1)
+        return (0);
     j = 0;
     while (strs[j] && ft_strncmp(strs[j], "|", 1))
     {
@@ -45,4 +48,5 @@ void    unset(t_program *program, char **strs)
         }
         j++;
     }
+    return (0);
 }
