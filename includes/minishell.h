@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/01 16:54:12 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/04 14:51:19 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strjoin_mod(char const *s1, char const *s2);
 char	*ft_strtrim(const char *s1, const char *set);
 char	*ft_strchr(const char *s, int c);
+int	ft_isalnum(int c);
 
 // SIGNAL
 void	signal_c_handler(int signal);

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:57:42 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/27 17:29:34 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/04 17:48:19 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ char	*ft_strcpy(char *dest, const char *src)
 {
 	int	letter;
 
+	if (!src || !src[0])
+	{
+		dest[0] = 0;
+		return (dest);
+	}
 	letter = 0;
 	while (src[letter])
 	{

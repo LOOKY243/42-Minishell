@@ -6,49 +6,99 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/01 12:24:37 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/04 18:06:17 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	is_separator(char c)
+{
+	if (ft_isalnum(c) || c == '_')
+		return (0);
+	return (1);
+}
+
 char	*change_cmd_var(t_program program, char *cmd)
 {
-	char	**split;
-	char *tmp;
-	char	*env;
 	char	*new_cmd;
-	int	i;
+	char	*tmp;
+	char	*var_name;
+	char	*env_value;
+	int		i;
+	int		start;
+	int		end;
+	int		len;
 
-	i = -1;
-	split = ft_split_cmd(cmd, ' ');
-	while(split[++i])
+	new_cmd = NULL;
+	tmp = NULL;
+	var_name = NULL;
+	env_value = NULL;
+	i = 0;
+	start = 0;
+	end = 0;
+	len = 0;
+	while (cmd[i])
 	{
-		if (ft_strcmp(split[i], "$?") == 0)
+		if (cmd[i] == '$' && !is_separator(cmd[i + 1]))
 		{
-			free(split[i]);
-			split[i] = ft_itoa(program.exit_value);
-			continue;
+			end = i + 1;
+			while (cmd[end] && !is_separator(cmd[end]))
+				end++;
+			var_name = malloc(end - i);
+			ft_strncpy(var_name, cmd + i + 1, end - i - 1);
+			var_name[end - i - 1] = '\0';
+			env_value = find_variable(program.envp, var_name);
+			if (env_value != NULL && env_value[0] == '=')
+				env_value++;
+			if (env_value)
+			{
+				len = ft_strlen(new_cmd);
+				tmp = malloc(len + (i - start) + ft_strlen(env_value) + 1);
+				if (!tmp)
+				{
+					free(var_name);
+					free(new_cmd);
+					return (NULL);
+				}
+				ft_strcpy(tmp, new_cmd);
+				ft_strncpy(tmp + len, cmd + start, i - start);
+				ft_strcpy(tmp + len + (i - start), env_value);
+				free(new_cmd);
+				new_cmd = tmp;
+				start = end;
+			}
+			else
+			{
+				len = ft_strlen(new_cmd);
+				tmp = malloc(len + (i - start) + 1);
+				if (!tmp)
+				{
+					free(var_name);
+					free(new_cmd);
+					return (NULL);
+				}
+				ft_strcpy(tmp, new_cmd);
+				ft_strncpy(tmp + len, cmd + start, i - start);
+				tmp[len + (i - start)] = '\0';
+				free(new_cmd);
+				new_cmd = tmp;
+				start = end;
+			}
+			free(var_name);
 		}
-		env = NULL;
-		if (split[i][0] == '$')
-			env = find_variable(program.envp, &split[i][1]);
-		if (env && env[0] == '=')
-		{
-			free(split[i]);
-			split[i] = ft_strdup(&env[1]);
-		}
+		i++;
 	}
-	i = -1;
-	new_cmd = ft_calloc(1, sizeof(char));
-	new_cmd[0] = '\0';
-	while(split[++i])
+	len = ft_strlen(new_cmd);
+	tmp = malloc(len + ft_strlen(cmd + start) + 1);
+	if (!tmp)
 	{
-		tmp = ft_strjoin(new_cmd, split[i]);
 		free(new_cmd);
-		new_cmd = ft_strjoin(tmp, " ");
-		free(tmp);
+		return (NULL);
 	}
-	ft_freesplit(split);
+	ft_strcpy(tmp, new_cmd);
+	ft_strcpy(tmp + len, cmd + start);
+	free(new_cmd);
+	new_cmd = tmp;
 	return (new_cmd);
 }

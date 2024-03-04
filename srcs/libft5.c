@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:49:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/01 16:55:14 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/04 14:51:07 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,14 @@ char	*ft_strchr(const char *s, int c)
 	if (st == 0)
 		return ((char *)&str[i]);
 	return (NULL);
+}
+
+int	ft_isalnum(int c)
+{
+	if ((c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z')
+		|| (c >= '0' && c <= '9'))
+		return (1);
+	else
+		return (0);
 }
