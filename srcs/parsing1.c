@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/01 16:50:11 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/01 17:22:10 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int    is_double_quoted(char  *str)
 
 // char    *expand(char *str)
 // {
-    
+// tout est un seprateur sauf les alphanum et _
 // }
 
 void	read_stdin(t_program *program, char *limiter)
