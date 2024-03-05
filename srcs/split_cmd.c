@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:46:29 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/05 17:45:24 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/05 18:06:13 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ char	*ft_prealloc(char const *s, char c, int i)
 			i++;
 		}
 	}
-	return (calloc((count + 1), sizeof(char)));
+	return (ft_calloc((count + 1), sizeof(char)));
 }
 
 void	ft_split2(const char *s, char **strs, size_t i[3], char c)
@@ -133,7 +133,7 @@ char	**ft_split_cmd(const char *s, char c)
 
 	if (!s)
 		return (NULL);
-	strs = calloc(ft_countsplit(s, c) + 1, sizeof(char *));
+	strs = ft_calloc(ft_countsplit(s, c) + 1, sizeof(char *));
 	if (!strs)
 		return (NULL);
 	i[2] = 0;
