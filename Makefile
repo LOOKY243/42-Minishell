@@ -10,7 +10,7 @@ OBJS = $(SRCSINC:.c=.o)
 CFLAGS = -Wall -Wextra -Werror -g
 LDFLAGS = -L./$(INCPATH) -lreadline
 
-all:$(NAME) clean
+all:$(NAME)
 
 $(NAME): $(OBJS)
 	@printf "\033[1;37m"

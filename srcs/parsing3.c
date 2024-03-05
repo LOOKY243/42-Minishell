@@ -12,14 +12,69 @@
 
 #include "minishell.h"
 
-char	*treat_cmd(t_program program, char *cmd)
+char *ft_replace(char *str, char *toReplace, char *replacer)
 {
+	int	i;
+	int		j;
 	char *tmp;
 	char *final;
 
-	tmp = remove_quote(cmd);
-	final = change_cmd_var(program, tmp);
+	tmp = ft_calloc(ft_strlen(str) + ft_strlen(replacer) + 1, sizeof(char));
+	i = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (ft_strncmp(&str[i], toReplace, ft_strlen(toReplace)) != 0 || j != 0)
+		{
+			tmp[i + j] = str[i];
+			i++;
+			continue;
+		}
+		j = -1;
+		while (replacer[++j])
+			tmp[i + j - 1] = replacer[j];
+		i += ft_strlen(replacer);
+	}
+	tmp[i + j] = '\0';
+	final = ft_strdup(tmp);
+	free(tmp);
+	free(str);
 	return (final);
+}
+
+char	*change_cmd_env(t_program program, char *cmd)
+{
+	char quote;
+	char *tmp;
+	char *env;
+	char *str;
+	int i;
+
+	i = -1;
+	str = ft_strdup(cmd);
+	while(str[++i])
+	{
+		if (!quote && (str[i] == '\'' || str[i] == '"'))
+		{
+			quote = str[i];
+			continue;
+		}
+		if (quote == str[i])
+		{
+			quote = 0;
+			continue;
+		}
+		if (quote != '\'' && str[i] == '$')
+		{
+			tmp = ft_substr(&str[i + 1], 0, ft_strlen_alnum(&str[i + 1]));
+			env = find_variable_secure(program.envp, tmp);
+			if (!env)
+				env = " ";
+			str = ft_replace(str, tmp, &env[1]);
+			free(tmp);
+		}
+	}
+	return (str);
 }
 
 char	*remove_quote(char *str)
@@ -52,6 +107,17 @@ char	*remove_quote(char *str)
 	}
 	tmp[i - offset] = '\0';
 	final = ft_strdup(tmp);
+	free(tmp);
+	return (final);
+}
+
+char	*treat_cmd(t_program program, char *cmd)
+{
+	char *tmp;
+	char *final;
+
+	tmp = change_cmd_env(program, cmd);
+	final = remove_quote(tmp);
 	free(tmp);
 	return (final);
 }

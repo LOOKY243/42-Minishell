@@ -51,6 +51,8 @@ char	*ft_strcpy(char *dest, const char *src);
 char	*ft_strjoin_mod(char const *s1, char const *s2);
 char	*ft_strtrim(const char *s1, const char *set);
 char	*ft_strchr(const char *s, int c);
+bool ft_isalnum(char c);
+int	ft_strlen_alnum(char *s);
 
 // SIGNAL
 void	signal_c_handler(int signal);
@@ -84,12 +86,12 @@ bool    is_recoded(char *cmd);
 // PARSING
 char	*treat_cmd(t_program program, char *cmd);
 char	*change_cmd_var(t_program program, char *cmd);
-char	*remove_quote(char *str);
 
 // BUILT-INS
 int    	echo(char **cmd, int fd);
 int		count_args(char	**arr);
 int	count_args_no_sign(char	**arr);
+char	*find_variable_secure(char **envp, char *var);
 char	*find_variable(char **envp, char *var);
 int 	pwd(char **envp, int fd);
 int 	env(char **envp, int fd);
