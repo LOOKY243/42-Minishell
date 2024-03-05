@@ -80,7 +80,11 @@ void	handle_file(t_program *program);
 void	treat_child(t_program *program, char *cmd, int current, int max);
 void	treat_child_recoded(t_program *program, char *cmd, int current, int max);
 bool    is_recoded(char *cmd);
+
+// PARSING
+char	*treat_cmd(t_program program, char *cmd);
 char	*change_cmd_var(t_program program, char *cmd);
+char	*remove_quote(char *str);
 
 // BUILT-INS
 int    	echo(char **cmd, int fd);
