@@ -6,14 +6,11 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:46:29 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/05 18:06:13 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/05 18:06:57 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-#include <stdlib.h>
-#include <stdio.h>
 
 unsigned int	ft_countsplit(const char *s, char c)
 {
