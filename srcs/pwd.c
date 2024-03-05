@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:32:49 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/01 11:31:03 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/05 12:58:37 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,11 @@ char	*find_variable(char **envp, char *var)
 	return (NULL);
 }
 
-int	pwd(char **envp, int fd)
+int	pwd(int fd)
 {
-	char	*pwd;
+	char	pwd[BUFFER_SIZE];
 
-	pwd = find_variable(envp, "PWD=");
-	if (!pwd)
-		return (ENOENT);
+	getcwd(pwd, sizeof(pwd));
 	print_fd(fd, pwd);
 	print_fd(fd, "\n");
 	return (0);
