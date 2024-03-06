@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:24:46 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/05 15:50:02 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/06 13:13:32 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,10 @@ int     cd(t_program *program, char *path)
     if (program->cmd.len != 1)
         return (0);
     if (path[0] == '-' && ft_strlen(path) == 1)
+    {
         path = find_variable(program->envp, "OLDPWD=");
+        printf("%s\n", path);
+    }
     if (!path)
         return (ENOENT);
     getcwd(pwd, sizeof(pwd));
