@@ -62,10 +62,12 @@ int	main(int argc, char **argv, char **envp)
 			modify_prompt(s);
 		else if (*s)
 		{
-			exit_shell(&program, s);
-			modify_prompt(s);
 			add_history(s);
-			process(s, &program);
+			modify_prompt(s);
+			if (!ft_strncmp(s, "exit", 4) && (s[4] == '\0' || s[4] == ' '))
+				exit_shell(&program, s);
+			else
+				process(s, &program);
 			free(s);
 		}
 		print("\n");

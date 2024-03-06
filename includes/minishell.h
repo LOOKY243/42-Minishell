@@ -23,6 +23,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 #include <errno.h>
+#include <limits.h>
 #include "enum.h"
 #include "struct.h"
 #define BUFFER_SIZE 1024
@@ -53,6 +54,7 @@ char	*ft_strtrim(const char *s1, const char *set);
 char	*ft_strchr(const char *s, int c);
 bool ft_isalnum(char c);
 int	ft_strlen_alnum(char *s);
+bool	ft_atoi(const char *s, int *n);
 
 // SIGNAL
 void	signal_c_handler(int signal);

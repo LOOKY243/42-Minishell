@@ -29,12 +29,29 @@ void destroy_program(t_program *program)
 
 void exit_shell(t_program *program, char *s)
 {
-	if (!ft_strcmp(s, "exit"))
+	int n;
+	char **split;
+
+	print("exit\n");
+	split = ft_split_cmd(s, ' ');
+	if (split[1] && split[2])
 	{
-		modify_prompt(s);
-		print("exit\n");
-		free(s);
-		destroy_program(program);
-		exit(EXIT_SUCCESS);
+		program->exit_value = 1;
+		return (print_fd(2, "\x1b[1;31mexit: too many arguments\n\x1b[0m"));
 	}
+	free(s);
+	destroy_program(program);
+	if (!split[1])
+	{
+		ft_freesplit(split);
+		exit(program->exit_value);
+	}
+	if (ft_atoi(split[1], &n))
+	{
+		ft_freesplit(split);
+		exit(n);
+	}
+	ft_freesplit(split);
+	print_fd(2, "\x1b[1;31mexit: numeric argument required\n\x1b[0m");
+	exit(2);
 }

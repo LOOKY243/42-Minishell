@@ -95,3 +95,32 @@ char	*ft_strchr(const char *s, int c)
 		return ((char *)&str[i]);
 	return (NULL);
 }
+
+bool	ft_atoi(const char *s, int *n)
+{
+	int		i;
+	long	tmp;
+
+	i = 0;
+	*n = 0;
+	tmp = 0;
+	if (s[i] == '-')
+		return (false);
+	if (s[i] == '+')
+		++i;
+	while (s[i] == '0')
+		++i;
+	if (ft_strlen(&s[i]) > 10 || (ft_strlen(&s[i]) == 0 && s[i - 1] != '0'))
+		return (false);
+	while (s[i])
+	{
+		if (!(s[i] >= '0' && s[i] <= '9'))
+			return (false);
+		tmp = tmp * 10 + (s[i] - '0');
+		++i;
+	}
+	if (tmp > INT_MAX)
+		return (false);
+	*n = tmp;
+	return (true);
+}
