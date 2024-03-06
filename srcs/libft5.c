@@ -12,6 +12,27 @@
 
 #include "minishell.h"
 
+int	ft_strlen_alnum(char *s)
+{
+	int i;
+
+	if (!s)
+		return (0);
+	i = 0;
+	while (s[i])
+	{
+		if (!ft_isalnum(s[i]))
+			return (i);
+		++i;
+	}
+	return (i);
+}
+
+bool ft_isalnum(char c)
+{
+	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'));
+}
+
 int	ft_inset(char c, const char *set)
 {
 	unsigned int	i;

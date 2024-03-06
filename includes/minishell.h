@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/05 12:58:48 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/06 13:33:19 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ char	*ft_strjoin_mod(char const *s1, char const *s2);
 char	*ft_strtrim(const char *s1, const char *set);
 char	*ft_strchr(const char *s, int c);
 int	ft_isalnum(int c);
+bool ft_isalnum(char c);
+int	ft_strlen_alnum(char *s);
 
 // SIGNAL
 void	signal_c_handler(int signal);
@@ -81,12 +83,16 @@ void	handle_file(t_program *program);
 void	treat_child(t_program *program, char *cmd, int current, int max);
 void	treat_child_recoded(t_program *program, char *cmd, int current, int max);
 bool    is_recoded(char *cmd);
+
+// PARSING
+char	*treat_cmd(t_program program, char *cmd);
 char	*change_cmd_var(t_program program, char *cmd);
 
 // BUILT-INS
 int    	echo(char **cmd, int fd);
 int		count_args(char	**arr);
 int	count_args_no_sign(char	**arr);
+char	*find_variable_secure(char **envp, char *var);
 char	*find_variable(char **envp, char *var);
 int 	pwd(int fd);
 int 	env(char **envp, int fd);

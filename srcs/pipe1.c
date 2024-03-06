@@ -19,7 +19,7 @@ int	exec(t_program *program, char *cmd)
 
 	if (pipe(program->pipe) == -1)
 		return (print_error("\x1b[1;31mpipe", EXIT_FAILURE));
-	new_cmd = change_cmd_var(*program, cmd);
+	new_cmd = treat_cmd(*program, cmd);
 	if (!is_recoded(new_cmd))
 	{
 		program->exit_value = 0;
