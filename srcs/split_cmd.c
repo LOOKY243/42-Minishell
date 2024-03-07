@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:46:29 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/28 17:16:10 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/05 18:06:57 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,13 @@ unsigned int	ft_countsplit(const char *s, char c)
 {
 	unsigned int	count;
 	unsigned int	i;
-	char			quote;
+	unsigned int	d_quote;
+	unsigned int	s_quote;
 
 	count = 0;
 	i = 0;
+	d_quote = 0;
+	s_quote = 0;
 	while (s[i])
 	{
 		while (s[i] == c && s[i])
@@ -27,28 +30,41 @@ unsigned int	ft_countsplit(const char *s, char c)
 		count++;
 		while (s[i] != c && s[i])
 		{
+			if (s[i] == '\'')
+				s_quote++;
+			else if (s[i] == '\"')
+				d_quote++;
 			if (s[i] == '\'' || s[i] == '\"')
 			{
-				quote = s[i];
 				i++;
-				while (s[i] && s[i] != quote)
+				while (s[i] && (d_quote % 2 || s_quote % 2))
+				{
+					if (s[i + 1] == '\'')
+						s_quote++;
+					else if (s[i + 1] == '\"')
+						d_quote++;
 					i++;
-				i++;
+				}
 			}
 			i++;
 		}
-
 	}
 	return (count);
 }
 
-void	ft_prealloc2(char const *s, char quote, int *i, int *count)
+void	ft_prealloc2(char const *s, int *d_quote, int *s_quote, int *i, int *count)
 {
-	while (s[*i] && s[*i] != quote)
+	while (s[*i] && (*d_quote % 2 || *s_quote % 2))
 	{
 		(*count)++;
 		if (s[*i + 1] && (s[*i + 1] == '\'' || s[*i + 1] == '\"'))
+		{
+			if (s[*i + 1] == '\'')
+				(*s_quote)++;
+			else if (s[*i + 1] == '\"')
+				(*d_quote)++;
 			(*count)++;
+		}
 		(*i)++;
 	}
 }
@@ -56,18 +72,23 @@ void	ft_prealloc2(char const *s, char quote, int *i, int *count)
 char	*ft_prealloc(char const *s, char c, int i)
 {
 	int	count;
-	char	quote;
+	int	s_quote;
+	int	d_quote;
 
 	count = 0;
+	s_quote = 0;
+	d_quote = 0;
 	while (s[i] != c && s[i])
 	{
+		if (s[i] == '\'')
+			s_quote++;
+		else if (s[i] == '\"')
+			d_quote++;
 		if (s[i] == '\'' || s[i] == '\"')
 		{
-			quote = s[i];
 			i++;
 			count++;
-			ft_prealloc2(s, quote, &i, &count);
-			i++;
+			ft_prealloc2(s, &d_quote, &s_quote, &i, &count);
 		}
 		else
 		{
@@ -80,24 +101,22 @@ char	*ft_prealloc(char const *s, char c, int i)
 
 void	ft_split2(const char *s, char **strs, size_t i[3], char c)
 {
-	char	quote;
+	int	s_quote = 0;
+	int	d_quote = 0;
 	
 	while (s[i[0]] != c && s[i[0]])
 	{
 		if (s[i[0]] == '\'' || s[i[0]] == '\"')
 		{
-			quote = s[i[0]];
 			strs[i[2]][i[1]++] = s[i[0]++];
-			while (s[i[0]] && s[i[0]] != quote)
+			if (s[i[0] - 1] == '\'')
+				s_quote++;
+			else if (s[i[0] - 1] == '\"')
+				d_quote++;
+			while (s[i[0]] && ((s[i[0]] != '\'' && s[i[0]] != '\"') || (s[i[0]] == '\'' && s_quote % 2) || (s[i[0]] == '\"' && d_quote % 2)))
 			{
 				strs[i[2]][i[1]++] = s[i[0]++];
-				if (s[i[0]] && s[i[0]] == quote)
-				{
-					strs[i[2]][i[1]] = s[i[0]];
-					break;
-				}
 			}
-			i[0]++;
 		}
 		else
 			strs[i[2]][i[1]++] = s[i[0]++];
@@ -127,6 +146,6 @@ char	**ft_split_cmd(const char *s, char c)
 		ft_split2(s, strs, i, c);
 		i[2]++;
 	}
-	strs[i[2]] = 0;
+	strs[i[2]] = NULL;
 	return (strs);
 }

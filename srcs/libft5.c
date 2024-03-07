@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:49:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/01 16:55:14 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/04 14:51:07 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,6 @@ int	ft_strlen_alnum(char *s)
 		++i;
 	}
 	return (i);
-}
-
-bool ft_isalnum(char c)
-{
-	return ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'));
 }
 
 int	ft_inset(char c, const char *set)
@@ -94,6 +89,15 @@ char	*ft_strchr(const char *s, int c)
 	if (st == 0)
 		return ((char *)&str[i]);
 	return (NULL);
+}
+
+int	ft_isalnum(int c)
+{
+	if ((c >= 'a' && c <= 'z')
+		|| (c >= 'A' && c <= 'Z')
+		|| (c >= '0' && c <= '9'))
+		return (1);
+	return (0);
 }
 
 bool	ft_atoi(const char *s, int *n)

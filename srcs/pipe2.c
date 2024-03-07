@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/01 10:24:37 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/05 12:59:10 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	treat_command_recoded(t_program *program, int fd, char *cmd)
 	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
 		value = echo(args, fd);
 	else if (ft_strcmp(args[0], "pwd") == 0)
-		value = pwd(program->envp, fd);
+		value = pwd(fd);
 	else if (ft_strcmp(args[0], "env") == 0)
 		value = env(program->envp, fd);
 	else if (ft_strcmp(args[0], "export") == 0)

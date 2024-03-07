@@ -33,7 +33,8 @@ char *ft_replace(char *str, char *toReplace, char *replacer)
 		j = -1;
 		while (replacer[++j])
 			tmp[i + j - 1] = replacer[j];
-		i += ft_strlen(replacer);
+		i += ft_strlen(toReplace);
+		j = ft_strlen(replacer) - ft_strlen(toReplace) - 1;
 	}
 	tmp[i + j] = '\0';
 	final = ft_strdup(tmp);
