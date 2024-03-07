@@ -67,6 +67,18 @@ char	*change_cmd_env(t_program program, char *cmd)
 		}
 		if (quote != '\'' && str[i] == '$')
 		{
+			if (ft_strlen_alnum(&str[i + 1]) == 0)
+			{
+				if (str[i + 1] == '?')
+				{
+					env = ft_itoa(program.exit_value);
+					str = ft_replace(str, "?", env);
+					free(env);
+					continue;
+				}
+				else
+					continue;
+			}
 			tmp = ft_substr(&str[i + 1], 0, ft_strlen_alnum(&str[i + 1]));
 			env = find_variable_secure(program.envp, tmp);
 			if (!env)

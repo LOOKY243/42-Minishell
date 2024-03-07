@@ -17,6 +17,8 @@ char	*find_variable_secure(char **envp, char *var)
 	int	i;
 	int	len;
 
+	if (!var)
+		return (NULL);
 	i = 0;
 	len = ft_strlen(var);
 	while (envp[i])
