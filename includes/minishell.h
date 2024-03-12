@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/06 13:33:19 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:14:38 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ char	*ft_strchr(const char *s, int c);
 int		ft_isalnum(int c);
 int		ft_strlen_alnum(char *s);
 bool	ft_atoi(const char *s, int *n);
+void	*ft_memcpy(void *dest, const void *src, size_t n);
 
 // SIGNAL
 void	signal_c_handler(int signal);
 void	signal_d_handler(int signal);
+void signal_slash_handler(int signal);
 
 // PRINT
 int	print_strerror(char *str, int errnum, int value);
@@ -100,6 +102,7 @@ int 	env(char **envp, int fd);
 int    export(t_program *program, char **var, int fd);
 int    unset(t_program *program, char **strs);
 void exit_shell(t_program *program, char *s);
+void exit_shell2(t_program *program);
 size_t len_until_sign(char  *str, int sign);
 int    cd(t_program *program, char *path);
 int	return_value(int value); //$?

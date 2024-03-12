@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 11:37:33 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/11 16:51:13 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,12 @@ void exit_shell(t_program *program, char *s)
 	}
 	ft_freesplit(split);
 	print_fd(2, "\x1b[1;31mexit: numeric argument required\n\x1b[0m");
+	exit(2);
+}
+
+void exit_shell2(t_program *program)
+{
+	print("exit\n");
+	destroy_program(program);
 	exit(2);
 }
