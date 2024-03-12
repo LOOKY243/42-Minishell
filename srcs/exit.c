@@ -34,24 +34,28 @@ void exit_shell(t_program *program, char *s)
 
 	print("exit\n");
 	split = ft_split_cmd(s, ' ');
+	if (!split[0] || !split[1])
+	{
+		ft_freesplit(split);
+		free(s);
+		destroy_program(program);
+		exit(program->exit_value);
+	}
+	if (!ft_atoi(split[1], &n))
+	{
+		ft_freesplit(split);
+		print_fd(2, "\x1b[1;31mexit: numeric argument required\n\x1b[0m");
+		free(s);
+		destroy_program(program);
+		exit(2);
+	}
 	if (split[1] && split[2])
 	{
 		program->exit_value = 1;
 		return (print_fd(2, "\x1b[1;31mexit: too many arguments\n\x1b[0m"));
 	}
+	ft_freesplit(split);
 	free(s);
 	destroy_program(program);
-	if (!split[1])
-	{
-		ft_freesplit(split);
-		exit(program->exit_value);
-	}
-	if (ft_atoi(split[1], &n))
-	{
-		ft_freesplit(split);
-		exit(n);
-	}
-	ft_freesplit(split);
-	print_fd(2, "\x1b[1;31mexit: numeric argument required\n\x1b[0m");
-	exit(2);
+	exit(n);
 }

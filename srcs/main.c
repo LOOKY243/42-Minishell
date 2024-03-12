@@ -38,6 +38,7 @@ void init_program(t_program *program, char **envp)
 	program->path = ft_split_cmd(find_variable(envp, "PATH="), ':');
 	program->random_file = NULL;
 	program->rseed = 0;
+	program->exit_value = 0;
 }
 
 int	main(int argc, char **argv, char **envp)
