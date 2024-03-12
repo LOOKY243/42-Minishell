@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:46:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/23 15:19:08 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/11 17:19:49 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int    unset(t_program *program, char **strs)
         i = 0;
         while (program->envp[i])
         {
-            if (!ft_strncmp_case(program->envp[i], strs[j], ft_strlen(strs[j])) && len_until_sign(program->envp[i], '=') == ft_strlen(strs[j]))
+            if (!ft_strncmp(program->envp[i], strs[j], ft_strlen(strs[j])) && len_until_sign(program->envp[i], '=') == ft_strlen(strs[j]))
             {
                 free(program->envp[i]);
                 program->envp[i] = ft_strdup("\0");

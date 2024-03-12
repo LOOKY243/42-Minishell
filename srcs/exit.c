@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/16 11:37:33 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/11 16:51:13 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,11 @@ void exit_shell(t_program *program, char *s)
 	free(s);
 	destroy_program(program);
 	exit(n);
+}
+
+void exit_shell2(t_program *program)
+{
+	print("exit\n");
+	destroy_program(program);
+	exit(2);
 }

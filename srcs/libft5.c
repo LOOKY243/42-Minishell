@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:49:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/04 14:51:07 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/12 15:14:18 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,33 +98,4 @@ int	ft_isalnum(int c)
 		|| (c >= '0' && c <= '9'))
 		return (1);
 	return (0);
-}
-
-bool	ft_atoi(const char *s, int *n)
-{
-	int		i;
-	long	tmp;
-
-	i = 0;
-	*n = 0;
-	tmp = 0;
-	if (s[i] == '-')
-		return (false);
-	if (s[i] == '+')
-		++i;
-	while (s[i] == '0')
-		++i;
-	if (ft_strlen(&s[i]) > 10 || (ft_strlen(&s[i]) == 0 && s[i - 1] != '0'))
-		return (false);
-	while (s[i])
-	{
-		if (!(s[i] >= '0' && s[i] <= '9'))
-			return (false);
-		tmp = tmp * 10 + (s[i] - '0');
-		++i;
-	}
-	if (tmp > INT_MAX)
-		return (false);
-	*n = tmp;
-	return (true);
 }
