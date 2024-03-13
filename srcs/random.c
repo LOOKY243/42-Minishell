@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   rand.c                                             :+:      :+:    :+:   */
+/*   random.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ycostode <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/04 16:24:41 by ycostode          #+#    #+#             */
-/*   Updated: 2023/12/04 16:58:21 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/13 16:45:28 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,9 @@ int	random_number(t_program *program, int min, int max)
 
 char	*random_string(t_program *program, int len)
 {
-	char *name;
+	char	*name;
 	char	*usable;
-	int	i;
+	int		i;
 
 	usable = "abcdefghijklmnopqrstuvwxyz";
 	while (true)
@@ -45,7 +45,7 @@ char	*random_string(t_program *program, int len)
 			name[i] = usable[random_number(program, 0, ft_strlen(usable))];
 		name[len] = '\0';
 		if (access(name, F_OK) == -1)
-			break;
+			break ;
 		free(name);
 	}
 	return (name);

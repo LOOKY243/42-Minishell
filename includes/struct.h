@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:31:55 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:16:44 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:29:51 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ typedef struct s_program
 	int		env_len;
 	int		exit_value;
 	int		rseed;
-}	t_program;
+}			t_program;
 
 #endif

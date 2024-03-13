@@ -6,18 +6,18 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 14:33:44 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:44:58 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char *ft_replace(char *str, char *toReplace, char *replacer)
+char	*ft_replace(char *str, char *toReplace, char *replacer)
 {
-	int	i;
+	int		i;
 	int		j;
-	char *tmp;
-	char *final;
+	char	*tmp;
+	char	*final;
 
 	tmp = ft_calloc(ft_strlen(str) + ft_strlen(replacer) + 1, sizeof(char));
 	i = 0;
@@ -28,7 +28,7 @@ char *ft_replace(char *str, char *toReplace, char *replacer)
 		{
 			tmp[i + j] = str[i];
 			i++;
-			continue;
+			continue ;
 		}
 		j = -1;
 		while (replacer[++j])
@@ -45,25 +45,25 @@ char *ft_replace(char *str, char *toReplace, char *replacer)
 
 char	*change_cmd_env(t_program program, char *cmd)
 {
-	char quote;
-	char *tmp;
-	char *env;
-	char *str;
-	int i;
+	char	quote;
+	char	*tmp;
+	char	*env;
+	char	*str;
+	int		i;
 
 	i = -1;
 	str = ft_strdup(cmd);
-	while(str[++i])
+	while (str[++i])
 	{
 		if (!quote && (str[i] == '\'' || str[i] == '"'))
 		{
 			quote = str[i];
-			continue;
+			continue ;
 		}
 		if (quote == str[i])
 		{
 			quote = 0;
-			continue;
+			continue ;
 		}
 		if (quote != '\'' && str[i] == '$')
 		{
@@ -74,10 +74,10 @@ char	*change_cmd_env(t_program program, char *cmd)
 					env = ft_itoa(program.exit_value);
 					str = ft_replace(str, "?", env);
 					free(env);
-					continue;
+					continue ;
 				}
 				else
-					continue;
+					continue ;
 			}
 			tmp = ft_substr(&str[i + 1], 0, ft_strlen_alnum(&str[i + 1]));
 			env = find_variable_secure(program.envp, tmp);
@@ -92,11 +92,11 @@ char	*change_cmd_env(t_program program, char *cmd)
 
 char	*remove_quote(char *str)
 {
-	int i;
-	int offset;
-	char *tmp;
-	char *final;
-	char quote;
+	int		i;
+	int		offset;
+	char	*tmp;
+	char	*final;
+	char	quote;
 
 	tmp = ft_calloc(ft_strlen(str) + 1, sizeof(char));
 	i = -1;
@@ -108,13 +108,13 @@ char	*remove_quote(char *str)
 		{
 			quote = str[i];
 			++offset;
-			continue;
+			continue ;
 		}
 		if (quote == str[i])
 		{
 			quote = 0;
 			++offset;
-			continue;
+			continue ;
 		}
 		tmp[i - offset] = str[i];
 	}
@@ -126,8 +126,8 @@ char	*remove_quote(char *str)
 
 char	*treat_cmd(t_program program, char *cmd)
 {
-	char *tmp;
-	char *final;
+	char	*tmp;
+	char	*final;
 
 	tmp = change_cmd_env(program, cmd);
 	final = remove_quote(tmp);

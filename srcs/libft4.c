@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 15:57:42 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/04 17:48:19 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:44:18 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,18 @@
 
 int	ft_isalpha(char *s)
 {
-    int i;
+	int	i;
 
-    if (!s || !s[0])
-        return (0);
-    i = 0;
-    while (s[i])
-    {
-        if ((s[i] < 'a' && s[i] > 'z') && (s[i] < 'A' && s[i] > 'Z'))
-            return (0);
-        i++;
-    }
-    return (1);
+	if (!s || !s[0])
+		return (0);
+	i = 0;
+	while (s[i])
+	{
+		if ((s[i] < 'a' && s[i] > 'z') && (s[i] < 'A' && s[i] > 'Z'))
+			return (0);
+		i++;
+	}
+	return (1);
 }
 
 char	*ft_strstr(const char *str, const char *to_find)
@@ -96,8 +96,8 @@ char	*ft_strcpy(char *dest, const char *src)
 
 char	*ft_strjoin_mod(char const *s1, char const *s2)
 {
-	char				*str;
-	unsigned int		i;
+	char			*str;
+	unsigned int	i;
 
 	if (!s2)
 		return (NULL);

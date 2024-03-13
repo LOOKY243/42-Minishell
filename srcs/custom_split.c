@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:24:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 12:42:09 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:42:55 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**custom_split(const char *input_string, int *count)
 	while (i < length)
 	{
 		if ((input_string[i] == '"' || input_string[i] == '\'')
-			&& quote == '\0')
+				&& quote == '\0')
 		{
 			quote = input_string[i];
 			result[result_index] = malloc((length - i + 1) * sizeof(char));

@@ -6,7 +6,7 @@
 /*   By: ycostode <ycostode@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:30:55 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/09 16:31:02 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/13 16:29:36 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,6 @@ typedef enum e_fd
 {
 	PIPE_READ,
 	PIPE_WRITE
-}			t_fd;
+}	t_fd;
 
 #endif

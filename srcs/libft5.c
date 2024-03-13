@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 14:49:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/12 15:14:18 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:44:23 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_strlen_alnum(char *s)
 {
-	int i;
+	int	i;
 
 	if (!s)
 		return (0);
@@ -77,8 +77,8 @@ char	*ft_strchr(const char *s, int c)
 	unsigned char	*str;
 	unsigned char	st;
 
-	str = (unsigned char *) s;
-	st = (unsigned char) c;
+	str = (unsigned char *)s;
+	st = (unsigned char)c;
 	i = 0;
 	while (str[i])
 	{
@@ -93,9 +93,8 @@ char	*ft_strchr(const char *s, int c)
 
 int	ft_isalnum(int c)
 {
-	if ((c >= 'a' && c <= 'z')
-		|| (c >= 'A' && c <= 'Z')
-		|| (c >= '0' && c <= '9'))
+	if ((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0'
+			&& c <= '9'))
 		return (1);
 	return (0);
 }

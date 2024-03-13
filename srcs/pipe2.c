@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 14:33:57 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:45:09 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ char	*get_cmds(t_program program, char *cmd)
 int	treat_command(t_program *program, char *cmd)
 {
 	char	**args;
-	//char	*tmp;
-	int	value;
-	
+	int		value;
+
+	// char	*tmp;
 	args = ft_split_cmd(cmd, ' ');
 	/*
 	while (args[++i])
@@ -74,7 +74,7 @@ int	treat_command(t_program *program, char *cmd)
 int	treat_command_recoded(t_program *program, int fd, char *cmd)
 {
 	char	**args;
-	int value;
+	int		value;
 
 	args = ft_split_cmd(cmd, ' ');
 	value = ENOENT;
@@ -122,22 +122,26 @@ void	treat_child_recoded(t_program *program, char *cmd, int current, int max)
 	if (max != 0)
 	{
 		if (current == 0)
-			program->exit_value = treat_command_recoded(program, program->pipe[PIPE_WRITE], cmd);
+			program->exit_value = treat_command_recoded(program,
+					program->pipe[PIPE_WRITE], cmd);
 		else if (current == max)
-			program->exit_value = treat_command_recoded(program, program->outfile, cmd);
+			program->exit_value = treat_command_recoded(program,
+					program->outfile, cmd);
 		else
-			program->exit_value = treat_command_recoded(program, program->pipe[PIPE_WRITE], cmd);
+			program->exit_value = treat_command_recoded(program,
+					program->pipe[PIPE_WRITE], cmd);
 	}
 	else
-		program->exit_value = treat_command_recoded(program, program->outfile, cmd);
+		program->exit_value = treat_command_recoded(program, program->outfile,
+				cmd);
 	if (program->exit_value != 0)
 		close(program->pipe[PIPE_READ]);
 }
 
-bool    is_recoded(char *cmd)
+bool	is_recoded(char *cmd)
 {
 	char	**args;
-	bool recoded;
+	bool	recoded;
 
 	args = ft_split_cmd(cmd, ' ');
 	recoded = false;

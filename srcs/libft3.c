@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:38:01 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/16 14:10:26 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:44:13 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ char	*ft_itoa(int n)
 		sign = 1;
 	nb = n * sign;
 	length = ft_size(n);
-	num = (char *) ft_calloc(length + 1, sizeof(char));
+	num = (char *)ft_calloc(length + 1, sizeof(char));
 	if (!num)
 		return (NULL);
 	num[length--] = '\0';

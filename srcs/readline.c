@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/05 15:53:50 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:45:37 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*session(char **envp)
 	return (line);
 }
 
-static char	*log_name(char	**envp)
+static char	*log_name(char **envp)
 {
 	char	*line;
 	char	*tmp;
@@ -60,7 +60,7 @@ static char	*log_name(char	**envp)
 	tmp = ft_strjoin(line, "@");
 	post = session(envp);
 	line = ft_strjoin(tmp, post);
-	free (tmp);
+	free(tmp);
 	if (post)
 		free(post);
 	return (line);

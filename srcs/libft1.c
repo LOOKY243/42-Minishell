@@ -6,15 +6,15 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:40:20 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/27 17:29:18 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:44:02 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-size_t ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-	int i;
+	int	i;
 
 	if (!str)
 		return (0);

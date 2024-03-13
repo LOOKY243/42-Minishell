@@ -6,17 +6,17 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:17:34 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:44:37 by ycostode         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-bool exterminate = false;
+bool	g_exterminate = false;
 
 char	**copy_envp(char **envp)
 {
-	int	i;
+	int		i;
 	char	**env;
 
 	env = ft_calloc(count_args(envp) + 1, sizeof(char *));
@@ -32,7 +32,7 @@ char	**copy_envp(char **envp)
 	return (env);
 }
 
-void init_program(t_program *program, char **envp)
+void	init_program(t_program *program, char **envp)
 {
 	program->envp = copy_envp(envp);
 	program->env_len = count_args(envp);
@@ -43,14 +43,14 @@ void init_program(t_program *program, char **envp)
 
 int	main(int argc, char **argv, char **envp)
 {
-	(void)argv;
-	char *s;
-	t_program program;
+	char		*s;
+	t_program	program;
 
+	(void)argv;
 	if (argc != 1)
-		return (print_strerror("minishell: ", E2BIG, EXIT_FAILURE));
+		return (print_strerror("args", E2BIG, EXIT_FAILURE));
 	if (!envp || !envp[0])
-		return (print_strerror("env: ", ENODATA, EXIT_FAILURE));
+		return (print_strerror("env", ENODATA, EXIT_FAILURE));
 	init_program(&program, envp);
 	print("\x1b[1;34mEarly Access v0.1\n\x1b[0m");
 	signal(SIGINT, signal_c_handler);
@@ -58,7 +58,7 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, signal_slash_handler);
 	while (true)
 	{
-		exterminate = false;
+		g_exterminate = false;
 		print_prompt(prompt(program.envp));
 		s = readline("\x1b[1;30m╰─ \x1b[0m");
 		if (!s || ft_strlen(s) == 0)
