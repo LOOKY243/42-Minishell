@@ -29,7 +29,6 @@ typedef struct s_program
 	int		outfile;
 	int		pipe_saved;
 	char	*random_file;
-	char	**path;
 	char	**envp;
 	int		exit_value;
 	int		rseed;
