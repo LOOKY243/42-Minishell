@@ -16,25 +16,31 @@ char	*get_cmds(t_program program, char *cmd)
 {
 	int		i;
 	char	*path;
+	char	**env;
 	char	*tmp;
 
 	if (!cmd)
 		return (NULL);
-	if (!program.path)
+	if (!find_variable(program.envp, "PATH="))
 		return (cmd);
 	i = 0;
-	while (program.path[i])
+	env = ft_split_cmd(find_variable(program.envp, "PATH="), ':');
+	while (env[i])
 	{
-		path = ft_strdup(program.path[i]);
+		path = ft_strdup(env[i]);
 		tmp = ft_strjoin(path, "/");
 		free(path);
 		path = ft_strjoin(tmp, cmd);
 		free(tmp);
 		if (access(path, X_OK) != -1)
+		{
+			ft_freesplit(env);
 			return (path);
+		}
 		free(path);
 		++i;
 	}
+	ft_freesplit(env);
 	return (cmd);
 }
 

@@ -35,7 +35,6 @@ char	**copy_envp(char **envp)
 void init_program(t_program *program, char **envp)
 {
 	program->envp = copy_envp(envp);
-	program->path = ft_split_cmd(find_variable(envp, "PATH="), ':');
 	program->random_file = NULL;
 	program->rseed = 0;
 	program->exit_value = 0;

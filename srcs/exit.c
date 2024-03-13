@@ -21,7 +21,6 @@ int	return_value(int value)
 void destroy_program(t_program *program)
 {
 	ft_freesplit(program->envp);
-	ft_freesplit(program->path);
 	if (program->random_file)
 		free(program->random_file);
 }
