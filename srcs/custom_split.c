@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:24:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/12 15:16:42 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 12:42:09 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,9 @@ char	**custom_split(const char *input_string, int *count)
 	int		result_index;
 	int		i;
 	int		j;
-	bool	inside_quotes;
-	char	quote_char;
+	char	quote;
 
-	inside_quotes = false;
-	quote_char = '\0';
+	quote = '\0';
 	length = ft_strlen(input_string);
 	result = malloc(length * sizeof(char *));
 	if (!result)
@@ -39,19 +37,18 @@ char	**custom_split(const char *input_string, int *count)
 	while (i < length)
 	{
 		if ((input_string[i] == '"' || input_string[i] == '\'')
-			&& !inside_quotes)
+			&& quote == '\0')
 		{
-			inside_quotes = true;
-			quote_char = input_string[i];
+			quote = input_string[i];
 			result[result_index] = malloc((length - i + 1) * sizeof(char));
-			result[result_index][0] = quote_char;
+			result[result_index][0] = quote;
 			j = i + 1;
-			while (j < length && input_string[j] != quote_char)
+			while (j < length && input_string[j] != quote)
 			{
 				result[result_index][j - i] = input_string[j];
 				j++;
 			}
-			if (j < length && input_string[j] == quote_char)
+			if (j < length && input_string[j] == quote)
 			{
 				result[result_index][j - i] = input_string[j];
 				j++;
@@ -59,6 +56,7 @@ char	**custom_split(const char *input_string, int *count)
 			result[result_index][j - i + 1] = '\0';
 			result_index++;
 			i = j;
+			quote = '\0';
 		}
 		else if (input_string[i] == '<')
 		{
@@ -91,13 +89,13 @@ char	**custom_split(const char *input_string, int *count)
 			}
 		}
 		else if (is_command_char(input_string[i], input_string[i + 1])
-			&& !inside_quotes)
+			&& quote == '\0')
 			i++;
 		else
 		{
 			j = i;
 			while (j < length && (!is_command_char(input_string[j],
-						input_string[j + 1]) || inside_quotes))
+						input_string[j + 1]) || quote != '\0'))
 				j++;
 			result[result_index] = malloc((j - i + 1) * sizeof(char));
 			ft_memcpy(result[result_index], input_string + i, (j - i)

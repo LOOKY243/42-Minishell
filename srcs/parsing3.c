@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/12 15:03:44 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/12 16:12:05 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,10 +130,7 @@ char	*treat_cmd(t_program program, char *cmd)
 	char *final;
 
 	tmp = change_cmd_env(program, cmd);
-	if (strncmp(tmp, "echo", 4))
-		final = remove_quote(tmp);
-	else
-		final = ft_strdup(tmp);
+	final = remove_quote(tmp);
 	free(tmp);
 	return (final);
 }

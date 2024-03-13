@@ -11,3 +11,7 @@
 >>   - `ee==hi`
 >> - `need to fixed split cmd` **->**
 >>   - `echo "'"$PATH"'"`
+
+
+
+>>  - signals
