@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/12 16:33:29 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 14:33:57 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,18 @@ char	*get_cmds(t_program program, char *cmd)
 int	treat_command(t_program *program, char *cmd)
 {
 	char	**args;
+	//char	*tmp;
 	int	value;
 	
 	args = ft_split_cmd(cmd, ' ');
+	/*
+	while (args[++i])
+	{
+		tmp = ft_strtrim(args[i], "\"\' ");
+		free(args[i]);
+		args[i] = tmp;
+	}
+	*/
 	args[0] = get_cmds(*program, args[0]);
 	if (args[0])
 	{
@@ -104,20 +113,6 @@ void	treat_child(t_program *program, char *cmd, int current, int max)
 
 void	treat_child_recoded(t_program *program, char *cmd, int current, int max)
 {
-	/*
-	if (max != 0)
-	{
-		if (current == 0)
-			dups(program->infile, program->pipe[PIPE_WRITE]);
-		else if (current == max)
-			dups(program->pipe_saved, program->outfile);
-		else
-			dups(program->pipe_saved, program->pipe[PIPE_WRITE]);
-	}
-	else
-		dups(program->infile, program->outfile);
-	close(program->pipe[PIPE_WRITE]);
-	*/
 	if (max != 0)
 	{
 		if (current == 0)
