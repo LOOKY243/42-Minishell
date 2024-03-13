@@ -4,11 +4,8 @@
 
 > ### ***ALL THE THING TO DO***
 >
->> - `echo "|" cat` **->** 
->>   - `| cat`
->> - `need to fixed split cmd` **->**
->>   - `echo "'"$PATH"'"`
-
-
-
->>  - signals
+>> - `return value` **->**
+>>   - `ls oui` -> 1
+>>   - `ls` -> 0
+>> - `signals` **->**
+>>   - `Ctrl+C`

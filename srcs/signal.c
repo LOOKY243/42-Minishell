@@ -15,7 +15,11 @@
 void	signal_c_handler(int signal)
 {
 	(void)signal;
-	print("^C\n");
+
+	print("\n");
+	rl_replace_line("", 1);
+	rl_on_new_line();
+	rl_redisplay();
 }
 
 void	signal_d_handler(int signal)

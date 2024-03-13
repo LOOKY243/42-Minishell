@@ -32,7 +32,7 @@ void	exit_shell(t_program *program, char *s)
 
 	print("exit\n");
 	split = ft_split_cmd(s, ' ');
-	if (!split[0] || !split[1])
+	if (!split || !split[0] || !split[1])
 	{
 		ft_freesplit(split);
 		free(s);
