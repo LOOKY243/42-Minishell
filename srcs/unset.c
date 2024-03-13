@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:46:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/11 17:19:49 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:18:32 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,5 +48,6 @@ int    unset(t_program *program, char **strs)
         }
         j++;
     }
+    program->env_len--;
     return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/02/27 18:24:08 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:23:21 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char    **copy_arr(char **arr)
     return (copy);
 }
 
-int export_no_args(char **envp, int fd)
+int export_no_args(t_program *program, char **envp, int fd)
 {
     int i;
     int j;
@@ -51,10 +51,10 @@ int export_no_args(char **envp, int fd)
 
     env = copy_arr(envp);
     i = 0;
-    while (env[i + 1])
+    while (i + 1 < program->env_len)
     {
         j = i;
-        while (env[++j])
+        while (++j < program->env_len)
         {
             if (ft_strcmp(env[i], env[j]) > 0)
             {
@@ -177,6 +177,6 @@ int    export(t_program *program, char **var, int fd)
     if (!program->envp || !program->envp[0])
         return (ENOENT);
     if (!var[1])
-        return (export_no_args(program->envp, fd));
+        return (export_no_args(program, program->envp, fd));
     return (export_var(program, var));
 }

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/12 14:49:59 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:17:34 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ char	**copy_envp(char **envp)
 void init_program(t_program *program, char **envp)
 {
 	program->envp = copy_envp(envp);
+	program->env_len = count_args(envp);
 	program->random_file = NULL;
 	program->rseed = 0;
 	program->exit_value = 0;

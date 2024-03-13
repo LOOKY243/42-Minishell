@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/12 16:56:30 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 15:19:08 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,22 @@ void	read_stdin(t_program *program, char *limiter)
 int is_command_sign(char *str)
 {
     int i;
+    char    quote;
 
     i = -1;
+    quote = '\0';
     if (!str)
         return (0);
     while (str[++i])
     {
+        if (str[i] == '\'' || str[i] == '\"')
+            quote = str[i];
+        while (str[i] && quote != '\0')
+        {
+            i++;
+            if (str[i] == quote)
+                quote = '\0';
+        }
         if (str[i] == '>' || str[i] == '<')
             return (1);
     }

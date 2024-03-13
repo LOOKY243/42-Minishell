@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:31:55 by ycostode          #+#    #+#             */
-/*   Updated: 2024/02/19 16:31:30 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/13 16:16:44 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ typedef struct s_program
 	int		pipe_saved;
 	char	*random_file;
 	char	**envp;
+	int		env_len;
 	int		exit_value;
 	int		rseed;
 }	t_program;
