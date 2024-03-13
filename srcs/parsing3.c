@@ -130,7 +130,7 @@ char	*treat_cmd(t_program program, char *cmd)
 	char *final;
 
 	tmp = change_cmd_env(program, cmd);
-	if (strncmp(tmp, "echo", 4))
+	if (!strncmp(tmp, "echo", 4))
 		final = remove_quote(tmp);
 	else
 		final = ft_strdup(tmp);
