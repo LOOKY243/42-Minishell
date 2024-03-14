@@ -49,6 +49,7 @@ char	*change_cmd_env(t_program program, char *cmd)
 	char	*tmp;
 	char	*env;
 	char	*str;
+	char	*oui;
 	int		i;
 
 	i = -1;
@@ -80,12 +81,14 @@ char	*change_cmd_env(t_program program, char *cmd)
 				else
 					continue ;
 			}
-			tmp = ft_substr(&str[i + 1], 0, ft_strlen_alnum(&str[i + 1]));
+			oui = ft_substr(&str[i + 1], 0, ft_strlen_alnum(&str[i + 1]));
+			tmp = ft_strjoin(oui, "=");
 			env = find_variable_secure(program.envp, tmp);
 			if (!env)
 				env = " ";
-			str = ft_replace(str, tmp, &env[1]);
+			str = ft_replace(str, oui, env);
 			free(tmp);
+			free(oui);
 		}
 	}
 	return (str);
