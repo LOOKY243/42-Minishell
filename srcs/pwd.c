@@ -17,10 +17,10 @@ char	*find_variable_secure(char **envp, char *var)
 	int	i;
 	int	len;
 
-	if (!var)
+	if (!var || !envp)
 		return (NULL);
 	i = 0;
-	len = ft_strlen(var);
+	len = ft_strlen(var) - 1;
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], var, len) == 0 && (envp[i][len] == '='
