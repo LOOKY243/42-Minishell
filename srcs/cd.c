@@ -45,16 +45,15 @@ int	cd(t_program *program, char *path)
 	if (path[0] == '-' && ft_strlen(path) == 1)
 	{
 		path = find_variable(program->envp, "OLDPWD=");
+		if (!path)
+			return (ENODATA);
 		printf("%s\n", path);
 	}
 	if (!path)
 		return (ENOENT);
 	getcwd(pwd, sizeof(pwd));
 	if (chdir(path) != 0)
-	{
-		perror("chdir");
 		return (ENOENT);
-	}
 	i = 0;
 	while (program->envp[i] && ft_strncmp("OLDPWD=", program->envp[i], 7))
 		i++;
