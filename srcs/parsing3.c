@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:44:58 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/14 17:25:24 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ char	*change_cmd_env(t_program program, char *cmd)
 
 	i = -1;
 	str = ft_strdup(cmd);
+	quote = '\0';
 	while (str[++i])
 	{
 		if (!quote && (str[i] == '\'' || str[i] == '"'))
