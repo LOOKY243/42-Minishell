@@ -16,7 +16,6 @@
 # include "enum.h"
 # include "struct.h"
 # include <errno.h>
-# include <fcntl.h>
 # include <limits.h>
 # include <readline/history.h>
 # include <readline/readline.h>
@@ -81,7 +80,7 @@ void		dups(int stdinfd, int stdoutfd);
 void		close_fd(t_program program);
 int			simple_exec(char **cmd, t_program program);
 void		process(char *prompt, t_program *program);
-void		wait_child(t_program program);
+void		wait_child(t_program *program);
 void		handle_file(t_program *program);
 void		treat_child(t_program *program, char *cmd, int current, int max);
 void		treat_child_recoded(t_program *program, char *cmd, int current,

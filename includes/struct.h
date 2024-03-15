@@ -13,6 +13,9 @@
 #ifndef STRUCT_H
 # define STRUCT_H
 
+# include <fcntl.h>
+# define MAX_FD 1024
+
 typedef struct s_cmd
 {
 	char	**list;
@@ -24,6 +27,7 @@ typedef struct s_program
 {
 	int		pipe[2];
 	int		data_pipe[2];
+	pid_t	pid[MAX_FD];
 	t_cmd	cmd;
 	int		infile;
 	int		outfile;

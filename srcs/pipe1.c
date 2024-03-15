@@ -24,6 +24,7 @@ int	exec(t_program *program, char *cmd)
 	{
 		program->exit_value = 0;
 		pid = fork();
+		program->pid[program->cmd.current] = pid;
 		if (pid == -1)
 			return (print_error("fork", EXIT_FAILURE));
 		if (pid == 0)
@@ -80,5 +81,5 @@ void	process(char *prompt, t_program *program)
 	program->random_file = NULL;
 	close_fd(*program);
 	ft_freesplit(program->cmd.list);
-	wait_child(*program);
+	wait_child(program);
 }

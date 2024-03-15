@@ -50,11 +50,15 @@ void	close_fd(t_program program)
 		close(program.outfile);
 }
 
-void	wait_child(t_program program)
+void	wait_child(t_program *program)
 {
 	int	i;
 
-	i = program.cmd.len - 1;
-	while (i-- >= 0)
-		wait(NULL);
+	i = 0;
+	while (i < program->cmd.len)
+	{
+		waitpid(program->pid[i], &program->exit_value, 0);
+		program->exit_value = WEXITSTATUS(program->exit_value);
+		++i;
+	}
 }
