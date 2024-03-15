@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:45:09 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:45:40 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	treat_command_recoded(t_program *program, int fd, char *cmd)
 
 	args = ft_split_cmd(cmd, ' ');
 	value = ENOENT;
-	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
+	if (ft_strcmp(args[0], "echo") == 0)
 		value = echo(args, fd);
 	else if (ft_strcmp(args[0], "pwd") == 0)
 		value = pwd(fd);
@@ -144,7 +144,7 @@ bool	is_recoded(char *cmd)
 
 	args = ft_split_cmd(cmd, ' ');
 	recoded = false;
-	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
+	if (ft_strcmp(args[0], "echo") == 0)
 		recoded = true;
 	else if (ft_strcmp(args[0], "pwd") == 0 && !args[1])
 		recoded = true;
