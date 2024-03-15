@@ -31,7 +31,7 @@ int	exec(t_program *program, char *cmd)
 		{
 			treat_child(program, new_cmd, program->cmd.current, program->cmd.len
 				- 1);
-			exit(EXIT_SUCCESS);
+			exit(program->exit_value);
 		}
 	}
 	else

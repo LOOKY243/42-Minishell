@@ -55,9 +55,8 @@ int	treat_command(t_program *program, char *cmd)
 	if (args[0])
 	{
 		value = execve(args[0], args, program->envp);
-		print("\x1b[1;31m");
 		print_error(args[0], value);
-		return (value);
+		return (127);
 	}
 	ft_freesplit(args);
 	return (127);
