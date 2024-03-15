@@ -90,6 +90,7 @@ bool		is_recoded(char *cmd);
 // PARSING
 char		*treat_cmd(t_program program, char *cmd);
 char		*change_cmd_var(t_program program, char *cmd);
+void		remove_quote_split(int start, char **split);
 
 // BUILT-INS
 int			echo(char **cmd, int fd);

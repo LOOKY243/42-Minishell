@@ -128,13 +128,27 @@ char	*remove_quote(char *str)
 	return (final);
 }
 
+void	remove_quote_split(int start, char **split)
+{
+	int i;
+	char *tmp;
+
+	if (!split)
+		return ;
+	i = start;
+	while (split[i])
+	{
+		tmp = remove_quote(split[i]);
+		free(split[i]);
+		split[i] = tmp;
+		++i;
+	}
+}
+
 char	*treat_cmd(t_program program, char *cmd)
 {
-	char	*tmp;
 	char	*final;
 
-	tmp = change_cmd_env(program, cmd);
-	final = remove_quote(tmp);
-	free(tmp);
+	final = change_cmd_env(program, cmd);
 	return (final);
 }

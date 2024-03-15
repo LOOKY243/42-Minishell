@@ -50,14 +50,7 @@ int	treat_command(t_program *program, char *cmd)
 	int		value;
 
 	args = ft_split_cmd(cmd, ' ');
-	if (ft_strcmp(args[0], "echo") == 0)
-	{
-		ft_freesplit(args);
-		args = ft_calloc(3, sizeof(char *));
-		args[0] = ft_strdup("echo");
-		args[1] = ft_strdup(&ft_strchr(cmd, 'e')[5]);
-		args[2] = NULL;
-	}
+	remove_quote_split(1, args);
 	args[0] = get_cmds(*program, args[0]);
 	if (args[0])
 	{
@@ -76,6 +69,7 @@ int	treat_command_recoded(t_program *program, int fd, char *cmd)
 	int		value;
 
 	args = ft_split_cmd(cmd, ' ');
+	remove_quote_split(1, args);
 	value = ENOENT;
 	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
 		value = echo(args, fd);
