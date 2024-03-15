@@ -130,10 +130,16 @@ void	add_to_env_append(char ***envp, char *line, int index)
 	char	**env;
 	char	*tmp;
 	int		i;
+	int		idx;
 
 	if (!is_in_env(*envp, line, index))
 	{
-		add_to_env_empty(envp, line);
+		idx = ft_strchr(line, '+') - line;
+		tmp = ft_calloc(ft_strlen(line), sizeof(char));
+		ft_strncpy(tmp, line, idx);
+		ft_strncpy(&tmp[idx], &line[idx + 1], ft_strlen(line) - idx - 1);
+		add_to_env_empty(envp, tmp);
+		free(tmp);
 		return ;
 	}
 	i = -1;
@@ -142,7 +148,10 @@ void	add_to_env_append(char ***envp, char *line, int index)
 	{
 		if (ft_strncmp(env[i], line, index) == 0)
 		{
-			tmp = ft_strjoin(env[i], &line[index + 2]);
+			if (ft_strchr(env[i], '='))
+				tmp = ft_strjoin(env[i], &line[index + 2]);
+			else
+				tmp = ft_strjoin(env[i], &line[index + 1]);
 			free(env[i]);
 			env[i] = tmp;
 		}
