@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:33:19 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:39:44 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,5 +112,6 @@ int			return_value(int value);
 char		*random_string(t_program *program, int len);
 char		**custom_split(const char *input_string, int *count);
 void		free_result(char **result, int count);
+int			is_separator(char c);
 
 #endif

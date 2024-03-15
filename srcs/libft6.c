@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:13:56 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:44:31 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:48:32 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,11 @@ bool	ft_atoi(const char *s, int *n)
 		return (false);
 	*n = tmp;
 	return (true);
+}
+
+int	is_separator(char c)
+{
+	if (ft_isalnum(c) || c == '_')
+		return (0);
+	return (1);
 }
