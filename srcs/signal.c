@@ -14,22 +14,18 @@
 
 void	signal_c_handler(int signal)
 {
+	static bool shouldKill = true;
 	(void)signal;
 
+	if (!shouldKill)
+	{
+		shouldKill = !shouldKill;
+		return ;
+	}
 	print("\n");
+	kill(0, SIGINT);
 	rl_replace_line("", 1);
 	rl_on_new_line();
 	rl_redisplay();
-}
-
-void	signal_d_handler(int signal)
-{
-	(void)signal;
-	print("exit\n");
-	g_exterminate = true;
-}
-
-void	signal_slash_handler(int signal)
-{
-	(void)signal;
+	shouldKill = !shouldKill;
 }
