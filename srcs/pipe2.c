@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/15 14:45:40 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/21 14:36:43 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ int	treat_command(t_program *program, char *cmd)
 	args[0] = get_cmds(*program, args[0]);
 	if (args[0])
 	{
-		value = execve(args[0], args, program->envp);
+		close(program->pipe[1]);
+		close(program->pipe[0]);
+		value = execve(args[0], args, program->envp);;
 		print_error(args[0], value);
+		ft_freesplit(args);
 		return (127);
 	}
 	ft_freesplit(args);

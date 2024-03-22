@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/15 17:39:24 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/20 17:20:46 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	init_cmd_var(t_cmd_var *cmd_var)
 int	change_cmd_var3(t_cmd_var *cmd_var, char *cmd)
 {
 	cmd_var->len = ft_strlen(cmd_var->new_cmd);
-	cmd_var->tmp = malloc(cmd_var->len + (cmd_var->i - cmd_var->start)
-			+ ft_strlen(cmd_var->env_value) + 1);
+	cmd_var->tmp = ft_calloc(cmd_var->len + (cmd_var->i - cmd_var->start)
+			+ ft_strlen(cmd_var->env_value) + 1, sizeof(char));
 	if (!cmd_var->tmp)
 	{
 		free(cmd_var->var_name);
@@ -49,7 +49,7 @@ int	change_cmd_var3(t_cmd_var *cmd_var, char *cmd)
 int	change_cmd_var4(t_cmd_var *cmd_var, char *cmd)
 {
 	cmd_var->len = ft_strlen(cmd_var->new_cmd);
-	cmd_var->tmp = malloc(cmd_var->len + (cmd_var->i - cmd_var->start) + 1);
+	cmd_var->tmp = ft_calloc(cmd_var->len + (cmd_var->i - cmd_var->start) + 1, sizeof(char));
 	if (!cmd_var->tmp)
 	{
 		free(cmd_var->var_name);
@@ -75,7 +75,7 @@ int	change_cmd_var2(t_program *program, t_cmd_var *cmd_var, char *cmd)
 			cmd_var->end = cmd_var->i + 1;
 			while (cmd[cmd_var->end] && !is_separator(cmd[cmd_var->end]))
 				cmd_var->end++;
-			cmd_var->var_name = malloc(cmd_var->end - cmd_var->i);
+			cmd_var->var_name = ft_calloc(cmd_var->end - cmd_var->i, sizeof(char));
 			ft_strncpy(cmd_var->var_name, cmd + cmd_var->i + 1, cmd_var->end
 				- cmd_var->i - 1);
 			cmd_var->env_value = find_variable(program->envp,
@@ -105,7 +105,7 @@ char	*change_cmd_var(t_program program, char *cmd)
 	if (!change_cmd_var2(&program, &cmd_var, cmd))
 		return (NULL);
 	cmd_var.len = ft_strlen(cmd_var.new_cmd);
-	cmd_var.tmp = malloc(cmd_var.len + ft_strlen(cmd + cmd_var.start) + 1);
+	cmd_var.tmp = ft_calloc(cmd_var.len + ft_strlen(cmd + cmd_var.start) + 1, sizeof(char));
 	if (!cmd_var.tmp)
 	{
 		free(cmd_var.new_cmd);

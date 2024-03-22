@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/15 15:45:45 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/22 12:30:31 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,8 @@ void	read_stdin(t_program *program, char *limiter)
 	char	*buffer;
 	char	*tmp;
 
+	if (program->infile)
+		close(program->infile);
 	program->random_file = random_string(program, 10);
 	program->infile = open(program->random_file, O_CREAT | O_WRONLY | O_TRUNC,
 			0666);
@@ -85,7 +87,10 @@ void	read_stdin(t_program *program, char *limiter)
 		{
 			tmp = change_cmd_var(*program, buffer);
 			if (!ft_strcmp(buffer, limiter))
+			{
+				free(tmp);
 				break ;
+			}
 		}
 		else if (!ft_strncmp(buffer, &limiter[1], ft_strlen(&limiter[1]) - 1))
 			break ;
@@ -191,7 +196,10 @@ void	handle_file(t_program *program)
 				cut[i + 1] = 0;
 			}
 			if (program->random_file)
+			{
 				unlink(program->random_file);
+				free(program->random_file);
+			}
 			program->random_file = 0;
 		}
 		program->cmd.list[j] = join_rest(cut, len);
