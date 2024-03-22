@@ -202,6 +202,15 @@ void	handle_file(t_program *program)
 			}
 			program->random_file = 0;
 		}
+		while (--i != 1)
+		{
+			if (!ft_strcmp(cut[i], ">") && cut[i + 1]
+				&& !is_command_sign(cut[i + 1]))
+			{
+				program->outfile = open(cut[i + 1],
+				O_CREAT | O_WRONLY | O_TRUNC, 0666);
+			}
+		}
 		free(program->cmd.list[j]);
 		program->cmd.list[j] = join_rest(cut, len);
 		free_result(cut, len);

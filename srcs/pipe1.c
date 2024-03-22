@@ -69,6 +69,6 @@ void	process(char *prompt, t_program *program)
 		unlink(program->random_file);
 	program->random_file = NULL;
 	close_fd(*program);
-	ft_freesplit(program->cmd.list);
 	wait_child(program);
+	ft_freesplit(program->cmd.list);
 }
