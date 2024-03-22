@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:45:04 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:20:15 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ int	exec(t_program *program, char *cmd)
 		{
 			treat_child(program, new_cmd, program->cmd.current, program->cmd.len
 				- 1);
+			free_child(program, new_cmd);
 			exit(program->exit_value);
 		}
 	}
@@ -64,6 +65,7 @@ void	process(char *prompt, t_program *program)
 	program->cmd.len = size_list(program->cmd.list);
 	program->pipe_saved = -1;
 	handle_file(program);
+	program->outfile = STDOUT_FILENO;
 	if (program->infile == -1 || program->outfile == -1)
 	{
 		close_file(program->infile, program->outfile);

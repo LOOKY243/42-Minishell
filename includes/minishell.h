@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:33:19 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/20 16:58:58 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ int			env(char **envp, int fd);
 int			export(t_program *program, char **var, int fd);
 int			unset(t_program *program, char **strs);
 void		exit_shell(t_program *program, char *s);
-void		exit_shell2(t_program *program);
 size_t		len_until_sign(char *str, int sign);
 int			cd(t_program *program, char *path);
 int			return_value(int value);
@@ -112,5 +111,7 @@ int			return_value(int value);
 char		*random_string(t_program *program, int len);
 char		**custom_split(const char *input_string, int *count);
 void		free_result(char **result, int count);
+int			is_separator(char c);
+void	free_child(t_program *program, char *new_cmd);
 
 #endif

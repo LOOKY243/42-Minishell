@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:44:45 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/22 12:30:31 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,45 +70,40 @@ int	is_double_quoted(char *str)
 
 void	read_stdin(t_program *program, char *limiter)
 {
-	int		bytes;
 	int		is_quoted;
-	char	buffer[BUFFER_SIZE + 1];
+	char	*buffer;
 	char	*tmp;
-	char	*tmp2;
 
+	if (program->infile)
+		close(program->infile);
 	program->random_file = random_string(program, 10);
 	program->infile = open(program->random_file, O_CREAT | O_WRONLY | O_TRUNC,
 			0666);
-	bytes = 1;
 	is_quoted = is_double_quoted(limiter);
 	while (true)
 	{
-		if (bytes != 0)
-			print("\x1b[0mheredoc> ");
-		bytes = read(STDIN_FILENO, buffer, BUFFER_SIZE);
-		buffer[bytes] = '\0';
+		buffer = readline("\x1b[0mheredoc> ");
 		if (!is_quoted)
 		{
-			tmp = ft_substr(buffer, 0, ft_strlen(buffer) - 1);
-			tmp2 = change_cmd_var(*program, tmp);
-			free(tmp);
-			if (ft_strlen(buffer) - 1 == ft_strlen(limiter)
-				&& ft_strncmp(buffer, limiter, ft_strlen(limiter)) == 0)
+			tmp = change_cmd_var(*program, buffer);
+			if (!ft_strcmp(buffer, limiter))
+			{
+				free(tmp);
 				break ;
+			}
 		}
-		else if (ft_strlen(buffer) == ft_strlen(&limiter[1])
-			&& ft_strncmp(buffer, &limiter[1], ft_strlen(&limiter[1]) - 1) == 0)
+		else if (!ft_strncmp(buffer, &limiter[1], ft_strlen(&limiter[1]) - 1))
 			break ;
 		else
-			tmp2 = ft_substr(buffer, 0, ft_strlen(buffer) - 1);
-		if (write(program->infile, tmp2,
-				ft_strlen(tmp2)) != (int)ft_strlen(tmp2))
+			tmp = ft_strdup(buffer);
+		if (write(program->infile, tmp,
+				ft_strlen(tmp)) != (int)ft_strlen(tmp))
 		{
 			print_error("write", EXIT_FAILURE);
 			break ;
 		}
 		write(program->infile, "\n", 1);
-		free(tmp2);
+		free(tmp);
 	}
 	close(program->infile);
 	program->infile = open(program->random_file, O_RDONLY);
@@ -201,7 +196,10 @@ void	handle_file(t_program *program)
 				cut[i + 1] = 0;
 			}
 			if (program->random_file)
+			{
 				unlink(program->random_file);
+				free(program->random_file);
+			}
 			program->random_file = 0;
 		}
 		program->cmd.list[j] = join_rest(cut, len);

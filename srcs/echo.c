@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:03:50 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:42:59 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/15 14:47:54 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,49 @@ int	count_args_no_sign(char **arr)
 	return (i);
 }
 
+bool	check_n_arg(char *str)
+{
+	int	i;
+
+	if (!str)
+		return (false);
+	if (str[0] != '-')
+		return (false);
+	i = 1;
+	while (str[i])
+	{
+		if (str[i] != 'n')
+			return (false);
+		i++;
+	}
+	return (true);
+}
+
 int	echo(char **cmd, int fd)
 {
 	int	i;
 
-	i = 2;
-	while (cmd[i] && ft_strcmp(cmd[i], "|"))
+	if (cmd[1] && check_n_arg(cmd[1]))
 	{
-		print_fd(fd, cmd[i]);
-		if (i != count_args(cmd) - 1)
-			print_fd(fd, " ");
-		i++;
+		i = 2;
+		while (cmd[i] && ft_strcmp(cmd[i], "|"))
+		{
+			print_fd(fd, cmd[i]);
+			if (i != count_args(cmd) - 1)
+				print_fd(fd, " ");
+			i++;
+		}
+	}
+	else
+	{
+		i = 0;
+		while (cmd[++i])
+		{
+			if (i != count_args(cmd))
+				print_fd(fd, " ");
+			print_fd(fd, cmd[i]);
+		}
+		printf("\n");
 	}
 	return (0);
 }

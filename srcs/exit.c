@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:43:15 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:18:18 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ void	exit_shell(t_program *program, char *s)
 	destroy_program(program);
 	exit(n);
 }
-
-void	exit_shell2(t_program *program)
+void	free_child(t_program *program, char *new_cmd)
 {
-	print("exit\n");
-	destroy_program(program);
-	exit(2);
+	ft_freesplit(program->cmd.list);
+	ft_freesplit(program->envp);
+	free(new_cmd);
+	return ;
 }

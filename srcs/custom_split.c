@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:24:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:42:55 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/22 12:22:18 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	**custom_split(const char *input_string, int *count)
 
 	quote = '\0';
 	length = ft_strlen(input_string);
-	result = malloc(length * sizeof(char *));
+	result = ft_calloc(length, sizeof(char *));
 	if (!result)
 		return (NULL);
 	result_index = 0;
@@ -40,7 +40,7 @@ char	**custom_split(const char *input_string, int *count)
 				&& quote == '\0')
 		{
 			quote = input_string[i];
-			result[result_index] = malloc((length - i + 1) * sizeof(char));
+			result[result_index] = ft_calloc((length - i + 2), sizeof(char));
 			result[result_index][0] = quote;
 			j = i + 1;
 			while (j < length && input_string[j] != quote)
@@ -97,7 +97,7 @@ char	**custom_split(const char *input_string, int *count)
 			while (j < length && (!is_command_char(input_string[j],
 						input_string[j + 1]) || quote != '\0'))
 				j++;
-			result[result_index] = malloc((j - i + 1) * sizeof(char));
+			result[result_index] = ft_calloc((j - i + 1), sizeof(char));
 			ft_memcpy(result[result_index], input_string + i, (j - i)
 				* sizeof(char));
 			result[result_index][j - i] = '\0';

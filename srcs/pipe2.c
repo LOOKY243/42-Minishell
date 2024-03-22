@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:45:09 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/21 14:36:43 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,11 @@ int	treat_command(t_program *program, char *cmd)
 	args[0] = get_cmds(*program, args[0]);
 	if (args[0])
 	{
-		value = execve(args[0], args, program->envp);
+		close(program->pipe[1]);
+		close(program->pipe[0]);
+		value = execve(args[0], args, program->envp);;
 		print_error(args[0], value);
+		ft_freesplit(args);
 		return (127);
 	}
 	ft_freesplit(args);
@@ -70,7 +73,7 @@ int	treat_command_recoded(t_program *program, int fd, char *cmd)
 	args = ft_split_cmd(cmd, ' ');
 	remove_quote_split(1, args);
 	value = ENOENT;
-	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
+	if (ft_strcmp(args[0], "echo") == 0)
 		value = echo(args, fd);
 	else if (ft_strcmp(args[0], "pwd") == 0)
 		value = pwd(fd);
@@ -137,7 +140,7 @@ bool	is_recoded(char *cmd)
 
 	args = ft_split_cmd(cmd, ' ');
 	recoded = false;
-	if (ft_strcmp(args[0], "echo") == 0 && ft_strcmp(args[1], "-n") == 0)
+	if (ft_strcmp(args[0], "echo") == 0)
 		recoded = true;
 	else if (ft_strcmp(args[0], "pwd") == 0 && !args[1])
 		recoded = true;

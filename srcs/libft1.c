@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:40:20 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:44:02 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/20 17:53:53 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ size_t	ft_strlen(const char *str)
 {
 	int	i;
 
-	if (!str)
+	if (!str || !str[0])
 		return (0);
 	i = 0;
 	while (str[i])
@@ -28,12 +28,16 @@ char	**ft_freesplit(char **split)
 {
 	int	i;
 
-	i = 0;
+	i = -1;
 	if (!split)
 		return (NULL);
-	while (split[i])
-		free(split[i++]);
+	while (split[++i])
+	{
+		free(split[i]);
+		split[i] = NULL;
+	}
 	free(split);
+	split = NULL;
 	return (NULL);
 }
 
