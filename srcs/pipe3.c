@@ -57,8 +57,11 @@ void	wait_child(t_program *program)
 	i = 0;
 	while (i < program->cmd.len)
 	{
-		waitpid(program->pid[i], &program->exit_value, 0);
-		program->exit_value = WEXITSTATUS(program->exit_value);
+		if (!is_recoded(program->cmd.list[i]))
+		{
+			waitpid(program->pid[i], &program->exit_value, 0);
+			program->exit_value = WEXITSTATUS(program->exit_value);
+		}
 		++i;
 	}
 }
