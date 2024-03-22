@@ -58,8 +58,6 @@ int	treat_command(t_program *program, char *cmd)
 		close(program->pipe[0]);
 		value = execve(args[0], args, program->envp);;
 		print_error(args[0], value);
-		ft_freesplit(args);
-		return (127);
 	}
 	ft_freesplit(args);
 	return (127);

@@ -12,23 +12,19 @@
 
 #include "minishell.h"
 
-unsigned int	ft_countsplit(const char *s, char c)
+unsigned int ft_countsplit(const char *s, char c)
 {
-	unsigned int	count;
-	unsigned int	i;
-	unsigned int	d_quote;
-	unsigned int	s_quote;
+	unsigned int count = 0;
+	unsigned int i = 0;
+	unsigned int d_quote = 0;
+	unsigned int s_quote = 0;
 
-	count = 0;
-	i = 0;
-	d_quote = 0;
-	s_quote = 0;
-	while (s[i])
+	while (s[i] != '\0') // Check for null terminator
 	{
-		while (s[i] == c && s[i])
+		while (s[i] == c && s[i] != '\0') // Check for null terminator
 			i++;
 		count++;
-		while (s[i] != c && s[i])
+		while (s[i] != c && s[i] != '\0') // Check for null terminator
 		{
 			if (s[i] == '\'')
 				s_quote++;
@@ -37,20 +33,22 @@ unsigned int	ft_countsplit(const char *s, char c)
 			if (s[i] == '\'' || s[i] == '\"')
 			{
 				i++;
-				while (s[i] && (d_quote % 2 || s_quote % 2))
+				while (s[i] != '\0' && (d_quote % 2 || s_quote % 2)) // Check for null terminator
 				{
-					if (s[i + 1] == '\'')
+					if (s[i] == '\'') // Check for null terminator
 						s_quote++;
-					else if (s[i + 1] == '\"')
+					else if (s[i] == '\"') // Check for null terminator
 						d_quote++;
 					i++;
 				}
 			}
-			i++;
+			if (s[i] != '\0') // Check for null terminator
+				i++;
 		}
 	}
-	return (count);
+	return count;
 }
+
 
 void	ft_prealloc2(char const *s, int *d_quote, int *s_quote, int *i,
 		int *count)

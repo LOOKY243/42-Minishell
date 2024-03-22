@@ -202,6 +202,7 @@ void	handle_file(t_program *program)
 			}
 			program->random_file = 0;
 		}
+		free(program->cmd.list[j]);
 		program->cmd.list[j] = join_rest(cut, len);
 		free_result(cut, len);
 	}
