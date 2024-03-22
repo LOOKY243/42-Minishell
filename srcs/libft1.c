@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:40:20 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/20 17:53:53 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/03/22 13:05:51 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,8 @@ char	**ft_freesplit(char **split)
 	while (split[++i])
 	{
 		free(split[i]);
-		split[i] = NULL;
 	}
 	free(split);
-	split = NULL;
 	return (NULL);
 }
 
