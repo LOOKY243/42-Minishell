@@ -63,6 +63,7 @@ void	process(char *prompt, t_program *program)
 	{
 		if (exec(program, program->cmd.list[program->cmd.current]))
 			break ;
+		program->outfile = STDOUT_FILENO;
 		program->cmd.current++;
 	}
 	if (program->random_file)

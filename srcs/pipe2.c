@@ -68,6 +68,8 @@ int	treat_command_recoded(t_program *program, int fd, char *cmd)
 	char	**args;
 	int		value;
 
+	if (program->outfile != STDOUT_FILENO)
+		fd = program->outfile;
 	args = ft_split_cmd(cmd, ' ');
 	remove_quote_split(1, args);
 	value = ENOENT;
