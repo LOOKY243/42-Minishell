@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:43:21 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/03/29 12:03:15 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ char	**copy_arr(char **arr)
 	return (copy);
 }
 
-int	export_no_args(t_program *program, char **envp, int fd)
+int	export_no_args(char **envp, int fd)
 {
 	int		i;
 	int		j;
@@ -51,10 +51,10 @@ int	export_no_args(t_program *program, char **envp, int fd)
 
 	env = copy_arr(envp);
 	i = 0;
-	while (i + 1 < program->env_len)
+	while (env[i + 1])
 	{
 		j = i;
-		while (++j < program->env_len)
+		while (env[++j])
 		{
 			if (ft_strcmp(env[i], env[j]) > 0)
 			{
@@ -172,7 +172,7 @@ int	export_var(t_program *program, char **var)
 	{
 		index = ft_strchr(var[i], '=') - var[i];
 		if (index <= 0)
-			add_to_env_empty(&program->envp, var[i]); // clean
+			add_to_env_empty(&program->envp, var[i]);
 		else if (var[i][index - 1] == '+')
 			add_to_env_append(&program->envp, var[i], index - 1);
 		else
@@ -186,6 +186,6 @@ int	export(t_program *program, char **var, int fd)
 	if (!program->envp || !program->envp[0])
 		return (ENOENT);
 	if (!var[1])
-		return (export_no_args(program, program->envp, fd));
+		return (export_no_args(program->envp, fd));
 	return (export_var(program, var));
 }

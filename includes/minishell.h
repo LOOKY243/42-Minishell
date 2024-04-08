@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/20 16:58:58 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/04 14:41:22 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ void		*ft_memcpy(void *dest, const void *src, size_t n);
 
 // SIGNAL
 void		signal_c_handler(int signal);
-void		signal_d_handler(int signal);
-void		signal_slash_handler(int signal);
 
 // PRINT
 int			print_strerror(char *str, int errnum, int value);
@@ -75,13 +73,11 @@ void		close_file(int infile, int oufile);
 int			ft_strcmp(const char *s1, const char *s2);
 char		**ft_split_cmd(char const *s, char c);
 char		**ft_split(char const *s, char c);
-t_program	init_struct(t_cmd cmd, char **envp);
 void		dups(int stdinfd, int stdoutfd);
 void		close_fd(t_program program);
-int			simple_exec(char **cmd, t_program program);
 void		process(char *prompt, t_program *program);
 void		wait_child(t_program *program);
-void		handle_file(t_program *program);
+int			handle_file(t_program *program);
 void		treat_child(t_program *program, char *cmd, int current, int max);
 void		treat_child_recoded(t_program *program, char *cmd, int current,
 				int max);
@@ -113,5 +109,7 @@ char		**custom_split(const char *input_string, int *count);
 void		free_result(char **result, int count);
 int			is_separator(char c);
 void	free_child(t_program *program, char *new_cmd);
+char *remove_quotes(char *str);
+int find_paired_quotes(char *str);
 
 #endif

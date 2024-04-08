@@ -1,0 +1,43 @@
+touch <<< -> c'est une erreur de syntaxe
+
+
+❯ echo >> touch >>
+==3212600== Syscall param openat(filename) points to unaddressable byte(s)
+==3212600==    at 0x49D953B: open (open64.c:41)
+==3212600==    by 0x404E37: handle_file (parsing1.c:237)
+==3212600==    by 0x405E0F: process (pipe1.c:55)
+==3212600==    by 0x4043F9: main (main.c:79)
+==3212600==  Address 0x0 is not stack'd, malloc'd or (recently) free'd
+==3212600== 
+inf❯ 
+exit
+==3212600== 
+==3212600== HEAP SUMMARY:
+==3212600==     in use at exit: 208,257 bytes in 225 blocks
+==3212600==   total heap usage: 552 allocs, 327 frees, 245,077 bytes allocated
+
+
+
+gerer le modulo (256) avec exit (dans le negatif aussi). Attention a l'overflow (long ?)
+
+rm ' touch' -> ne trouve pas le fichier meme s'il existe
+
+sur les heredoc -> skip les espaces. Ne pas prendre au dela du premier argument. (<<eof cat)
+heredoc -> bien faire attention que c'est bien un infile !!!!!
+
+❯ <|>
+outfile: Bad address
+
+
+echo lol > txt -> pareil, ne pas prendre l'espace entre le > et le txt. + ne met pas le \n dans le fichier ' txt'
+
+❯ cat | explosion
+minishit: explosion: No such file or directory
+
+❯ "ls" -l
+minishit: ls  -l: No such file or directory
+
+❯ """"""""""""""""""""""""""""""
+minishit: /nfs/homes/gmarre/sgoinfre/shell_script/: Permission denied (pareil sur simple quote)
+
+heredoc ctrl d | ctrl c

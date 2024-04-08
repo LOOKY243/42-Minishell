@@ -34,7 +34,6 @@ typedef struct s_program
 	int		pipe_saved;
 	char	*random_file;
 	char	**envp;
-	int		env_len;
 	int		exit_value;
 	int		rseed;
 }			t_program;

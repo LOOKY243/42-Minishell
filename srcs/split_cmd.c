@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:46:29 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:45:59 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/04/08 14:59:25 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,12 @@ unsigned int ft_countsplit(const char *s, char c)
 	unsigned int d_quote = 0;
 	unsigned int s_quote = 0;
 
-	while (s[i] != '\0') // Check for null terminator
+	while (s[i] != '\0')
 	{
-		while (s[i] == c && s[i] != '\0') // Check for null terminator
+		while (s[i] == c && s[i] != '\0')
 			i++;
 		count++;
-		while (s[i] != c && s[i] != '\0') // Check for null terminator
+		while (s[i] != c && s[i] != '\0')
 		{
 			if (s[i] == '\'')
 				s_quote++;
@@ -33,16 +33,16 @@ unsigned int ft_countsplit(const char *s, char c)
 			if (s[i] == '\'' || s[i] == '\"')
 			{
 				i++;
-				while (s[i] != '\0' && (d_quote % 2 || s_quote % 2)) // Check for null terminator
+				while (s[i] != '\0' && (d_quote % 2 || s_quote % 2))
 				{
-					if (s[i] == '\'') // Check for null terminator
+					if (s[i] == '\'')
 						s_quote++;
-					else if (s[i] == '\"') // Check for null terminator
+					else if (s[i] == '\"')
 						d_quote++;
 					i++;
 				}
 			}
-			if (s[i] != '\0') // Check for null terminator
+			else if (s[i] != '\0')
 				i++;
 		}
 	}
@@ -114,10 +114,12 @@ void	ft_split2(const char *s, char **strs, size_t i[3], char c)
 				s_quote++;
 			else if (s[i[0] - 1] == '\"')
 				d_quote++;
-			while (s[i[0]] && ((s[i[0]] != '\'' && s[i[0]] != '\"')
-						|| (s[i[0]] == '\'' && s_quote % 2) || (s[i[0]] == '\"'
-						&& d_quote % 2)))
+			while (s[i[0]] && (s[i[0]] != '\'' && s[i[0]] != '\"') && s_quote % 2 && d_quote % 2)
 			{
+				if (s[i[0] - 1] == '\'')
+					s_quote++;
+				else if (s[i[0] - 1] == '\"')
+					d_quote++;
 				strs[i[2]][i[1]++] = s[i[0]++];
 			}
 		}

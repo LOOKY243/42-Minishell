@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/14 17:25:24 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/01 17:42:19 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,7 +108,7 @@ char	*remove_quote(char *str)
 	quote = 0;
 	while (str[++i])
 	{
-		if (!quote && (str[i] == '\'' || str[i] == '"'))
+		if (!quote && (str[i] == '\'' || str[i] == '\"'))
 		{
 			quote = str[i];
 			++offset;

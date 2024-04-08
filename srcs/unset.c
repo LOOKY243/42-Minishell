@@ -48,6 +48,5 @@ int	unset(t_program *program, char **strs)
 		}
 		j++;
 	}
-	program->env_len--;
 	return (0);
 }
