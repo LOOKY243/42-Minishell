@@ -35,7 +35,7 @@ typedef struct s_program
 	char	*random_file;
 	char	**envp;
 	int		env_len;
-	int		exit_value;
+	long long	exit_value;
 	int		rseed;
 }			t_program;
 

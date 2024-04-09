@@ -27,7 +27,7 @@ void	destroy_program(t_program *program)
 
 void	exit_shell(t_program *program, char *s)
 {
-	int		n;
+	long long		n;
 	char	**split;
 
 	print("exit\n");
@@ -37,7 +37,7 @@ void	exit_shell(t_program *program, char *s)
 		ft_freesplit(split);
 		free(s);
 		destroy_program(program);
-		exit(program->exit_value);
+		exit(program->exit_value % 256);
 	}
 	if (!ft_atoi(split[1], &n))
 	{
@@ -55,8 +55,9 @@ void	exit_shell(t_program *program, char *s)
 	ft_freesplit(split);
 	free(s);
 	destroy_program(program);
-	exit(n);
+	exit(n % 256);
 }
+
 void	free_child(t_program *program, char *new_cmd)
 {
 	ft_freesplit(program->cmd.list);

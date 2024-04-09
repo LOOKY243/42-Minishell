@@ -53,13 +53,14 @@ void	close_fd(t_program program)
 void	wait_child(t_program *program)
 {
 	int	i;
+	int status;
 
 	i = 0;
 	while (i < program->cmd.len)
 	{
-		if (!is_recoded(program->cmd.list[i]) || !program->pid[i])
+		if (!is_recoded(program->cmd.list[i]))
 		{
-			waitpid(program->pid[i], &program->exit_value, 0);
+			waitpid(program->pid[i], &status, 0);
 			program->exit_value = WEXITSTATUS(program->exit_value);
 		}
 		++i;
