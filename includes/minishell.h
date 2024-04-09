@@ -53,7 +53,7 @@ char		*ft_strtrim(const char *s1, const char *set);
 char		*ft_strchr(const char *s, int c);
 int			ft_isalnum(int c);
 int			ft_strlen_alnum(char *s);
-bool		ft_atoi(const char *s, int *n);
+bool		ft_atoi(const char *s, long long *n);
 void		*ft_memcpy(void *dest, const void *src, size_t n);
 
 // SIGNAL

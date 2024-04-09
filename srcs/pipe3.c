@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/22 12:41:49 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/09 17:17:16 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,14 @@ void	close_fd(t_program program)
 void	wait_child(t_program *program)
 {
 	int	i;
+	int status;
 
 	i = 0;
 	while (i < program->cmd.len)
 	{
 		if (!is_recoded(program->cmd.list[i]))
 		{
-			waitpid(program->pid[i], &program->exit_value, 0);
+			waitpid(program->pid[i], &status, 0);
 			program->exit_value = WEXITSTATUS(program->exit_value);
 		}
 		++i;
