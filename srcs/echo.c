@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:03:50 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/15 14:47:54 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/09 15:25:08 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int	echo(char **cmd, int fd)
 	if (cmd[1] && check_n_arg(cmd[1]))
 	{
 		i = 2;
+		while (check_n_arg(cmd[i]))
+			i++;
 		while (cmd[i] && ft_strcmp(cmd[i], "|"))
 		{
 			print_fd(fd, cmd[i]);
@@ -66,17 +68,15 @@ int	echo(char **cmd, int fd)
 				print_fd(fd, " ");
 			i++;
 		}
+		return (0);
 	}
-	else
+	i = 0;
+	while (cmd[++i])
 	{
-		i = 0;
-		while (cmd[++i])
-		{
-			if (i != count_args(cmd))
-				print_fd(fd, " ");
-			print_fd(fd, cmd[i]);
-		}
-		printf("\n");
+		if (i != count_args(cmd))
+			print_fd(fd, " ");
+		print_fd(fd, cmd[i]);
 	}
+	printf("\n");
 	return (0);
 }

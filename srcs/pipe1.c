@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/04 16:42:00 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/09 14:29:31 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	process(char *prompt, t_program *program)
 	program->cmd.list = ft_split_cmd(prompt, '|');
 	program->cmd.len = count_args_no_sign(program->cmd.list);
 	program->pipe_saved = -1;
+	g_exterminate = 0;
 	if (!handle_file(program))
 		return ((void)ft_freesplit(program->cmd.list));
 	if (program->infile == -1 || program->outfile == -1)
@@ -62,6 +63,8 @@ void	process(char *prompt, t_program *program)
 	}
 	while (program->cmd.list[program->cmd.current])
 	{
+		if (g_exterminate == 1)
+			break ;
 		if (exec(program, program->cmd.list[program->cmd.current]))
 			break ;
 		if (program->outfile != STDOUT_FILENO)

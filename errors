@@ -41,3 +41,26 @@ minishit: ls  -l: No such file or directory
 minishit: /nfs/homes/gmarre/sgoinfre/shell_script/: Permission denied (pareil sur simple quote)
 
 heredoc ctrl d | ctrl c
+
+---------------------------------------------------------------------
+
+"'"$USER"'"
+minishit: ' gmarre: No such file or directory
+❯ '"$USER"'
+minishit: "$USER: No such file or directory
+❯ '"cat"'
+minishit: "cat: No such file or directory
+❯ $USER
+minishit: gmarre: No such file or directory
+❯ '$USER'
+minishit: $USER: No such file or directory
+❯ "'$USER'"
+minishit: 'gmarre: No such file or directory
+
+a=''' 
+❯ export a+=34
+
+ echo -nnnnnnnnnnn -nnnn des
+-nnnn des
+
+

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/04 16:46:10 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/09 14:56:17 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,33 +91,26 @@ char *remove_quotes(char *str)
 	int 	i;
 	int		j;
 	char	quote;
-	char	*copy;
 	char	*new;
 
 	if (!find_paired_quotes(str))
 		return (ft_strdup(str));
-	copy = ft_strdup(str);
-	new = ft_calloc(1, sizeof(void));
-	while (find_paired_quotes(copy))
+	new = ft_calloc(ft_strlen(str) - 1, sizeof(char));
+	i = 0;
+	j = 0;
+	quote = 0;
+	while (str[i])
 	{
-		i = 0;
-		j = 0;
-		quote = 0;
-		free(new);
-		new = ft_calloc(ft_strlen(str) - 1, sizeof(char));
-		while (copy[i])
+		if (!quote && (str[i] == '\'' || str[i] == '\"'))
+			quote = str[i++];
+		if (str[i] == quote)
 		{
-			if (!quote && (str[i] == '\'' || str[i] == '\"'))
-				quote = str[i++];
-			if (str[i] == quote)
-				i++;
-			else
-				new[j++] = str[i++];
+			i++;
+			quote = 0;
 		}
-		free(copy);
-		copy = ft_strdup(new);
+		else
+			new[j++] = str[i++];
 	}
-	free(copy);
 	return (new);
 }
 
@@ -138,6 +131,10 @@ void	read_stdin(t_program *program, char *limit)
 	while (true)
 	{
 		buffer = readline("\x1b[0mheredoc> ");
+		if (buffer == NULL)
+			break ;
+		else if (g_exterminate == 1)
+            break;
 		if (!is_quoted)
 		{
 			tmp = change_cmd_var(*program, buffer);

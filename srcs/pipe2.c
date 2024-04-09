@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/08 15:06:32 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/09 14:14:23 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int	treat_command(t_program *program, char *cmd)
 	tmp = remove_quotes(args[0]);
 	free(args[0]);
 	args[0] = ft_strtrim(tmp, " ");
+	free(tmp);
 	args[0] = get_cmds(*program, args[0]);
 	if (args[0])
 	{
@@ -70,11 +71,15 @@ int	treat_command(t_program *program, char *cmd)
 int	treat_command_recoded(t_program *program, int fd, char *cmd)
 {
 	char	**args;
+	char	*tmp;
 	int		value;
 
 	if (program->outfile != STDOUT_FILENO)
 		fd = program->outfile;
 	args = ft_split_cmd(cmd, ' ');
+	tmp = remove_quotes(args[0]);
+	free(args[0]);
+	args[0] = tmp;
 	remove_quote_split(1, args);
 	value = ENOENT;
 	if (ft_strcmp(args[0], "echo") == 0)
@@ -144,7 +149,7 @@ bool	is_recoded(char *cmd)
 	bool	recoded;
 
 	args = ft_split_cmd(cmd, ' ');
-	command = ft_strtrim(command, " \"\'");
+	command = remove_quotes(args[0]);
 	free(args[0]);
 	args[0] = command;
 	recoded = false;
