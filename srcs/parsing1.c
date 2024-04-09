@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/09 14:56:17 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/09 16:17:13 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,13 @@ char *remove_quotes(char *str)
 	return (new);
 }
 
+void sigint_handler(int signum)
+{
+	(void)signum;
+	write(STDIN_FILENO, "\n" ,1);
+    g_exterminate = 1;
+}
+
 void	read_stdin(t_program *program, char *limit)
 {
 	int		is_quoted;
@@ -121,6 +128,7 @@ void	read_stdin(t_program *program, char *limit)
 	char	*tmp;
 	char	*limiter;
 
+	signal(SIGINT, sigint_handler);
 	if (program->infile)
 		close(program->infile);
 	program->random_file = random_string(program, 10);
@@ -134,7 +142,9 @@ void	read_stdin(t_program *program, char *limit)
 		if (buffer == NULL)
 			break ;
 		else if (g_exterminate == 1)
+		{
             break;
+		}
 		if (!is_quoted)
 		{
 			tmp = change_cmd_var(*program, buffer);
