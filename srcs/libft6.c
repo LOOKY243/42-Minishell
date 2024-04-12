@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:13:56 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/09 16:16:42 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/11 13:01:51 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 
 bool	ft_atoi(const char *s, long long *n)
 {
-	int		i;
-	int sign;
+	int					i;
+	int					sign;
 	unsigned long long	tmp;
 
 	i = 0;
 	*n = 0;
 	tmp = 0;
-	sign  = 1;
+	sign = 1;
 	if (s[i] == '-')
-		sign  = -1;
+		sign = -1;
 	if (s[i] == '+' || s[i] == '-')
 		++i;
 	while (s[i] == '0')

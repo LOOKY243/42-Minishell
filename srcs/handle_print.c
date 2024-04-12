@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_print.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ycostode <ycostode@student.1337.ma>        +#+  +:+       +#+        */
+/*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:38:17 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:43:28 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:29:34 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	print_strerror(char *str, int errnum, int value)
 	error = strerror(errnum);
 	print_fd(STDERR_FILENO, "\x1b[1;31mminishit: ");
 	write(STDERR_FILENO, str, ft_strlen(str));
-	write(STDERR_FILENO, ": ", 2);
 	write(STDERR_FILENO, error, ft_strlen(error));
 	print_fd(STDERR_FILENO, "\x1b[0m\n");
 	return (value);
@@ -62,9 +61,9 @@ void	print_prompt(char *s)
 
 void	modify_prompt(const char *s)
 {
-	print("\x1b[1A\x1b[0K"); // go to and clean empty line
-	print("\x1b[1A\x1b[0K"); // go to and clean ╰─ command
-	print("\x1b[1A\x1b[0K"); // go to and clean ╭─ header
+	print("\x1b[1A\x1b[0K");
+	print("\x1b[1A\x1b[0K");
+	print("\x1b[1A\x1b[0K");
 	print("\x1b[1;33m❯\x1b[0m ");
 	print(s);
 	print("\n");

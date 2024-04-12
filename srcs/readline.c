@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/20 16:22:17 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/11 15:18:32 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ char	*prompt(char **envp)
 	log = log_name(envp);
 	current = home_pwd(envp);
 	print("\x1b[0m");
-	prompt = ft_strdup("\x1b[1;30m╭─\x1b[0;30m░▒▓\x1b[0;37;40m  \x1b[1;30m\x1b[0;34;40m  ");
+	prompt = ft_strdup("\x1b[1;30m╭─\x1b[0;30m░▒▓\x1b[0;37;40m \
+	\x1b[1;30m\x1b[0;34;40m  ");
 	tmp = ft_strjoin(prompt, current);
 	if (current)
 		free(current);

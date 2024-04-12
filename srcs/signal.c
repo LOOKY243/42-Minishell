@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/03/13 16:45:43 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/04/11 15:56:46 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 void	signal_c_handler(int signal)
 {
-	static bool shouldKill = true;
-	(void)signal;
+	static bool	should_kill = true;
 
-	if (!shouldKill)
+	(void)signal;
+	if (!should_kill)
 	{
-		shouldKill = !shouldKill;
+		should_kill = !should_kill;
 		return ;
 	}
 	print("\n");
@@ -27,5 +27,5 @@ void	signal_c_handler(int signal)
 	rl_replace_line("", 1);
 	rl_on_new_line();
 	rl_redisplay();
-	shouldKill = !shouldKill;
+	should_kill = !should_kill;
 }

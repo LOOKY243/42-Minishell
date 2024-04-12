@@ -6,34 +6,58 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/09 17:16:59 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/11 15:16:18 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec(t_program *program, char *cmd)
+int	check_only_spaces(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ')
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+int	exec_non_recoded(char *new_cmd, t_program *program)
 {
 	pid_t	pid;
+
+	program->exit_value = 0;
+	pid = fork();
+	program->pid[program->cmd.current] = pid;
+	if (pid == -1)
+		return (print_error("fork", EXIT_FAILURE));
+	if (pid == 0)
+	{
+		treat_child(program, new_cmd, program->cmd.current, program->cmd.len
+			- 1);
+		free_child(program, new_cmd);
+		exit(program->exit_value);
+	}
+	return (0);
+}
+
+int	exec(t_program *program, char *cmd)
+{
 	char	*new_cmd;
 
 	if (pipe(program->pipe) == -1)
 		return (print_error("pipe", EXIT_FAILURE));
 	new_cmd = treat_cmd(*program, cmd);
-	if (!is_recoded(new_cmd))
+	if (!check_only_spaces(cmd))
+		;
+	else if (!is_recoded(new_cmd))
 	{
-		program->exit_value = 0;
-		pid = fork();
-		program->pid[program->cmd.current] = pid;
-		if (pid == -1)
-			return (print_error("fork", EXIT_FAILURE));
-		if (pid == 0)
-		{
-			treat_child(program, new_cmd, program->cmd.current, program->cmd.len
-				- 1);
-			free_child(program, new_cmd);
-			exit(program->exit_value);
-		}
+		if (exec_non_recoded(new_cmd, program) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 	}
 	else
 		treat_child_recoded(program, new_cmd, program->cmd.current,
@@ -44,6 +68,18 @@ int	exec(t_program *program, char *cmd)
 	program->pipe_saved = program->pipe[PIPE_READ];
 	close(program->pipe[PIPE_WRITE]);
 	return (EXIT_SUCCESS);
+}
+
+void	launch_commands(t_program *program)
+{
+	while (program->cmd.list[program->cmd.current])
+	{
+		if (g_exterminate == 1)
+			break ;
+		if (exec(program, program->cmd.list[program->cmd.current]))
+			break ;
+		program->cmd.current++;
+	}
 }
 
 void	process(char *prompt, t_program *program)
@@ -61,17 +97,7 @@ void	process(char *prompt, t_program *program)
 		ft_freesplit(program->cmd.list);
 		return ;
 	}
-	while (program->cmd.list[program->cmd.current])
-	{
-		if (g_exterminate == 1)
-			break ;
-		if (exec(program, program->cmd.list[program->cmd.current]))
-			break ;
-		if (program->outfile != STDOUT_FILENO)
-			close(program->outfile);
-		program->outfile = STDOUT_FILENO;
-		program->cmd.current++;
-	}
+	launch_commands(program);
 	if (program->random_file)
 		unlink(program->random_file);
 	program->random_file = NULL;

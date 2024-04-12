@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/09 16:16:37 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 12:27:20 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,7 @@ bool		is_recoded(char *cmd);
 char		*treat_cmd(t_program program, char *cmd);
 char		*change_cmd_var(t_program program, char *cmd);
 void		remove_quote_split(int start, char **split);
+int	is_command_sign(char *str);
 
 // BUILT-INS
 int			echo(char **cmd, int fd);
@@ -108,8 +109,11 @@ char		*random_string(t_program *program, int len);
 char		**custom_split(const char *input_string, int *count);
 void		free_result(char **result, int count);
 int			is_separator(char c);
-void	free_child(t_program *program, char *new_cmd);
-char *remove_quotes(char *str);
-int find_paired_quotes(char *str);
+void		free_child(t_program *program, char *new_cmd);
+char		*remove_quotes(char *str);
+int			find_paired_quotes(char *str);
+int	open_file(t_program *program, char *str, int type);
+char	*join_rest(char **cmds, int len);
+void	read_stdin(t_program *program, char *limit);
 
 #endif

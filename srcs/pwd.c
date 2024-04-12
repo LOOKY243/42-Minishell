@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 11:32:49 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:45:21 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/04/10 13:17:14 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*find_variable_secure(char **envp, char *var)
 	while (envp[i])
 	{
 		if (ft_strncmp(envp[i], var, len) == 0 && (envp[i][len] == '='
-				|| envp[i][len] == '\0' || envp[i][len] == '\n'))
+			|| envp[i][len] == '\0' || envp[i][len] == '\n'))
 			return (&envp[i][ft_strlen(var)]);
 		i++;
 	}

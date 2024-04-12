@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:24:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/03 17:05:08 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/11 15:25:22 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,95 +18,119 @@ int	is_command_char(char c, char next)
 				|| next == '>')));
 }
 
-char	**custom_split(const char *input_string, int *count)
+int	is_starting_quote(t_custom_split *s, const char *input_string)
 {
-	int		length;
-	char	**result;
-	int		result_index;
-	int		i;
-	int		j;
-	char	quote;
-
-	quote = '\0';
-	length = ft_strlen(input_string);
-	result = ft_calloc(length, sizeof(char *));
-	if (!result)
-		return (NULL);
-	result_index = 0;
-	i = 0;
-	while (i < length)
+	if ((input_string[s->i] == '"' || input_string[s->i] == '\'')
+			&& s->quote == '\0')
 	{
-		if ((input_string[i] == '"' || input_string[i] == '\'')
-				&& quote == '\0')
+		s->quote = input_string[s->i];
+		s->result[s->result_index] = ft_calloc((s->length - s->i + 2),
+				sizeof(char));
+		s->result[s->result_index][0] = s->quote;
+		s->j = s->i + 1;
+		while (s->j < s->length && input_string[s->j] != s->quote)
 		{
-			quote = input_string[i];
-			result[result_index] = ft_calloc((length - i + 2), sizeof(char));
-			result[result_index][0] = quote;
-			j = i + 1;
-			while (j < length && input_string[j] != quote)
-			{
-				result[result_index][j - i] = input_string[j];
-				j++;
-			}
-			if (j < length && input_string[j] == quote)
-			{
-				result[result_index][j - i] = input_string[j];
-				j++;
-			}
-			result[result_index][j - i + 1] = '\0';
-			result_index++;
-			i = j;
-			quote = '\0';
+			s->result[s->result_index][s->j - s->i] = input_string[s->j];
+			s->j++;
 		}
-		else if (input_string[i] == '<')
+		if (s->j < s->length && input_string[s->j] == s->quote)
 		{
-			if (input_string[i + 1] == '<')
-			{
-				result[result_index] = ft_strdup("<<");
-				result_index++;
-				i += 2;
-			}
-			else
-			{
-				result[result_index] = ft_strdup("<");
-				result_index++;
-				i++;
-			}
+			s->result[s->result_index][s->j - s->i] = input_string[s->j];
+			s->j++;
 		}
-		else if (input_string[i] == '>')
+		s->result[s->result_index][s->j - s->i + 1] = '\0';
+		s->result_index++;
+		s->i = s->j;
+		s->quote = '\0';
+		return (1);
+	}
+	return (0);
+}
+
+int	is_infile_sign(t_custom_split *s, const char *input_string)
+{
+	if (input_string[s->i] == '<')
+	{
+		if (input_string[s->i + 1] == '<')
 		{
-			if (i + 1 < length && input_string[i + 1] == '>')
-			{
-				result[result_index] = ft_strdup(">>");
-				result_index++;
-				i += 2;
-			}
-			else
-			{
-				result[result_index] = ft_strdup(">");
-				result_index++;
-				i++;
-			}
+			s->result[s->result_index] = ft_strdup("<<");
+			s->result_index++;
+			s->i += 2;
 		}
-		else if (is_command_char(input_string[i], input_string[i + 1])
-			&& quote == '\0')
-			i++;
 		else
 		{
-			j = i;
-			while (j < length && (!is_command_char(input_string[j],
-						input_string[j + 1]) || quote != '\0'))
-				j++;
-			result[result_index] = ft_calloc((j - i + 1), sizeof(char));
-			ft_memcpy(result[result_index], input_string + i, (j - i)
-				* sizeof(char));
-			result[result_index][j - i] = '\0';
-			result_index++;
-			i = j;
+			s->result[s->result_index] = ft_strdup("<");
+			s->result_index++;
+			s->i++;
 		}
+		return (1);
 	}
-	*count = result_index;
-	return (result);
+	return (0);
+}
+
+int	is_outfile_sign(t_custom_split *s, const char *input_string)
+{
+	if (input_string[s->i] == '>')
+	{
+		if (s->i + 1 < s->length && input_string[s->i + 1] == '>')
+		{
+			s->result[s->result_index] = ft_strdup(">>");
+			s->result_index++;
+			s->i += 2;
+		}
+		else
+		{
+			s->result[s->result_index] = ft_strdup(">");
+			s->result_index++;
+			s->i++;
+		}
+		return (1);
+	}
+	if (is_command_char(input_string[s->i], input_string[s->i + 1])
+		&& s->quote == '\0')
+		s->i++;
+	return (0);
+}
+
+void	copy_rest(t_custom_split *s, const char *input_string)
+{
+	s->j = s->i;
+	while (s->j < s->length && (!is_command_char(input_string[s->j],
+				input_string[s->j + 1]) || s->quote != '\0'))
+		s->j++;
+	s->result[s->result_index] = ft_calloc((s->j - s->i + 1), sizeof(char));
+	ft_memcpy(s->result[s->result_index], input_string + s->i, (s->j - s->i)
+		* sizeof(char));
+	s->result[s->result_index][s->j - s->i] = '\0';
+	s->result_index++;
+	s->i = s->j;
+}
+
+char	**custom_split(const char *input_string, int *count)
+{
+	t_custom_split	s;
+
+	s.quote = '\0';
+	s.length = ft_strlen(input_string);
+	s.result = ft_calloc(s.length, sizeof(char *));
+	if (!s.result)
+		return (NULL);
+	s.result_index = 0;
+	s.i = 0;
+	s.j = 0;
+	while (s.i < s.length)
+	{
+		if (is_starting_quote(&s, input_string))
+			continue ;
+		else if (is_infile_sign(&s, input_string))
+			continue ;
+		else if (is_outfile_sign(&s, input_string))
+			continue ;
+		else
+			copy_rest(&s, input_string);
+	}
+	*count = s.result_index;
+	return (s.result);
 }
 
 void	free_result(char **result, int count)

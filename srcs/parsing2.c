@@ -6,90 +6,91 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/20 17:20:46 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/11 12:47:35 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	init_cmd_var(t_cmd_var *cmd_var)
+void	init_cmd_var(t_cmd_var *var)
 {
-	cmd_var->new_cmd = NULL;
-	cmd_var->tmp = NULL;
-	cmd_var->var_name = NULL;
-	cmd_var->env_value = NULL;
-	cmd_var->i = -1;
-	cmd_var->start = 0;
-	cmd_var->end = 0;
-	cmd_var->len = 0;
+	var->new_cmd = NULL;
+	var->tmp = NULL;
+	var->var_name = NULL;
+	var->env_value = NULL;
+	var->i = -1;
+	var->start = 0;
+	var->end = 0;
+	var->len = 0;
 }
 
-int	change_cmd_var3(t_cmd_var *cmd_var, char *cmd)
+int	change_cmd_var3(t_cmd_var *var, char *cmd)
 {
-	cmd_var->len = ft_strlen(cmd_var->new_cmd);
-	cmd_var->tmp = ft_calloc(cmd_var->len + (cmd_var->i - cmd_var->start)
-			+ ft_strlen(cmd_var->env_value) + 1, sizeof(char));
-	if (!cmd_var->tmp)
+	var->len = ft_strlen(var->new_cmd);
+	var->tmp = ft_calloc(var->len + (var->i - var->start)
+			+ ft_strlen(var->env_value) + 1, sizeof(char));
+	if (!var->tmp)
 	{
-		free(cmd_var->var_name);
-		free(cmd_var->new_cmd);
+		free(var->var_name);
+		free(var->new_cmd);
 		return (0);
 	}
-	ft_strcpy(cmd_var->tmp, cmd_var->new_cmd);
-	ft_strncpy(cmd_var->tmp + cmd_var->len, cmd + cmd_var->start, cmd_var->i
-		- cmd_var->start);
-	ft_strcpy(cmd_var->tmp + cmd_var->len + (cmd_var->i - cmd_var->start),
-		cmd_var->env_value);
-	free(cmd_var->new_cmd);
-	cmd_var->new_cmd = cmd_var->tmp;
-	cmd_var->start = cmd_var->end;
+	ft_strcpy(var->tmp, var->new_cmd);
+	ft_strncpy(var->tmp + var->len, cmd + var->start, var->i
+		- var->start);
+	ft_strcpy(var->tmp + var->len + (var->i - var->start),
+		var->env_value);
+	free(var->new_cmd);
+	var->new_cmd = var->tmp;
+	var->start = var->end;
 	return (1);
 }
 
-int	change_cmd_var4(t_cmd_var *cmd_var, char *cmd)
+int	change_cmd_var4(t_cmd_var *var, char *cmd)
 {
-	cmd_var->len = ft_strlen(cmd_var->new_cmd);
-	cmd_var->tmp = ft_calloc(cmd_var->len + (cmd_var->i - cmd_var->start) + 1, sizeof(char));
-	if (!cmd_var->tmp)
+	var->len = ft_strlen(var->new_cmd);
+	var->tmp = ft_calloc(var->len + (var->i - var->start) + 1,
+			sizeof(char));
+	if (!var->tmp)
 	{
-		free(cmd_var->var_name);
-		free(cmd_var->new_cmd);
+		free(var->var_name);
+		free(var->new_cmd);
 		return (0);
 	}
-	ft_strcpy(cmd_var->tmp, cmd_var->new_cmd);
-	ft_strncpy(cmd_var->tmp + cmd_var->len, cmd + cmd_var->start, cmd_var->i
-		- cmd_var->start);
-	cmd_var->tmp[cmd_var->len + (cmd_var->i - cmd_var->start)] = '\0';
-	free(cmd_var->new_cmd);
-	cmd_var->new_cmd = cmd_var->tmp;
-	cmd_var->start = cmd_var->end;
+	ft_strcpy(var->tmp, var->new_cmd);
+	ft_strncpy(var->tmp + var->len, cmd + var->start, var->i
+		- var->start);
+	var->tmp[var->len + (var->i - var->start)] = '\0';
+	free(var->new_cmd);
+	var->new_cmd = var->tmp;
+	var->start = var->end;
 	return (1);
 }
 
-int	change_cmd_var2(t_program *program, t_cmd_var *cmd_var, char *cmd)
+int	change_cmd_var2(t_program *program, t_cmd_var *var, char *cmd)
 {
-	while (cmd[++cmd_var->i])
+	while (cmd[++var->i])
 	{
-		if (cmd[cmd_var->i] == '$' && !is_separator(cmd[cmd_var->i + 1]))
+		if (cmd[var->i] == '$' && !is_separator(cmd[var->i + 1]))
 		{
-			cmd_var->end = cmd_var->i + 1;
-			while (cmd[cmd_var->end] && !is_separator(cmd[cmd_var->end]))
-				cmd_var->end++;
-			cmd_var->var_name = ft_calloc(cmd_var->end - cmd_var->i, sizeof(char));
-			ft_strncpy(cmd_var->var_name, cmd + cmd_var->i + 1, cmd_var->end
-				- cmd_var->i - 1);
-			cmd_var->env_value = find_variable(program->envp,
-					cmd_var->var_name);
-			if (cmd_var->env_value != NULL && cmd_var->env_value[0] == '=')
-				cmd_var->env_value++;
-			if (cmd_var->env_value)
+			var->end = var->i + 1;
+			while (cmd[var->end] && !is_separator(cmd[var->end]))
+				var->end++;
+			var->var_name = ft_calloc(var->end - var->i,
+					sizeof(char));
+			ft_strncpy(var->var_name, cmd + var->i + 1, var->end - var->i - 1);
+			var->env_value = find_variable(program->envp,
+					var->var_name);
+			if (var->env_value != NULL && var->env_value[0] == '=')
+				var->env_value++;
+			if (var->env_value)
 			{
-				if (!change_cmd_var3(cmd_var, cmd))
+				if (!change_cmd_var3(var, cmd))
 					return (0);
 			}
-			else if (!change_cmd_var4(cmd_var, cmd))
+			else if (!change_cmd_var4(var, cmd))
 				return (0);
-			free(cmd_var->var_name);
+			free(var->var_name);
 		}
 	}
 	return (1);
@@ -97,23 +98,24 @@ int	change_cmd_var2(t_program *program, t_cmd_var *cmd_var, char *cmd)
 
 char	*change_cmd_var(t_program program, char *cmd)
 {
-	t_cmd_var	cmd_var;
+	t_cmd_var	var;
 
 	if (!cmd)
 		return (NULL);
-	init_cmd_var(&cmd_var);
-	if (!change_cmd_var2(&program, &cmd_var, cmd))
+	init_cmd_var(&var);
+	if (!change_cmd_var2(&program, &var, cmd))
 		return (NULL);
-	cmd_var.len = ft_strlen(cmd_var.new_cmd);
-	cmd_var.tmp = ft_calloc(cmd_var.len + ft_strlen(cmd + cmd_var.start) + 1, sizeof(char));
-	if (!cmd_var.tmp)
+	var.len = ft_strlen(var.new_cmd);
+	var.tmp = ft_calloc(var.len + ft_strlen(cmd + var.start) + 1,
+			sizeof(char));
+	if (!var.tmp)
 	{
-		free(cmd_var.new_cmd);
+		free(var.new_cmd);
 		return (NULL);
 	}
-	ft_strcpy(cmd_var.tmp, cmd_var.new_cmd);
-	ft_strcpy(cmd_var.tmp + cmd_var.len, cmd + cmd_var.start);
-	free(cmd_var.new_cmd);
-	cmd_var.new_cmd = cmd_var.tmp;
-	return (cmd_var.new_cmd);
+	ft_strcpy(var.tmp, var.new_cmd);
+	ft_strcpy(var.tmp + var.len, cmd + var.start);
+	free(var.new_cmd);
+	var.new_cmd = var.tmp;
+	return (var.new_cmd);
 }

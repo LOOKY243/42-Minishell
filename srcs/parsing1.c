@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/09 16:17:13 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 15:10:28 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,15 @@ int	is_double_quoted(char *str)
 	return (0);
 }
 
-int find_paired_quotes(char *str)
+int	find_paired_quotes(char *str)
 {
-	int i;
-	char quote;
+	int		i;
+	char	quote;
 
 	i = 0;
 	quote = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		if (!quote && str[i] && (str[i] == '\'' || str[i] == '\"'))
@@ -86,9 +88,9 @@ int find_paired_quotes(char *str)
 	return (0);
 }
 
-char *remove_quotes(char *str)
+char	*remove_quotes(char *str)
 {
-	int 	i;
+	int		i;
 	int		j;
 	char	quote;
 	char	*new;
@@ -114,11 +116,11 @@ char *remove_quotes(char *str)
 	return (new);
 }
 
-void sigint_handler(int signum)
+void	sigint_handler(int signal)
 {
-	(void)signum;
-	write(STDIN_FILENO, "\n" ,1);
-    g_exterminate = 1;
+	(void)signal;
+	write(0, "\n", 1);
+	g_exterminate = 1;
 }
 
 void	read_stdin(t_program *program, char *limit)
@@ -136,14 +138,19 @@ void	read_stdin(t_program *program, char *limit)
 			0666);
 	is_quoted = is_double_quoted(limit);
 	limiter = remove_quotes(limit);
-	while (true)
+	while (g_exterminate != 1)
 	{
 		buffer = readline("\x1b[0mheredoc> ");
 		if (buffer == NULL)
+		{
+			print_fd(STDOUT_FILENO,
+				"minishit: warning: here-document \
+at line 3 delimited by end-of-file (wanted 'eof')\n");
 			break ;
+		}
 		else if (g_exterminate == 1)
 		{
-            break;
+			break ;
 		}
 		if (!is_quoted)
 		{
@@ -158,8 +165,7 @@ void	read_stdin(t_program *program, char *limit)
 			break ;
 		else
 			tmp = ft_strdup(buffer);
-		if (write(program->infile, tmp,
-				ft_strlen(tmp)) != (int)ft_strlen(tmp))
+		if (write(program->infile, tmp, ft_strlen(tmp)) != (int)ft_strlen(tmp))
 		{
 			print_error("write", EXIT_FAILURE);
 			break ;
@@ -179,7 +185,7 @@ int	is_command_sign(char *str)
 
 	i = -1;
 	quote = '\0';
-	if (!str)
+	if (!str || !str[0])
 		return (0);
 	while (str[++i])
 	{
@@ -218,135 +224,43 @@ char	*join_rest(char **cmds, int len)
 	return (res);
 }
 
-int open_file(t_program *program, char *str, int type)
+int open_file2(int fd, int type)
 {
-	int fd;
-
-	if (!str)
-	{
-		if (program->cmd.current != program->cmd.len - 1)
-			print_fd(2, "minishit: syntax error near unexpected token '|'\n");
-		else
-			print_fd(2, "minishit: syntax error near unexpected token 'newline'\n");
-		return (-1);
-	}
-	if (type == 1)
-		fd = open(str,
-			O_CREAT | O_WRONLY | O_APPEND, 0666);
-	else if (type == 2)
-		fd = open(str, O_RDONLY);
-	else
-		fd = open(str, O_CREAT | O_WRONLY | O_TRUNC, 0666);
 	if (fd == -1)
 	{
 		if (type == 1 || type == 3)
 			perror("outfile");
 		else
 			perror("infile");
+		return (1);
+	}
+	return (0);
+}
+
+int	open_file(t_program *program, char *str, int type)
+{
+	int	fd;
+
+	if (!str)
+	{
+		if (program->cmd.current != program->cmd.len - 1)
+			print_fd(2, "minishit: syntax error near unexpected token '|'\n");
+		else
+			print_fd(2,
+				"minishit: syntax error near unexpected token 'newline'\n");
 		return (-1);
 	}
+	if (type == 1)
+		fd = open(str, O_CREAT | O_WRONLY | O_APPEND, 0666);
+	else if (type == 2)
+		fd = open(str, O_RDONLY);
+	else
+		fd = open(str, O_CREAT | O_WRONLY | O_TRUNC, 0666);
+	if (open_file2(fd, type))
+		return (-1);
 	if (type == 1 || type == 3)
 		program->outfile = fd;
 	else
 		program->infile = fd;
 	return (fd);
-}
-
-int	handle_file(t_program *program)
-{
-	char	**cut;
-	int		len;
-	int		trigger;
-	int		i;
-	int		j;
-
-	j = -1;
-	program->infile = STDIN_FILENO;
-	program->outfile = STDOUT_FILENO;
-	if (program->cmd.len == 0)
-		print_fd(2, "minishit: syntax error near unexpected token '|'\n");
-	while (program->cmd.list[++j])
-	{
-		cut = custom_split(program->cmd.list[j], &len);
-		i = -1;
-		while (++i < len)
-		{
-			trigger = 1;
-			if (i == len - 1)
-			{
-				if (is_command_sign(cut[i]))
-				{
-					free_result(cut, len);
-					print_fd(2, "minishit: syntax error near unexpected token 'newline'\n");
-					return (0);
-				}
-			}
-			else if (is_command_sign(cut[i]) && is_command_sign(cut[i + 1]))
-			{
-				if (j == program->cmd.len - 1)
-					print_fd(2, "minishit: syntax error near unexpected token 'newline'\n");
-				else
-					print_fd(2, "minishit: syntax error near unexpected token '|'\n");
-				free_result(cut, len);
-				return (0);
-			}
-			if (!ft_strcmp(cut[i], "<<"))
-				read_stdin(program, cut[i + 1]);
-			else if (!ft_strcmp(cut[i], ">>"))
-			{
-				if (open_file(program, cut[i + 1], 1) == -1)
-				{
-					free_result(cut, len);
-					return (0);
-				}
-			}
-			else if (!ft_strcmp(cut[i], "<"))
-			{
-				if (i == len - 1)
-				{
-					print_fd(2, "minishit: syntax error near unexpected token 'newline'\n");
-					free_result(cut, len);
-					return (0);
-				}
-				if (open_file(program, cut[i + 1], 2) == -1)
-				{
-					free_result(cut, len);
-					return (0);
-				}
-			}
-			else if (!ft_strcmp(cut[i], ">"))
-			{
-				if (i == len - 1)
-				{
-					print_fd(2, "minishit: syntax error near unexpected token 'newline'\n");
-					free_result(cut, len);
-					return (0);
-				}
-				if (open_file(program, cut[i + 1], 3) == -1)
-				{
-					free_result(cut, len);
-					return (0);
-				}
-			}
-			else
-				trigger = 0;
-			if (trigger)
-			{
-				free(cut[i]);
-				free(cut[i + 1]);
-				cut[i] = 0;
-				cut[i + 1] = 0;
-			}
-			if (program->random_file)
-			{
-				unlink(program->random_file);
-				free(program->random_file);
-			}
-			program->random_file = 0;
-		}
-		free(program->cmd.list[j]);
-		program->cmd.list[j] = join_rest(cut, len);
-		free_result(cut, len);
-	}
-	return (1);
 }

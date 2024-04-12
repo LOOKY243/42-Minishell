@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/29 12:03:15 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 14:26:52 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,25 +125,12 @@ void	add_to_env(char ***envp, char *line, int index)
 	*envp = env;
 }
 
-void	add_to_env_append(char ***envp, char *line, int index)
+void	add_to_env_append2(char **env, char *line, int index)
 {
-	char	**env;
+	int 	i;
 	char	*tmp;
-	int		i;
-	int		idx;
 
-	if (!is_in_env(*envp, line, index))
-	{
-		idx = ft_strchr(line, '+') - line;
-		tmp = ft_calloc(ft_strlen(line), sizeof(char));
-		ft_strncpy(tmp, line, idx);
-		ft_strncpy(&tmp[idx], &line[idx + 1], ft_strlen(line) - idx - 1);
-		add_to_env_empty(envp, tmp);
-		free(tmp);
-		return ;
-	}
 	i = -1;
-	env = *envp;
 	while (env[++i])
 	{
 		if (ft_strncmp(env[i], line, index) == 0)
@@ -156,7 +143,26 @@ void	add_to_env_append(char ***envp, char *line, int index)
 			env[i] = tmp;
 		}
 	}
-	++i;
+}
+
+void	add_to_env_append(char ***envp, char *line, int index)
+{
+	char	**env;
+	char	*tmp;
+	int		idx;
+
+	if (!is_in_env(*envp, line, index))
+	{
+		idx = ft_strchr(line, '+') - line;
+		tmp = ft_calloc(ft_strlen(line), sizeof(char));
+		ft_strncpy(tmp, line, idx);
+		ft_strncpy(&tmp[idx], &line[idx + 1], ft_strlen(line) - idx - 1);
+		add_to_env_empty(envp, tmp);
+		free(tmp);
+		return ;
+	}
+	env = *envp;
+	add_to_env_append2(env, line, index);
 	*envp = env;
 }
 

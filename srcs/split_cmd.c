@@ -6,19 +6,45 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:46:29 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/08 14:59:25 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 15:15:47 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-unsigned int ft_countsplit(const char *s, char c)
+void	ft_countsplit2(const char *s, unsigned int *i, unsigned int *d_quote, unsigned int *s_quote)
 {
-	unsigned int count = 0;
-	unsigned int i = 0;
-	unsigned int d_quote = 0;
-	unsigned int s_quote = 0;
+	if (s[*i] == '\'')
+		(*s_quote)++;
+	else if (s[*i] == '\"')
+		(*d_quote)++;
+	if (s[*i] == '\'' || s[*i] == '\"')
+	{
+		(*i)++;
+		while (s[*i] != '\0' && ((*d_quote) % 2 || (*s_quote) % 2))
+		{
+			if (s[*i] == '\'')
+				(*s_quote)++;
+			else if (s[*i] == '\"')
+				(*d_quote)++;
+			(*i)++;
+		}
+	}
+	else if (s[*i] != '\0')
+		(*i)++;
+}
 
+unsigned int	ft_countsplit(const char *s, char c)
+{
+	unsigned int	count;
+	unsigned int	i;
+	unsigned int	d_quote;
+	unsigned int	s_quote;
+
+	count = 0;
+	i = 0;
+	d_quote = 0;
+	s_quote = 0;
 	while (s[i] != '\0')
 	{
 		while (s[i] == c && s[i] != '\0')
@@ -26,29 +52,11 @@ unsigned int ft_countsplit(const char *s, char c)
 		count++;
 		while (s[i] != c && s[i] != '\0')
 		{
-			if (s[i] == '\'')
-				s_quote++;
-			else if (s[i] == '\"')
-				d_quote++;
-			if (s[i] == '\'' || s[i] == '\"')
-			{
-				i++;
-				while (s[i] != '\0' && (d_quote % 2 || s_quote % 2))
-				{
-					if (s[i] == '\'')
-						s_quote++;
-					else if (s[i] == '\"')
-						d_quote++;
-					i++;
-				}
-			}
-			else if (s[i] != '\0')
-				i++;
+			ft_countsplit2(s, &i, &d_quote, &s_quote);
 		}
 	}
-	return count;
+	return (count);
 }
-
 
 void	ft_prealloc2(char const *s, int *d_quote, int *s_quote, int *i,
 		int *count)
@@ -62,10 +70,18 @@ void	ft_prealloc2(char const *s, int *d_quote, int *s_quote, int *i,
 				(*s_quote)++;
 			else if (s[*i + 1] == '\"')
 				(*d_quote)++;
+			if (s[*i + 1] == '\'' || s[*i + 1] == '\"')
+				(*i)++;
 			(*count)++;
 		}
 		(*i)++;
 	}
+}
+
+void	increase(int *i, int *count)
+{
+	(*i)++;
+	(*count)++;
 }
 
 char	*ft_prealloc(char const *s, char c, int i)
@@ -77,7 +93,7 @@ char	*ft_prealloc(char const *s, char c, int i)
 	count = 0;
 	s_quote = 0;
 	d_quote = 0;
-	while (s[i] != c && s[i])
+	while (s[i] && s[i] != c)
 	{
 		if (s[i] == '\'')
 			s_quote++;
@@ -85,17 +101,21 @@ char	*ft_prealloc(char const *s, char c, int i)
 			d_quote++;
 		if (s[i] == '\'' || s[i] == '\"')
 		{
-			i++;
-			count++;
+			increase(&i, &count);
 			ft_prealloc2(s, &d_quote, &s_quote, &i, &count);
 		}
 		else
-		{
-			count++;
-			i++;
-		}
+		increase(&i, &count);
 	}
 	return (ft_calloc((count + 1), sizeof(char)));
+}
+
+void	check_quote(const char *s, size_t i[3], int *s_quote, int *d_quote)
+{
+	if (s[i[0]] == '\'')
+		(*s_quote)++;
+	else if (s[i[0]] == '\"')
+		(*d_quote)++;
 }
 
 void	ft_split2(const char *s, char **strs, size_t i[3], char c)
@@ -109,18 +129,13 @@ void	ft_split2(const char *s, char **strs, size_t i[3], char c)
 	{
 		if (s[i[0]] == '\'' || s[i[0]] == '\"')
 		{
-			strs[i[2]][i[1]++] = s[i[0]++];
-			if (s[i[0] - 1] == '\'')
-				s_quote++;
-			else if (s[i[0] - 1] == '\"')
-				d_quote++;
-			while (s[i[0]] && (s[i[0]] != '\'' && s[i[0]] != '\"') && s_quote % 2 && d_quote % 2)
+			strs[i[2]][i[1]++] = s[i[0]];
+			check_quote(s, i, &s_quote, &d_quote);
+			while (s[++i[0]] && (s[i[0]] != '\'' && s[i[0]] != '\"') && (s_quote
+					% 2 || d_quote % 2))
 			{
-				if (s[i[0] - 1] == '\'')
-					s_quote++;
-				else if (s[i[0] - 1] == '\"')
-					d_quote++;
-				strs[i[2]][i[1]++] = s[i[0]++];
+				check_quote(s, i, &s_quote, &d_quote);
+				strs[i[2]][i[1]++] = s[i[0]];
 			}
 		}
 		else
