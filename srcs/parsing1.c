@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/17 15:05:25 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:25:01 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ void	sigint_handler(int signal)
 	g_exterminate = 1;
 }
 
-int read_stdin3(t_program *program, char *tmp)
+int	read_stdin3(t_program *program, char *tmp)
 {
 	if (write(program->infile, tmp, ft_strlen(tmp)) != (int)ft_strlen(tmp))
 	{
@@ -135,23 +135,23 @@ int read_stdin3(t_program *program, char *tmp)
 	return (1);
 }
 
-int read_stdin2_bis(char *buffer)
+int	read_stdin2_bis(char *buffer)
 {
 	if (buffer == NULL)
 	{
-		print_fd(STDOUT_FILENO,
-			"minishit: warning: here-document \
+		print_fd(STDOUT_FILENO, "minishit: warning: here-document \
 at line 3 delimited by end-of-file (wanted 'eof')\n");
 		return (0);
 	}
 	return (1);
 }
 
-void read_stdin2(t_program *program, char *limit, char *limiter, int is_quoted)
+void	read_stdin2(t_program *program, char *limit, char *limiter,
+		int is_quoted)
 {
-	char *tmp;
-	char *buffer;
-	
+	char	*tmp;
+	char	*buffer;
+
 	while (g_exterminate != 1)
 	{
 		buffer = readline("\x1b[0mheredoc> ");
@@ -242,7 +242,7 @@ char	*join_rest(char **cmds, int len)
 	return (res);
 }
 
-int open_file2(int fd, int type)
+int	open_file2(int fd, int type)
 {
 	if (fd == -1)
 	{

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:06:09 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/12 14:26:52 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:25:32 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	add_to_env(char ***envp, char *line, int index)
 
 void	add_to_env_append2(char **env, char *line, int index)
 {
-	int 	i;
+	int		i;
 	char	*tmp;
 
 	i = -1;

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/17 14:12:09 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:25:23 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_replace2(char *str, char *tmp)
 {
 	char	*final;
-	
+
 	final = ft_strdup(tmp);
 	free(tmp);
 	free(str);
@@ -51,7 +51,7 @@ char	*ft_replace(char *str, char *toReplace, char *replacer)
 	return (final);
 }
 
-void change_cmd_env2(t_change_cmd_env *cmd_env, t_program *program)
+void	change_cmd_env2(t_change_cmd_env *cmd_env, t_program *program)
 {
 	if (cmd_env->quote != '\'' && cmd_env->str[cmd_env->i] == '$')
 	{
@@ -67,8 +67,8 @@ void change_cmd_env2(t_change_cmd_env *cmd_env, t_program *program)
 			else
 				return ;
 		}
-		cmd_env->oui = ft_substr(&cmd_env->str[cmd_env->i + 1],
-			0, ft_strlen_alnum(&cmd_env->str[cmd_env->i + 1]));
+		cmd_env->oui = ft_substr(&cmd_env->str[cmd_env->i + 1], 0,
+				ft_strlen_alnum(&cmd_env->str[cmd_env->i + 1]));
 		cmd_env->tmp = ft_strjoin(cmd_env->oui, "=");
 		cmd_env->env = find_variable_secure(program->envp, cmd_env->tmp);
 		if (!cmd_env->env)
@@ -81,14 +81,15 @@ void change_cmd_env2(t_change_cmd_env *cmd_env, t_program *program)
 
 char	*change_cmd_env(t_program program, char *cmd)
 {
-	t_change_cmd_env cmd_env;
+	t_change_cmd_env	cmd_env;
 
 	cmd_env.i = -1;
 	cmd_env.str = ft_strdup(cmd);
 	cmd_env.quote = '\0';
 	while (cmd_env.str[++cmd_env.i])
 	{
-		if (!cmd_env.quote && (cmd_env.str[cmd_env.i] == '\'' || cmd_env.str[cmd_env.i] == '"'))
+		if (!cmd_env.quote && (cmd_env.str[cmd_env.i] == '\''
+				|| cmd_env.str[cmd_env.i] == '"'))
 		{
 			cmd_env.quote = cmd_env.str[cmd_env.i];
 			continue ;
@@ -103,7 +104,7 @@ char	*change_cmd_env(t_program program, char *cmd)
 	return (cmd_env.str);
 }
 
-int remove_quote2(char *str, char *quote, int *offset, int i)
+int	remove_quote2(char *str, char *quote, int *offset, int i)
 {
 	if (!quote && (str[i] == '\'' || str[i] == '\"'))
 	{
@@ -128,7 +129,7 @@ char	*remove_quote(char *str)
 	while (str[++i[0]])
 	{
 		if (remove_quote2(str, &quote, &i[1], i[0]))
-			continue;
+			continue ;
 		else if (quote == str[i[0]])
 		{
 			quote = 0;

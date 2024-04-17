@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/11 12:47:35 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:24:40 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,8 @@ int	change_cmd_var3(t_cmd_var *var, char *cmd)
 		return (0);
 	}
 	ft_strcpy(var->tmp, var->new_cmd);
-	ft_strncpy(var->tmp + var->len, cmd + var->start, var->i
-		- var->start);
-	ft_strcpy(var->tmp + var->len + (var->i - var->start),
-		var->env_value);
+	ft_strncpy(var->tmp + var->len, cmd + var->start, var->i - var->start);
+	ft_strcpy(var->tmp + var->len + (var->i - var->start), var->env_value);
 	free(var->new_cmd);
 	var->new_cmd = var->tmp;
 	var->start = var->end;
@@ -49,8 +47,7 @@ int	change_cmd_var3(t_cmd_var *var, char *cmd)
 int	change_cmd_var4(t_cmd_var *var, char *cmd)
 {
 	var->len = ft_strlen(var->new_cmd);
-	var->tmp = ft_calloc(var->len + (var->i - var->start) + 1,
-			sizeof(char));
+	var->tmp = ft_calloc(var->len + (var->i - var->start) + 1, sizeof(char));
 	if (!var->tmp)
 	{
 		free(var->var_name);
@@ -58,8 +55,7 @@ int	change_cmd_var4(t_cmd_var *var, char *cmd)
 		return (0);
 	}
 	ft_strcpy(var->tmp, var->new_cmd);
-	ft_strncpy(var->tmp + var->len, cmd + var->start, var->i
-		- var->start);
+	ft_strncpy(var->tmp + var->len, cmd + var->start, var->i - var->start);
 	var->tmp[var->len + (var->i - var->start)] = '\0';
 	free(var->new_cmd);
 	var->new_cmd = var->tmp;
@@ -76,11 +72,9 @@ int	change_cmd_var2(t_program *program, t_cmd_var *var, char *cmd)
 			var->end = var->i + 1;
 			while (cmd[var->end] && !is_separator(cmd[var->end]))
 				var->end++;
-			var->var_name = ft_calloc(var->end - var->i,
-					sizeof(char));
+			var->var_name = ft_calloc(var->end - var->i, sizeof(char));
 			ft_strncpy(var->var_name, cmd + var->i + 1, var->end - var->i - 1);
-			var->env_value = find_variable(program->envp,
-					var->var_name);
+			var->env_value = find_variable(program->envp, var->var_name);
 			if (var->env_value != NULL && var->env_value[0] == '=')
 				var->env_value++;
 			if (var->env_value)
@@ -106,8 +100,7 @@ char	*change_cmd_var(t_program program, char *cmd)
 	if (!change_cmd_var2(&program, &var, cmd))
 		return (NULL);
 	var.len = ft_strlen(var.new_cmd);
-	var.tmp = ft_calloc(var.len + ft_strlen(cmd + var.start) + 1,
-			sizeof(char));
+	var.tmp = ft_calloc(var.len + ft_strlen(cmd + var.start) + 1, sizeof(char));
 	if (!var.tmp)
 	{
 		free(var.new_cmd);

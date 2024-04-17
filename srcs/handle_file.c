@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:45:00 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/17 14:44:56 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:23:45 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ near unexpected token '|'\n");
 	return (1);
 }
 
-int	append_file_and_infile(t_program *program, t_handle_file *h_file)
+int	append_file(t_program *program, t_handle_file *h_file)
 {
 	if (!ft_strcmp(h_file->cut[h_file->i], ">>"))
 	{
@@ -50,8 +50,14 @@ int	append_file_and_infile(t_program *program, t_handle_file *h_file)
 			free_result(h_file->cut, h_file->len);
 			return (0);
 		}
+		return (2);
 	}
-	else if (!ft_strcmp(h_file->cut[h_file->i], "<"))
+	return (1);
+}
+
+int	is_infile(t_program *program, t_handle_file *h_file)
+{
+	if (!ft_strcmp(h_file->cut[h_file->i], "<"))
 	{
 		if (h_file->i == h_file->len - 1)
 		{
@@ -65,6 +71,7 @@ unexpected token 'newline'\n");
 			free_result(h_file->cut, h_file->len);
 			return (0);
 		}
+		return (2);
 	}
 	return (1);
 }
@@ -86,15 +93,9 @@ void	free_close_args(t_program *program, t_handle_file *h_file, int trigger)
 	program->random_file = 0;
 }
 
-int	handle_file2(t_program *program, t_handle_file *h_file, int *trigger)
+int	is_outfile(t_program *program, t_handle_file *h_file)
 {
-	if (!check_file_errors(program, h_file))
-		return (0);
-	if (!ft_strcmp(h_file->cut[h_file->i], "<<"))
-		read_stdin(program, h_file->cut[h_file->i + 1]);
-	else if (!append_file_and_infile(program, h_file))
-		return (0);
-	else if (!ft_strcmp(h_file->cut[h_file->i], ">"))
+	if (!ft_strcmp(h_file->cut[h_file->i], ">"))
 	{
 		if (h_file->i == h_file->len - 1)
 		{
@@ -108,9 +109,37 @@ unexpected token 'newline'\n");
 			free_result(h_file->cut, h_file->len);
 			return (0);
 		}
+		return (2);
 	}
-	else
-		*trigger = 0;
+	return (1);
+}
+
+int	handle_file2(t_program *program, t_handle_file *h_file, int *trigger)
+{
+	int	val;
+
+	val = check_file_errors(program, h_file);
+	if (val == 0)
+		return (0);
+	if (!ft_strcmp(h_file->cut[h_file->i], "<<"))
+	{
+		read_stdin(program, h_file->cut[h_file->i + 1]);
+		return (1);
+	}
+	val = append_file(program, h_file);
+	if (val == 0)
+		return (0);
+	else if (val == 2)
+		return (1);
+	val = is_infile(program, h_file);
+	if (val == 2)
+		return (2);
+	val = is_outfile(program, h_file);
+	if (val == 0)
+		return (0);
+	else if (val == 2)
+		return (1);
+	*trigger = 0;
 	return (1);
 }
 

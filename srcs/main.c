@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/12 16:58:12 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:26:35 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	init_program(t_program *program, char **envp)
 	program->exit_value = 0;
 }
 
-void main_conditions(char *s, t_program *program)
+void	main_conditions(char *s, t_program *program)
 {
 	if (!s)
 	{

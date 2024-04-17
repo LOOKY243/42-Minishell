@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:24:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/11 15:25:22 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:28:02 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	is_command_char(char c, char next)
 int	is_starting_quote(t_custom_split *s, const char *input_string)
 {
 	if ((input_string[s->i] == '"' || input_string[s->i] == '\'')
-			&& s->quote == '\0')
+		&& s->quote == '\0')
 	{
 		s->quote = input_string[s->i];
 		s->result[s->result_index] = ft_calloc((s->length - s->i + 2),

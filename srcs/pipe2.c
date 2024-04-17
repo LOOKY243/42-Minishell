@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/12 17:19:10 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 17:26:13 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*get_cmds2(char **env, char *cmd)
 {
-	int i;
-	char *tmp;
-	char *path;
+	int		i;
+	char	*tmp;
+	char	*path;
 
 	i = 0;
 	while (env[i])
@@ -71,14 +71,15 @@ int	treat_command(t_program *program, char *cmd)
 	{
 		close(program->pipe[1]);
 		close(program->pipe[0]);
-		value = execve(args[0], args, program->envp);;
+		value = execve(args[0], args, program->envp);
 		print_error(args[0], value);
 	}
 	ft_freesplit(args);
 	return (127);
 }
 
-void treat_command_recoded2(t_program *program, int fd, int *value, char **args)
+void	treat_command_recoded2(t_program *program, int fd, int *value,
+		char **args)
 {
 	if (ft_strcmp(args[0], "export") == 0)
 		*value = export(program, args, fd);
