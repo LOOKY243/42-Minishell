@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 15:13:56 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/11 13:01:51 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 17:03:13 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
+int	ft_atoi2(const char *s, int i, unsigned long long *tmp)
+{
+	while (s[i])
+	{
+		if (!(s[i] >= '0' && s[i] <= '9'))
+			return (0);
+		*tmp = *tmp * 10 + (s[i] - '0');
+		++i;
+	}
+	return (1);
+}
+
 bool	ft_atoi(const char *s, long long *n)
 {
 	int					i;
@@ -49,13 +61,8 @@ bool	ft_atoi(const char *s, long long *n)
 		++i;
 	if (ft_strlen(&s[i]) > 19 || (ft_strlen(&s[i]) == 0 && s[i - 1] != '0'))
 		return (false);
-	while (s[i])
-	{
-		if (!(s[i] >= '0' && s[i] <= '9'))
-			return (false);
-		tmp = tmp * 10 + (s[i] - '0');
-		++i;
-	}
+	if (!ft_atoi2(s, i, &tmp))
+		return (false);
 	if ((sign == 1 && tmp > LLONG_MAX) || (sign == -1 && tmp - 1 > LLONG_MAX))
 		return (false);
 	*n = tmp * sign;

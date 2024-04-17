@@ -6,25 +6,19 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/10 13:49:52 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 17:19:10 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*get_cmds(t_program program, char *cmd)
+char	*get_cmds2(char **env, char *cmd)
 {
-	int		i;
-	char	*path;
-	char	**env;
-	char	*tmp;
+	int i;
+	char *tmp;
+	char *path;
 
-	if (!cmd)
-		return (NULL);
-	if (!find_variable(program.envp, "PATH="))
-		return (cmd);
 	i = 0;
-	env = ft_split_cmd(find_variable(program.envp, "PATH="), ':');
 	while (env[i])
 	{
 		path = ft_strdup(env[i]);
@@ -40,6 +34,22 @@ char	*get_cmds(t_program program, char *cmd)
 		free(path);
 		++i;
 	}
+	return (NULL);
+}
+
+char	*get_cmds(t_program program, char *cmd)
+{
+	char	**env;
+	char	*path;
+
+	if (!cmd)
+		return (NULL);
+	if (!find_variable(program.envp, "PATH="))
+		return (cmd);
+	env = ft_split_cmd(find_variable(program.envp, "PATH="), ':');
+	path = get_cmds2(env, cmd);
+	if (path != NULL)
+		return (path);
 	ft_freesplit(env);
 	return (cmd);
 }
@@ -68,6 +78,18 @@ int	treat_command(t_program *program, char *cmd)
 	return (127);
 }
 
+void treat_command_recoded2(t_program *program, int fd, int *value, char **args)
+{
+	if (ft_strcmp(args[0], "export") == 0)
+		*value = export(program, args, fd);
+	else if (ft_strcmp(args[0], "$?") == 0)
+		*value = return_value(program->exit_value);
+	else if (ft_strcmp(args[0], "unset") == 0)
+		*value = unset(program, args);
+	else if (ft_strcmp(args[0], "cd") == 0)
+		*value = cd(program, args[1]);
+}
+
 int	treat_command_recoded(t_program *program, int fd, char *cmd)
 {
 	char	**args;
@@ -88,14 +110,8 @@ int	treat_command_recoded(t_program *program, int fd, char *cmd)
 		value = pwd(fd);
 	else if (ft_strcmp(args[0], "env") == 0)
 		value = env(program->envp, fd);
-	else if (ft_strcmp(args[0], "export") == 0)
-		value = export(program, args, fd);
-	else if (ft_strcmp(args[0], "$?") == 0)
-		value = return_value(program->exit_value);
-	else if (ft_strcmp(args[0], "unset") == 0)
-		value = unset(program, args);
-	else if (ft_strcmp(args[0], "cd") == 0)
-		value = cd(program, args[1]);
+	else
+		treat_command_recoded2(program, fd, &value, args);
 	if (value != 0)
 		print_strerror(args[0], value, value);
 	ft_freesplit(args);

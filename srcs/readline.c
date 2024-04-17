@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/11 15:18:32 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 14:51:45 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ static char	*home_pwd(char **envp)
 	if (!home)
 		return (ft_strdup("/home"));
 	if (ft_strncmp(home, current, ft_strlen(home)) != 0)
+	{
+		free(pwd);
 		return (current);
+	}
 	final = ft_strjoin("~", &current[ft_strlen(home)]);
 	if (current)
 		free(current);

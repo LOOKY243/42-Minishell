@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:46:29 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/12 15:15:47 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 15:22:58 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,20 @@ unsigned int	ft_countsplit(const char *s, char c)
 	return (count);
 }
 
-void	ft_prealloc2(char const *s, int *d_quote, int *s_quote, int *i,
-		int *count)
+void	increase(int *i, int *count)
 {
+	(*i)++;
+	(*count)++;
+}
+
+int	ft_prealloc2(char const *s, int *d_quote, int *s_quote, int *i)
+{
+	int count;
+
+	count = 0;
 	while (s[*i] && (*d_quote % 2 || *s_quote % 2))
 	{
-		(*count)++;
+		count++;
 		if (s[*i + 1] && (s[*i + 1] == '\'' || s[*i + 1] == '\"'))
 		{
 			if (s[*i + 1] == '\'')
@@ -72,16 +80,11 @@ void	ft_prealloc2(char const *s, int *d_quote, int *s_quote, int *i,
 				(*d_quote)++;
 			if (s[*i + 1] == '\'' || s[*i + 1] == '\"')
 				(*i)++;
-			(*count)++;
+			count++;
 		}
 		(*i)++;
 	}
-}
-
-void	increase(int *i, int *count)
-{
-	(*i)++;
-	(*count)++;
+	return (count);
 }
 
 char	*ft_prealloc(char const *s, char c, int i)
@@ -102,7 +105,7 @@ char	*ft_prealloc(char const *s, char c, int i)
 		if (s[i] == '\'' || s[i] == '\"')
 		{
 			increase(&i, &count);
-			ft_prealloc2(s, &d_quote, &s_quote, &i, &count);
+			count += ft_prealloc2(s, &d_quote, &s_quote, &i);
 		}
 		else
 		increase(&i, &count);

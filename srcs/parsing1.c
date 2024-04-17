@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/12 15:10:28 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/17 15:05:25 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,35 +123,40 @@ void	sigint_handler(int signal)
 	g_exterminate = 1;
 }
 
-void	read_stdin(t_program *program, char *limit)
+int read_stdin3(t_program *program, char *tmp)
 {
-	int		is_quoted;
-	char	*buffer;
-	char	*tmp;
-	char	*limiter;
+	if (write(program->infile, tmp, ft_strlen(tmp)) != (int)ft_strlen(tmp))
+	{
+		print_error("write", EXIT_FAILURE);
+		return (0);
+	}
+	write(program->infile, "\n", 1);
+	free(tmp);
+	return (1);
+}
 
-	signal(SIGINT, sigint_handler);
-	if (program->infile)
-		close(program->infile);
-	program->random_file = random_string(program, 10);
-	program->infile = open(program->random_file, O_CREAT | O_WRONLY | O_TRUNC,
-			0666);
-	is_quoted = is_double_quoted(limit);
-	limiter = remove_quotes(limit);
+int read_stdin2_bis(char *buffer)
+{
+	if (buffer == NULL)
+	{
+		print_fd(STDOUT_FILENO,
+			"minishit: warning: here-document \
+at line 3 delimited by end-of-file (wanted 'eof')\n");
+		return (0);
+	}
+	return (1);
+}
+
+void read_stdin2(t_program *program, char *limit, char *limiter, int is_quoted)
+{
+	char *tmp;
+	char *buffer;
+	
 	while (g_exterminate != 1)
 	{
 		buffer = readline("\x1b[0mheredoc> ");
-		if (buffer == NULL)
-		{
-			print_fd(STDOUT_FILENO,
-				"minishit: warning: here-document \
-at line 3 delimited by end-of-file (wanted 'eof')\n");
+		if (!read_stdin2_bis(buffer))
 			break ;
-		}
-		else if (g_exterminate == 1)
-		{
-			break ;
-		}
 		if (!is_quoted)
 		{
 			tmp = change_cmd_var(*program, buffer);
@@ -165,14 +170,27 @@ at line 3 delimited by end-of-file (wanted 'eof')\n");
 			break ;
 		else
 			tmp = ft_strdup(buffer);
-		if (write(program->infile, tmp, ft_strlen(tmp)) != (int)ft_strlen(tmp))
-		{
-			print_error("write", EXIT_FAILURE);
+		if (!read_stdin3(program, tmp))
 			break ;
-		}
-		write(program->infile, "\n", 1);
-		free(tmp);
 	}
+}
+
+void	read_stdin(t_program *program, char *limit)
+{
+	int		is_quoted;
+	char	*limiter;
+
+	signal(SIGINT, sigint_handler);
+	if (program->infile)
+		close(program->infile);
+	if (!strcmp(limit, ""))
+		return ;
+	program->random_file = random_string(program, 10);
+	program->infile = open(program->random_file, O_CREAT | O_WRONLY | O_TRUNC,
+			0666);
+	is_quoted = is_double_quoted(limit);
+	limiter = remove_quotes(limit);
+	read_stdin2(program, limit, limiter, is_quoted);
 	close(program->infile);
 	program->infile = open(program->random_file, O_RDONLY);
 	free(limiter);

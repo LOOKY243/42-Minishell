@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/08 14:41:07 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/12 16:58:12 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,30 @@ void	init_program(t_program *program, char **envp)
 	program->exit_value = 0;
 }
 
+void main_conditions(char *s, t_program *program)
+{
+	if (!s)
+	{
+		modify_prompt(s);
+		exit_shell(program, s);
+	}
+	else if (ft_strlen(s) == 0)
+	{
+		modify_prompt(s);
+		free(s);
+	}
+	else if (*s)
+	{
+		add_history(s);
+		modify_prompt(s);
+		if (!ft_strncmp(s, "exit", 4) && (s[4] == '\0' || s[4] == ' '))
+			exit_shell(program, s);
+		else
+			process(s, program);
+		free(s);
+	}
+}
+
 int	main(int argc, char **argv, char **envp)
 {
 	char		*s;
@@ -59,26 +83,7 @@ int	main(int argc, char **argv, char **envp)
 		g_exterminate = false;
 		print_prompt(prompt(program.envp));
 		s = readline("\x1b[1;30m╰─ \x1b[0m");
-		if (!s)
-		{
-			modify_prompt(s);
-			exit_shell(&program, s);
-		}
-		else if (ft_strlen(s) == 0)
-		{
-			modify_prompt(s);
-			free(s);
-		}
-		else if (*s)
-		{
-			add_history(s);
-			modify_prompt(s);
-			if (!ft_strncmp(s, "exit", 4) && (s[4] == '\0' || s[4] == ' '))
-				exit_shell(&program, s);
-			else
-				process(s, &program);
-			free(s);
-		}
+		main_conditions(s, &program);
 		print("\n");
 	}
 }
