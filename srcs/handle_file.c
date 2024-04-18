@@ -6,40 +6,11 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:45:00 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/17 17:23:45 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/18 16:17:50 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	check_file_errors(t_program *program, t_handle_file *h_file)
-{
-	if (h_file->i == h_file->len - 1)
-	{
-		if (is_command_sign(h_file->cut[h_file->i]))
-		{
-			free_result(h_file->cut, h_file->len);
-			print_fd(2, "minishit: syntax error near \
-unexpected token 'newline'\n");
-			close(program->infile);
-			return (0);
-		}
-	}
-	else if (is_command_sign(h_file->cut[h_file->i])
-		&& is_command_sign(h_file->cut[h_file->i + 1]))
-	{
-		if (h_file->j == program->cmd.len - 1)
-			print_fd(2, "minishit: syntax error near \
-unexpected token 'newline'\n");
-		else
-			print_fd(2, "minishit: syntax error \
-near unexpected token '|'\n");
-		free_result(h_file->cut, h_file->len);
-		close(program->infile);
-		return (0);
-	}
-	return (1);
-}
 
 int	append_file(t_program *program, t_handle_file *h_file)
 {
@@ -74,23 +45,6 @@ unexpected token 'newline'\n");
 		return (2);
 	}
 	return (1);
-}
-
-void	free_close_args(t_program *program, t_handle_file *h_file, int trigger)
-{
-	if (trigger)
-	{
-		free(h_file->cut[h_file->i]);
-		free(h_file->cut[h_file->i + 1]);
-		h_file->cut[h_file->i] = 0;
-		h_file->cut[h_file->i + 1] = 0;
-	}
-	if (program->random_file)
-	{
-		unlink(program->random_file);
-		free(program->random_file);
-	}
-	program->random_file = 0;
 }
 
 int	is_outfile(t_program *program, t_handle_file *h_file)

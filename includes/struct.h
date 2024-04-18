@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 16:31:55 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/12 18:09:06 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/18 15:51:27 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,24 +63,22 @@ typedef struct s_custom_split
 
 typedef struct s_handle_file
 {
-	int i;
-	int j;
-	int len;
-	int value;
-	char **cut;
-	
-}	t_handle_file;
+	int			i;
+	int			j;
+	int			len;
+	int			value;
+	char		**cut;
+
+}				t_handle_file;
 
 typedef struct s_change_cmd_env
 {
-	char	quote;
-	char	*tmp;
-	char	*env;
-	char	*str;
-	char	*oui;
-	int		i;
-} t_change_cmd_env;
-
-
+	char		quote;
+	char		*tmp;
+	char		*env;
+	char		*str;
+	char		*oui;
+	int			i;
+}				t_change_cmd_env;
 
 #endif

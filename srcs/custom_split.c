@@ -6,17 +6,11 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:24:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/17 17:28:02 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/18 16:04:51 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	is_command_char(char c, char next)
-{
-	return (c == ' ' || c == '<' || c == '>' || (c == ' ' && (next == '<'
-				|| next == '>')));
-}
 
 int	is_starting_quote(t_custom_split *s, const char *input_string)
 {
@@ -131,14 +125,4 @@ char	**custom_split(const char *input_string, int *count)
 	}
 	*count = s.result_index;
 	return (s.result);
-}
-
-void	free_result(char **result, int count)
-{
-	int	i;
-
-	i = -1;
-	while (++i < count)
-		free(result[i]);
-	free(result);
 }
