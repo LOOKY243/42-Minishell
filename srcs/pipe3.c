@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/11 15:16:32 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/19 14:00:28 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	wait_child(t_program *program)
 		if (!is_recoded(program->cmd.list[i]))
 		{
 			waitpid(program->pid[i], &status, 0);
-			program->exit_value = WEXITSTATUS(program->exit_value);
+			program->exit_value = WEXITSTATUS(status);
 		}
 		++i;
 	}
