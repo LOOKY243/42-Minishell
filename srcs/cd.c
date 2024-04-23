@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 18:24:46 by gmarre            #+#    #+#             */
-/*   Updated: 2024/03/13 16:42:51 by ycostode         ###   ########.fr       */
+/*   Updated: 2024/04/23 19:13:18 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,19 @@ char	*change_oldpwd(char *envp, char *pwd)
 
 void	cd_loop(t_program *program)
 {
-	int	i;
+	int		i;
+	char	*pwd;
 
 	i = 0;
+	pwd = NULL;
 	while (program->envp[i] && ft_strncmp("PWD=", program->envp[i], 4))
 		i++;
 	if (program->envp[i])
 	{
 		free(program->envp[i]);
-		program->envp[i] = ft_strjoin("PWD=", getcwd(NULL, 0));
+		getcwd(pwd, sizeof(pwd));
+		program->envp[i] = ft_strjoin("PWD=", pwd);
+		free(pwd);
 	}
 }
 

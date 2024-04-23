@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/18 16:31:44 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/23 17:13:15 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,6 @@
 # include <unistd.h>
 # define BUFFER_SIZE 1024
 # define MAX_TOKENS 20
-
-extern bool		g_exterminate;
 
 // LIBFT
 size_t			ft_strlen(const char *str);

@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:45:00 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/18 16:17:50 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/23 18:16:34 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,15 @@ unexpected token 'newline'\n");
 	return (1);
 }
 
+int	return_shortcut(int val)
+{
+	if (val == 0)
+		return (0);
+	else if (val == 2)
+		return (2);
+	return (1);
+}
+
 int	handle_file2(t_program *program, t_handle_file *h_file, int *trigger)
 {
 	int	val;
@@ -81,18 +90,14 @@ int	handle_file2(t_program *program, t_handle_file *h_file, int *trigger)
 		return (1);
 	}
 	val = append_file(program, h_file);
-	if (val == 0)
-		return (0);
-	else if (val == 2)
-		return (1);
+	if (return_shortcut(val) != 1)
+		return (return_shortcut(val));
 	val = is_infile(program, h_file);
-	if (val == 2)
-		return (2);
+	if (return_shortcut(val) != 1)
+		return (return_shortcut(val));
 	val = is_outfile(program, h_file);
-	if (val == 0)
-		return (0);
-	else if (val == 2)
-		return (1);
+	if (return_shortcut(val) != 1)
+		return (return_shortcut(val));
 	*trigger = 0;
 	return (1);
 }

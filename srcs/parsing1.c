@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/18 16:13:15 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/23 17:13:34 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	sigint_handler(int signal)
 {
 	(void)signal;
 	write(0, "\n", 1);
-	g_exterminate = 1;
 }
 
 int	read_stdin3(t_program *program, char *tmp)
@@ -48,7 +47,7 @@ void	read_stdin2(t_program *program, char *limit, char *limiter,
 	char	*tmp;
 	char	*buffer;
 
-	while (g_exterminate != 1)
+	while (true)
 	{
 		buffer = readline("\x1b[0mheredoc> ");
 		if (!read_stdin2_bis(buffer))

@@ -6,13 +6,11 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/17 17:26:35 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/23 17:13:40 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-bool	g_exterminate = false;
 
 char	**copy_envp(char **envp)
 {
@@ -80,7 +78,6 @@ int	main(int argc, char **argv, char **envp)
 	signal(SIGQUIT, SIG_IGN);
 	while (true)
 	{
-		g_exterminate = false;
 		print_prompt(prompt(program.envp));
 		s = readline("\x1b[1;30m╰─ \x1b[0m");
 		main_conditions(s, &program);

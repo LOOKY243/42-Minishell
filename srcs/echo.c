@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/12 15:03:50 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/09 15:25:08 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/23 17:09:17 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,31 +52,41 @@ bool	check_n_arg(char *str)
 	return (true);
 }
 
+int adjust_pointer(char **cmd)
+{
+	int i;
+
+	i = 1;
+	while (check_n_arg(cmd[i]))
+		i++;
+	return (i - 1);
+}
+
 int	echo(char **cmd, int fd)
 {
 	int	i;
+	char *tmp;
+	char *str;
 
-	if (cmd[1] && check_n_arg(cmd[1]))
-	{
-		i = 2;
-		while (check_n_arg(cmd[i]))
-			i++;
-		while (cmd[i] && ft_strcmp(cmd[i], "|"))
-		{
-			print_fd(fd, cmd[i]);
-			if (i != count_args(cmd) - 1)
-				print_fd(fd, " ");
-			i++;
-		}
-		return (0);
-	}
-	i = 0;
+	i = adjust_pointer(cmd);
+	str = ft_calloc(1, sizeof(char));
 	while (cmd[++i])
 	{
-		if (i != count_args(cmd))
-			print_fd(fd, " ");
-		print_fd(fd, cmd[i]);
+		tmp = ft_strjoin(str, cmd[i]);
+		free(str);
+		str = tmp;
+		if (cmd[i + 1])
+		{
+			tmp = ft_strjoin(str, " ");
+			free(str);
+			str = tmp;
+		}
 	}
-	printf("\n");
+	str = remove_quotes(tmp);
+	print_fd(fd, str);
+	if (!check_n_arg(cmd[1]))
+		print_fd(fd, "\n");
+	free(str);
+	free(tmp);
 	return (0);
 }

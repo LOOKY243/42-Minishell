@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/11 15:16:18 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/23 18:30:10 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,25 @@
 
 int	check_only_spaces(char *str)
 {
-	int	i;
+	int		i;
+	char	*cpy;
 
-	i = 0;
-	while (str[i])
+	i = -1;
+	cpy = remove_quotes(str);
+	if (!ft_strlen(cpy))
 	{
-		if (str[i] != ' ')
-			return (1);
-		i++;
+		free(cpy);
+		return (0);
 	}
+	while (cpy[++i])
+	{
+		if (cpy[i] != ' ')
+		{
+			free(cpy);
+			return (1);
+		}
+	}
+	free(cpy);
 	return (0);
 }
 
@@ -53,7 +63,10 @@ int	exec(t_program *program, char *cmd)
 		return (print_error("pipe", EXIT_FAILURE));
 	new_cmd = treat_cmd(*program, cmd);
 	if (!check_only_spaces(cmd))
-		;
+	{
+		free(new_cmd);
+		return (EXIT_FAILURE);
+	}
 	else if (!is_recoded(new_cmd))
 	{
 		if (exec_non_recoded(new_cmd, program) == EXIT_FAILURE)
@@ -74,8 +87,6 @@ void	launch_commands(t_program *program)
 {
 	while (program->cmd.list[program->cmd.current])
 	{
-		if (g_exterminate == 1)
-			break ;
 		if (exec(program, program->cmd.list[program->cmd.current]))
 			break ;
 		program->cmd.current++;
@@ -88,7 +99,6 @@ void	process(char *prompt, t_program *program)
 	program->cmd.list = ft_split_cmd(prompt, '|');
 	program->cmd.len = count_args_no_sign(program->cmd.list);
 	program->pipe_saved = -1;
-	g_exterminate = 0;
 	if (!handle_file(program))
 		return ((void)ft_freesplit(program->cmd.list));
 	if (program->infile == -1 || program->outfile == -1)

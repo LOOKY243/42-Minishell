@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 16:24:12 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/18 16:04:51 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/23 18:37:34 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,9 +80,12 @@ int	is_outfile_sign(t_custom_split *s, const char *input_string)
 		}
 		return (1);
 	}
-	if (is_command_char(input_string[s->i], input_string[s->i + 1])
-		&& s->quote == '\0')
-		s->i++;
+	if (s->i + 1 < s->length)
+	{
+		if (is_command_char(input_string[s->i], input_string[s->i + 1])
+			&& s->quote == '\0')
+			s->i++;
+	}
 	return (0);
 }
 
@@ -114,6 +117,8 @@ char	**custom_split(const char *input_string, int *count)
 	s.j = 0;
 	while (s.i < s.length)
 	{
+		while (input_string[s.i] == ' ')
+			s.i++;
 		if (is_starting_quote(&s, input_string))
 			continue ;
 		else if (is_infile_sign(&s, input_string))
