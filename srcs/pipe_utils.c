@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 16:15:55 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/18 16:16:31 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/26 15:39:33 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	is_recoded(char *cmd)
 	recoded = false;
 	if (ft_strcmp(args[0], "echo") == 0)
 		recoded = true;
-	else if (ft_strcmp(args[0], "pwd") == 0 && !args[1])
+	else if (ft_strcmp(args[0], "pwd") == 0)
 		recoded = true;
 	else if (ft_strcmp(args[0], "cd") == 0)
 		recoded = true;

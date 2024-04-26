@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/23 18:30:10 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/24 14:40:35 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ void	launch_commands(t_program *program)
 		program->cmd.current++;
 	}
 }
+
+
 
 void	process(char *prompt, t_program *program)
 {
