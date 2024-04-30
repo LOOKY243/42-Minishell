@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:34 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/24 14:40:35 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:18:35 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,14 +93,14 @@ void	launch_commands(t_program *program)
 	}
 }
 
-
-
 void	process(char *prompt, t_program *program)
 {
 	program->cmd.current = 0;
 	program->cmd.list = ft_split_cmd(prompt, '|');
 	program->cmd.len = count_args_no_sign(program->cmd.list);
 	program->pipe_saved = -1;
+	if (multi_stuck_pipes(prompt))
+		return ((void)ft_freesplit(program->cmd.list));
 	if (!handle_file(program))
 		return ((void)ft_freesplit(program->cmd.list));
 	if (program->infile == -1 || program->outfile == -1)

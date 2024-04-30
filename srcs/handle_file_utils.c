@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/18 16:17:22 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/18 16:17:55 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:16:59 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,4 +63,42 @@ void	free_close_args(t_program *program, t_handle_file *h_file, int trigger)
 		free(program->random_file);
 	}
 	program->random_file = 0;
+}
+
+int	return_shortcut(int val)
+{
+	if (val == 0)
+		return (0);
+	else if (val == 2)
+		return (2);
+	return (1);
+}
+
+int	multi_stuck_pipes(char *prompt)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	while (prompt[i])
+	{
+		count = 0;
+		while (prompt[i] == '|')
+		{
+			count++;
+			i++;
+			if (count == 3)
+			{
+				printf("minishit: syntax error near unexpected token `||'\n");
+				return (1);
+			}
+		}
+		if (count == 2)
+		{
+			printf("minishit: syntax error near unexpected token `|'\n");
+			return (1);
+		}
+		i++;
+	}
+	return (0);
 }

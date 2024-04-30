@@ -26,8 +26,9 @@ int	print_strerror(char *str, int errnum, int value)
 
 	error = strerror(errnum);
 	print_fd(STDERR_FILENO, "\x1b[1;31mminishit: ");
-	write(STDERR_FILENO, str, ft_strlen(str));
-	write(STDERR_FILENO, error, ft_strlen(error));
+	print_fd(STDERR_FILENO, str);
+	print_fd(STDERR_FILENO, ": ");
+	print_fd(STDERR_FILENO, error);
 	print_fd(STDERR_FILENO, "\x1b[0m\n");
 	return (value);
 }

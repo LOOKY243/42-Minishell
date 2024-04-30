@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/12 12:45:00 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/23 18:16:34 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/29 14:14:52 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,15 +65,6 @@ unexpected token 'newline'\n");
 		}
 		return (2);
 	}
-	return (1);
-}
-
-int	return_shortcut(int val)
-{
-	if (val == 0)
-		return (0);
-	else if (val == 2)
-		return (2);
 	return (1);
 }
 

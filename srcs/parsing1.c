@@ -6,17 +6,11 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 12:26:18 by gmarre            #+#    #+#             */
-/*   Updated: 2024/04/23 17:13:34 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:32:24 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	sigint_handler(int signal)
-{
-	(void)signal;
-	write(0, "\n", 1);
-}
 
 int	read_stdin3(t_program *program, char *tmp)
 {
@@ -41,6 +35,18 @@ at line 3 delimited by end-of-file (wanted 'eof')\n");
 	return (1);
 }
 
+int	non_quoted_limit(t_program *program, char **tmp, char *limiter,
+		char *buffer)
+{
+	*tmp = change_cmd_var(*program, buffer);
+	if (!ft_strcmp(buffer, limiter))
+	{
+		free(*tmp);
+		return (1);
+	}
+	return (0);
+}
+
 void	read_stdin2(t_program *program, char *limit, char *limiter,
 		int is_quoted)
 {
@@ -54,12 +60,8 @@ void	read_stdin2(t_program *program, char *limit, char *limiter,
 			break ;
 		if (!is_quoted)
 		{
-			tmp = change_cmd_var(*program, buffer);
-			if (!ft_strcmp(buffer, limiter))
-			{
-				free(tmp);
+			if (non_quoted_limit(program, &tmp, limiter, buffer))
 				break ;
-			}
 		}
 		else if (!ft_strncmp(buffer, &limit[1], ft_strlen(&limit[1]) - 1))
 			break ;
@@ -67,7 +69,9 @@ void	read_stdin2(t_program *program, char *limit, char *limiter,
 			tmp = ft_strdup(buffer);
 		if (!read_stdin3(program, tmp))
 			break ;
+		free(buffer);
 	}
+	free(buffer);
 }
 
 void	read_stdin(t_program *program, char *limit)

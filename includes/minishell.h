@@ -6,7 +6,7 @@
 /*   By: gmarre <gmarre@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/09 15:19:27 by ycostode          #+#    #+#             */
-/*   Updated: 2024/04/23 17:13:15 by gmarre           ###   ########.fr       */
+/*   Updated: 2024/04/30 12:27:42 by gmarre           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void			*ft_memcpy(void *dest, const void *src, size_t n);
 
 // SIGNAL
 void			signal_c_handler(int signal);
+void			sigint_handler(int signal);
 
 // PRINT
 int				print_strerror(char *str, int errnum, int value);
@@ -133,5 +134,7 @@ void			check_quote(const char *s, size_t i[3], int *s_quote,
 unsigned int	ft_countsplit(const char *s, char c);
 void			ft_countsplit2(const char *s, unsigned int *i,
 					unsigned int *d_quote, unsigned int *s_quote);
+int				return_shortcut(int val);
+int				multi_stuck_pipes(char *prompt);
 
 #endif
